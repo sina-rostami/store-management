@@ -14,7 +14,7 @@ class Product():
     def get_id(self):
         return self.id
 
-    def set_name(self, name=str):
+    def set_name(self, name: str):
         self.name = name
 
     def get_name(self):

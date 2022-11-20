@@ -8,6 +8,7 @@ CORS(app)
 
 store = Store()
 
+
 @app.route('/login', methods=['POST', 'GET'])
 def add_product():
     if request.method == 'POST':
