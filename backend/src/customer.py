@@ -22,7 +22,7 @@ class Customer:
         else:
             return False
 
-    def deposit(self, income: float()):
+    def deposit(self, income: float):
         if self.debt != 0:
             if self.debt >= income:
                 self.debt -= income

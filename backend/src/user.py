@@ -11,7 +11,7 @@ class User:
         self.customers = customers
         self.products = products
 
-    def make_purchase_on_customer(self, customer_id: id, product_ids: list):
+    def make_purchase_on_customer(self, customer_id: int, product_ids: list):
         purchase_cost = 0
         for product_id in product_ids:
             for product in self.products:
@@ -25,14 +25,13 @@ class User:
     def add_product(self, product: Product):
         self.products.append(product)
 
-    def update_product(self, id : int, i_product: Product):
+    def update_product(self, id: int, i_product: Product):
         for product in self.products:
             if product.get_id() == id:
                 product = i_product
 
     def add_customer(self, customer: Customer):
         self.customers.append(customer)
-
 
     # create product handlers
 

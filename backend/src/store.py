@@ -2,6 +2,7 @@ import json
 
 from product import Product
 
+
 class Store:
     def __init__(self) -> None:
         self.admins = []
@@ -16,4 +17,3 @@ class Store:
 
     def add_product(self, data):
         self.products.append(Product)
-
