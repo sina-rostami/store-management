@@ -34,3 +34,39 @@ def place_order():
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
 
+@app.route('/order', methods=['GET'])
+def get_orders():
+    try:
+        return jsonify(backend.get_all_orders_as_json()), StatusCode.OK.value
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+
+@app.route('/customer', methods=['GET'])
+def get_customers():
+    try:
+        return jsonify(backend.get_all_customers_as_json()), StatusCode.OK.value
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+
+@app.route('/product', methods=['GET'])
+def get_products():
+    try:
+        return jsonify(backend.get_all_products_as_json()), StatusCode.OK.value
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+
+@app.route('/seller', methods=['GET'])
+def get_sellers():
+    try:
+        return jsonify(backend.get_all_sellers_as_json()), StatusCode.OK.value
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+

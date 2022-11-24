@@ -15,6 +15,12 @@ servers:
 tags:
   - name: order
     description: Everything about Orders
+  - name: customer
+    description: Everything about Customers
+  - name: seller
+    description: Everything about Sellers
+  - name: product
+    description: Everything about Products
 paths:
   /order:
     post:
@@ -49,22 +55,133 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+    get:
+      tags:
+        - order
+      summary: get orders
+      description: get orders
+      operationId: getOrder
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /customer:
+    get:
+      tags:
+        - customer
+      summary: get customers
+      description: get customers
+      operationId: getCustomer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /seller:
+    get:
+      tags:
+        - seller
+      summary: get sellers
+      description: get sellers
+      operationId: getSeller
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Seller'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /product:
+    get:
+      tags:
+        - product
+      summary: get products
+      description: get products
+      operationId: getProduct
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
 components:
   schemas:
     addOrder:
       required:
-        - seller-id
-        - customer-id
-        - products-ids
+        - seller_id
+        - customer_id
+        - products_ids
       type: object
       properties:
-        seller-id:
+        seller_id:
           type: integer
           example: 1
-        customer-id:
+        customer_id:
           type: integer
           example: 1
-        products-ids:
+        products_ids:
           type: array
           items:
             type: integer
@@ -74,16 +191,70 @@ components:
         id:
           type: integer
           example: 1
-        seller-id:
+        seller_id:
           type: integer
           example: 1
-        customer-id:
+        customer_id:
           type: integer
           example: 1
-        products-ids:
+        products_ids:
           type: array
           items:
             type: integer
+        total_price:
+          type: number
+          example: 10
+        date:
+          type: number
+          example: 1669315706.634264
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Ali"
+        credit:
+          type: number
+          example: 1000
+        join_date:
+          type: number
+          example: 1669315706.634264
+        is_active:
+          type: boolean
+          example: true
+        phone_number:
+          type: string
+          example: "01232312342"
+    Seller:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Ali"
+        username:
+          type: string
+          example: "ali_ahmadi"
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Ali"
+        category:
+          type: integer
+          example: 0
+        price:
+          type: number
+          example: 10.5
     ApiResponse:
       type: object
       properties:
