@@ -1,17 +1,36 @@
-from flask import Flask, request
-from backend.src.store import Store
-from flask_cors import CORS
+from enum import Enum
 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from werkzeug.exceptions import BadRequest
+
+from backend import Backend
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 CORS(app)
 
-store = Store()
+class StatusCode(Enum):
+    NOT_FOUND = 404
+    BAD_REQUEST = 400
+    OK = 200
+    INTERNAL_ERROR = 500
+    WRONG_PASSWORD = 401
 
+backend = Backend()
 
-@app.route('/login', methods=['POST', 'GET'])
-def add_product():
-    if request.method == 'POST':
-        return store.add_product(request.form)
-    elif request.method == 'GET':
-        return store.get_products()
+@app.route('/order', methods=['POST'])
+def place_order():
+    try:
+        did_success, message = backend.place_order(request.json)
+        if not did_success:
+            return jsonify({'message': message}), StatusCode.BAD_REQUEST.value
+
+        return jsonify({'message': message}), StatusCode.OK.value
+    except KeyError as e:
+        return jsonify({'message': f'{e} is not defined in the json data.'}), StatusCode.BAD_REQUEST.value
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+
