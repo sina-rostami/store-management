@@ -55,20 +55,3 @@ class Customer:
                            'credit': self.credit,
                            'debt': self.debt})
 
-
-if __name__ == '__main__':
-    customer = Customer(12, 'ali', '09123213', 10000, 5000)
-
-    print(customer)
-    customer.make_purchase(5000)
-    print(customer)
-    customer.make_purchase(5000)
-    print(customer)
-    customer.make_purchase(5000)
-    print(customer)
-    customer.make_purchase(1000)
-    print(customer)
-    customer.deposit(1000)
-    print(customer)
-    customer.deposit(12000)
-    print(customer)
