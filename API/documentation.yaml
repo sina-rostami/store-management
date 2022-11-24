@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: Store Management
+  description: |-
+    This is the API documentation for Store Management project based on the OpenAPI 3.0 specification.
+  contact:
+    email: sina.rostami@email.kntu.ac.ir
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+
+servers:
+  - url: http://127.0.0.1:5000
+tags:
+  - name: order
+    description: Everything about Orders
+paths:
+  /order:
+    post:
+      tags:
+        - order
+      summary: new order
+      description: Place a new order in the store
+      operationId: addOrder
+      requestBody:
+        description: Place a new order in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addOrder'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+components:
+  schemas:
+    addOrder:
+      required:
+        - seller-id
+        - customer-id
+        - products-ids
+      type: object
+      properties:
+        seller-id:
+          type: integer
+          example: 1
+        customer-id:
+          type: integer
+          example: 1
+        products-ids:
+          type: array
+          items:
+            type: integer
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        seller-id:
+          type: integer
+          example: 1
+        customer-id:
+          type: integer
+          example: 1
+        products-ids:
+          type: array
+          items:
+            type: integer
+    ApiResponse:
+      type: object
+      properties:
+        message:
+          type: "string"
+          enum:
+            - "<message>"
+            - "credit is not enough"
+            - "<key> is not defined in the json data."
