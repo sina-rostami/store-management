@@ -10,6 +10,7 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 CORS(app)
 
+
 class StatusCode(Enum):
     NOT_FOUND = 404
     BAD_REQUEST = 400
@@ -17,12 +18,14 @@ class StatusCode(Enum):
     INTERNAL_ERROR = 500
     WRONG_PASSWORD = 401
 
+
 backend = Backend()
+
 
 @app.route('/order', methods=['POST'])
 def place_order():
     try:
-        did_success, message = backend.place_order(request.json)
+        did_success, message = backend.seller_manager.place_order(request.json)
         if not did_success:
             return jsonify({'message': message}), StatusCode.BAD_REQUEST.value
 
@@ -34,14 +37,16 @@ def place_order():
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
 
+
 @app.route('/order', methods=['GET'])
 def get_orders():
     try:
-        return jsonify(backend.get_all_orders_as_json()), StatusCode.OK.value
+        return jsonify(backend.seller_manager.get_all_orders_as_json()), StatusCode.OK.value
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+
 
 @app.route('/customer', methods=['GET'])
 def get_customers():
@@ -52,6 +57,7 @@ def get_customers():
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
 
+
 @app.route('/product', methods=['GET'])
 def get_products():
     try:
@@ -61,12 +67,12 @@ def get_products():
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
 
+
 @app.route('/seller', methods=['GET'])
 def get_sellers():
     try:
-        return jsonify(backend.get_all_sellers_as_json()), StatusCode.OK.value
+        return jsonify(backend.seller_manager.get_all_sellers_as_json()), StatusCode.OK.value
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
-
