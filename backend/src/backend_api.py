@@ -51,7 +51,7 @@ def get_orders():
 @app.route('/customer', methods=['GET'])
 def get_customers():
     try:
-        return jsonify(backend.get_all_customers_as_json()), StatusCode.OK.value
+        return jsonify(backend.customer_manager.get_all_customers_as_json()), StatusCode.OK.value
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
     except Exception as e:

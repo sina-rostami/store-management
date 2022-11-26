@@ -4,12 +4,14 @@ import datetime
 from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Order, OrderProduct, Payment, Scratch
 
 from seller_manager import SellerManager
+from customer_manager import CustomerManager
 
 
 class Backend:
     def __init__(self) -> None:
         self.database_session = DatabaseHandler('sqlite:///test.db').get_session()
         self.seller_manager = SellerManager(self.database_session)
+        self.customer_manager = CustomerManager(self.database_session)
         self.add_defaults_to_database()
         self.add_mock_values_to_db()
 
@@ -46,17 +48,6 @@ class Backend:
 
     def get_hash(self, password):
         return hashlib.md5(bytes(password, 'utf-8')).hexdigest()
-
-    def get_customer_as_json(self, customer):
-        return {'id': customer.id,
-                'name': customer.name,
-                'credit': customer.credit,
-                'join_date': customer.join_date.timestamp(),
-                'is_active': customer.is_active,
-                'phone_number': customer.phone_number}
-
-    def get_all_customers_as_json(self):
-        return [self.get_customer_as_json(customer) for customer in self.database_session.query(Customer).all()]
 
     def get_product_as_json(self, product):
         return {'id': product.id,
