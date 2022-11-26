@@ -110,7 +110,7 @@ class Payment(Base):
 
 
 class Scratch(Base):
-    __tablename__ = 'scratch'
+    __tablename__ = 'Scratch'
     key = Column(Text, primary_key=True)
     value = Column(Text, nullable=False)
 

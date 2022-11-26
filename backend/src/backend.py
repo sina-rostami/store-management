@@ -30,17 +30,24 @@ class Backend:
             name='asghar', credit=100.0, join_date=datetime.datetime.now(),
             is_active=True, phone_number='09101010203'))
         self.database_session.add(Payer(name='asghar-payer', phone_number='09111010203'))
-        self.database_session.add(Category(name='tanagholat'))
-        self.database_session.add(Product(name='chips', price=50.0, category_id=0))
+        self.database_session.add(Category(name='خوراکی'))
+        self.database_session.add(Product(name='چای', price=1000,category_id=0))
+        self.database_session.add(Product(name='نسکافه', price=7000,category_id=0))
+        self.database_session.add(Product(name='آبمیوه', price=8000,category_id=0))
+        self.database_session.add(Product(name='نان', price=9000,category_id=0))
+        self.database_session.add(Product(name='املت', price=2000,category_id=0))
+        self.database_session.add(Product(name='سیب', price=3000,category_id=0))
+        self.database_session.add(Product(name='گوجه', price=5000,category_id=0))
+        self.database_session.add(Product(name='دوغ', price=6000,category_id=0))
         self.database_session.commit()
 
     def get_hash(self, password):
         return hashlib.md5(bytes(password, 'utf-8')).hexdigest()
 
     def place_order(self, request_data):
-        customer_id = request_data['customer-id']
-        seller_id = request_data['seller-id']
-        products_ids = request_data['products-ids']
+        customer_id = request_data['customer_id']
+        seller_id = request_data['seller_id']
+        products_ids = request_data['products_ids']
 
         # check existance of customer & seller & products
 
