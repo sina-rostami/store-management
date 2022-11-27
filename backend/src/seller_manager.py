@@ -1,4 +1,9 @@
 import datetime
+
+import shortuuid as shortuuid
+from flask import make_response, jsonify
+from werkzeug.security import generate_password_hash
+
 from database_handler import Seller, Product, Customer, OrderProduct, Order
 
 
@@ -52,3 +57,31 @@ class SellerManager:
 
     def get_all_sellers_as_json(self):
         return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all()]
+
+    def create_seller(self, data):
+        # gets name, email and password
+        name, username, password = data.get('name'), data.get('username'), data.get('password')
+
+        # checking for existing user
+        user = self.database_session.query(Seller) \
+            .filter_by(username=username) \
+            .first()
+        if not user:
+            # database ORM object
+            # insert user
+            self.database_session.add(Seller(
+                name=name,
+                username=username,
+                password=generate_password_hash(password)
+            ))
+            self.database_session.commit()
+
+            return make_response(jsonify({'message': 'Registered Successfully', 'code': 200, 'status': 'success'}), 200)
+        else:
+            # returns 202 if user already exists
+            return make_response(jsonify({'message': 'User exists', 'code': 400, 'status': 'failed'}), 400)
+
+    def find_by_username(self, username):
+        return self.database_session.query(Seller) \
+            .filter_by(username=username) \
+            .first()

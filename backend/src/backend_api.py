@@ -1,15 +1,17 @@
 from enum import Enum
+from functools import wraps
 
+import jwt
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from jwt import ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
-
+from security import Security
 from backend import Backend
-from security.security import token_required
+from database_handler import Seller
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
-CORS(app)
+app.config['SECRET_KEY'] = 'your secret key'
 
 
 class StatusCode(Enum):
@@ -21,6 +23,34 @@ class StatusCode(Enum):
 
 
 backend = Backend()
+
+
+# decorator for verifying the JWT
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'x-access-token' in request.headers:
+            token = request.headers.get('x-access-token')
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
+            current_user = backend.seller_manager.find_by_username(data['username'])
+
+        except ExpiredSignatureError:
+            return jsonify({
+                'message': 'Token is Expired !!'
+            }), 401
+
+        except:
+            return jsonify({
+                'message': 'Token is invalid !!'
+            }), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
 
 
 @app.route('/order', methods=['POST'])
@@ -78,3 +108,33 @@ def get_sellers():
         return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    # creates dictionary of form data
+    auth = request.form
+    if not auth or not auth.get('username') or not auth.get('password'):
+        # returns 401 if any email or / and password is missing
+        return jsonify(
+            'USERNAME_AND_PASSWORD_REQUIRED',
+            400,
+            {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
+        )
+    return backend.security.authorize(auth)
+
+
+@app.route('/add-seller', methods=['POST'])
+@token_required
+def add_seller(f):
+    # creates a dictionary of the form data
+    data = request.json
+
+    return backend.seller_manager.create_seller(data)
+
+
+if __name__ == "__main__":
+    # setting debug to True enables hot reload
+    # and also provides a debugger shell
+    # if you hit an error while running the server
+    app.run(debug=True)
