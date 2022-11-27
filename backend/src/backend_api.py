@@ -5,7 +5,7 @@ from flask_cors import CORS
 from werkzeug.exceptions import BadRequest
 
 from backend import Backend
-from backend.src.security.security import token_required
+from security.security import token_required
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
