@@ -1,6 +1,7 @@
 import hashlib
 import datetime
 
+from requests import HTTPError
 from werkzeug.security import generate_password_hash
 
 from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Order, OrderProduct, Payment, \
@@ -30,7 +31,7 @@ class Backend:
             self.database_session.commit()
 
         if not self.database_session.query(Scratch).filter_by(key=ADMIN_PASSWORD[0]).first():
-            self.database_session.add(Scratch(ADMIN_PASSWORD[0], self.get_hash(ADMIN_PASSWORD[1])))
+            self.database_session.add(Scratch(ADMIN_PASSWORD[0], generate_password_hash(ADMIN_PASSWORD[1])))
             self.database_session.commit()
 
     def add_mock_values_to_db(self):
@@ -53,5 +54,13 @@ class Backend:
         self.database_session.add(Product(name='دوغ', price=6000, category_id=0))
         self.database_session.commit()
 
-    def get_hash(self, password):
-        return hashlib.md5(bytes(password, 'utf-8')).hexdigest()
+    def find_admin(self, username):
+        admin_name = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
+        if admin_name == username:
+            password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value;
+            return {
+                'username': admin_name,
+                'password': password
+            }
+        else:
+            raise HTTPError()

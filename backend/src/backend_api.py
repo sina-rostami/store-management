@@ -1,11 +1,11 @@
-from enum import Enum
 from functools import wraps
+from http import HTTPStatus
 
 import jwt
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from jwt import ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
-from security import Security
+
 from backend import Backend
 from database_handler import Seller
 
@@ -13,20 +13,11 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'your secret key'
 
-
-class StatusCode(Enum):
-    NOT_FOUND = 404
-    BAD_REQUEST = 400
-    OK = 200
-    INTERNAL_ERROR = 500
-    WRONG_PASSWORD = 401
-
-
 backend = Backend()
 
 
 # decorator for verifying the JWT
-def token_required(f):
+def normal_authorization(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
@@ -37,7 +28,8 @@ def token_required(f):
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
             current_user = backend.seller_manager.find_by_username(data['username'])
-
+            if not current_user:
+                current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError:
             return jsonify({
                 'message': 'Token is Expired !!'
@@ -53,91 +45,140 @@ def token_required(f):
     return decorated
 
 
+def admin_authorization(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'x-access-token' in request.headers:
+            token = request.headers.get('x-access-token')
+        if not token:
+            return jsonify({'message': 'Token is missing !!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
+            current_user = backend.find_admin(data['username'])
+        except ExpiredSignatureError:
+            return jsonify({
+                'message': 'Token is Expired !!'
+            }), 401
+
+        except:
+            return jsonify({
+                'message': 'Token is invalid !!'
+            }), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+
+def check_fields(data, fields):
+    if not data:
+        return make_response(
+            jsonify({'message': 'EXPECTED_DATA', 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
+    for x in fields:
+        if not data.get(x):
+            raise BadRequest("EXPECTED_" + x.upper())
+
+
 @app.route('/order', methods=['POST'])
-@token_required
+@normal_authorization
 def place_order():
     try:
         did_success, message = backend.seller_manager.place_order(request.json)
         if not did_success:
-            return jsonify({'message': message}), StatusCode.BAD_REQUEST.value
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
-        return jsonify({'message': message}), StatusCode.OK.value
+        return jsonify({'message': message}), HTTPStatus.OK
     except KeyError as e:
-        return jsonify({'message': f'{e} is not defined in the json data.'}), StatusCode.BAD_REQUEST.value
+        return jsonify({'message': f'{e} is not defined in the json data.'}), HTTPStatus.BAD_REQUEST
     except BadRequest as e:
-        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/order', methods=['GET'])
 def get_orders():
     try:
-        return jsonify(backend.seller_manager.get_all_orders_as_json()), StatusCode.OK.value
+        return jsonify(backend.seller_manager.get_all_orders_as_json()), HTTPStatus.OK
     except BadRequest as e:
-        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/customer', methods=['GET'])
 def get_customers():
     try:
-        return jsonify(backend.customer_manager.get_all_customers_as_json()), StatusCode.OK.value
+        return jsonify(backend.customer_manager.get_all_customers_as_json()), HTTPStatus.OK
     except BadRequest as e:
-        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/product', methods=['GET'])
 def get_products():
     try:
-        return jsonify(backend.product_manager.get_all_products_as_json()), StatusCode.OK.value
+        return jsonify(backend.product_manager.get_all_products_as_json()), HTTPStatus.OK
     except BadRequest as e:
-        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/seller', methods=['GET'])
 def get_sellers():
     try:
-        return jsonify(backend.seller_manager.get_all_sellers_as_json()), StatusCode.OK.value
+        return jsonify(backend.seller_manager.get_all_sellers_as_json()), HTTPStatus.OK
     except BadRequest as e:
-        return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/login', methods=['POST'])
 def login():
-    # creates dictionary of form data
     auth = request.form
-    if not auth or not auth.get('username') or not auth.get('password'):
-        # returns 401 if any email or / and password is missing
-        return jsonify(
-            'USERNAME_AND_PASSWORD_REQUIRED',
-            400,
-            {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
-        )
-    return backend.security.authorize(auth)
+    try:
+        check_fields(auth, {'username', 'password'})
+        return backend.security.authorize(auth)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
 
 
-@app.route('/add-seller', methods=['POST'])
-@token_required
-def add_seller(f):
+@app.route('/seller', methods=['POST'])
+@admin_authorization
+def add_seller(current_user):
+    data = request.json
+    try:
+        check_fields(data, {'username', 'name', 'password'})
+        return backend.seller_manager.create_seller(data)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
+
+
+@app.route('/seller', methods=['PUT'])
+@normal_authorization
+def edit_profile(current_user):
     data = request.json
 
-    return backend.seller_manager.create_seller(data)
+    if isinstance(current_user, Seller) and current_user.username != data.get('old_username'):
+        return make_response(jsonify({'message': 'FORBIDDEN', 'code': HTTPStatus.FORBIDDEN, 'status': 'failed'}),
+                             HTTPStatus.FORBIDDEN)
 
-
-@app.route('/edit-account', methods=['POST'])
-@token_required
-def edit_profile(f):
-    data = request.json
-
-    return backend.seller_manager.edit_account(data)
+    try:
+        check_fields(data, {'username', 'name', 'password'})
+        return backend.seller_manager.edit_account(data, current_user)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
 
 
 if __name__ == "__main__":
