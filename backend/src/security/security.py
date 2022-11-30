@@ -5,7 +5,7 @@ import jwt
 from flask import Flask, request, jsonify
 
 # creates Flask object
-from backend.src.database_handler import Customer
+from database_handler import Customer
 
 app = Flask(__name__)
 # configuration

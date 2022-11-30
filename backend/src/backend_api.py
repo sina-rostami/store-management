@@ -13,6 +13,7 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'your secret key'
 
+
 backend = Backend()
 
 
@@ -98,6 +99,7 @@ def place_order():
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+
 @app.route('/order', methods=['GET'])
 def get_orders():
     try:
@@ -106,6 +108,7 @@ def get_orders():
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
 
 
 @app.route('/customer', methods=['GET'])
@@ -118,6 +121,7 @@ def get_customers():
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+
 @app.route('/product', methods=['GET'])
 def get_products():
     try:
@@ -126,6 +130,7 @@ def get_products():
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
 
 
 @app.route('/seller', methods=['GET'])
