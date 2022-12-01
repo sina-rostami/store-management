@@ -3,6 +3,7 @@ from http import HTTPStatus
 
 import jwt
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 from jwt import ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
 
@@ -12,7 +13,7 @@ from database_handler import Seller
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'your secret key'
-
+CORS(app)
 
 backend = Backend()
 
@@ -61,7 +62,6 @@ def admin_authorization(f):
             return jsonify({
                 'message': 'Token is Expired !!'
             }), 401
-
         except:
             return jsonify({
                 'message': 'Token is invalid !!'
@@ -141,57 +141,7 @@ def get_sellers():
 
 @app.route('/login', methods=['POST'])
 def login():
-    auth = request.form
-    try:
-        check_fields(auth, {'username', 'password'})
-        return backend.security.authorize(auth)
-    except BadRequest as e:
-        return make_response(
-            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
-            HTTPStatus.BAD_REQUEST)
-
-
-@app.route('/seller', methods=['POST'])
-@admin_authorization
-def add_seller(current_user):
-    data = request.json
-    try:
-        check_fields(data, {'username', 'name', 'password'})
-        return backend.seller_manager.create_seller(data)
-    except BadRequest as e:
-        return make_response(
-            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
-            HTTPStatus.BAD_REQUEST)
-
-
-@app.route('/seller', methods=['PUT'])
-@normal_authorization
-def edit_profile(current_user):
-    data = request.json
-
-    if isinstance(current_user, Seller) and current_user.username != data.get('old_username'):
-        return make_response(jsonify({'message': 'FORBIDDEN', 'code': HTTPStatus.FORBIDDEN, 'status': 'failed'}),
-                             HTTPStatus.FORBIDDEN)
-
-    try:
-        check_fields(data, {'username', 'name', 'password'})
-        return backend.seller_manager.edit_account(data, current_user)
-    except BadRequest as e:
-        return make_response(
-            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
-            HTTPStatus.BAD_REQUEST)
-
-
-if __name__ == "__main__":
-    # setting debug to True enables hot reload
-    # and also provides a debugger shell
-    # if you hit an error while running the server
-    app.run(debug=True)
-
-
-@app.route('/login', methods=['POST'])
-def login():
-    auth = request.form
+    auth = request.json
     try:
         check_fields(auth, {'username', 'password'})
         return backend.security.authorize(auth)
