@@ -24,7 +24,7 @@ class SellerManager:
         maximum_debt = float(self.database_session.query(Scratch).filter_by(key='maximum_debt').first().value)
 
         if total_price > customer.credit + maximum_debt:
-            return False, 'credit is not enough'
+            return False, 'CREDIT_NOT_ENOUGH'
 
         order = Order(seller_id=seller_id, customer_id=customer_id, total_price=total_price,
                       date=datetime.datetime.now())
@@ -60,65 +60,35 @@ class SellerManager:
         return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all()]
 
     def create_seller(self, data):
-        # gets name, email and password
         name, username, password = data.get('name'), data.get('username'), data.get('password')
 
-        # checking for existing user
-        user = self.database_session.query(Seller) \
-            .filter_by(username=username) \
-            .first()
+        user = self.database_session.query(Seller).filter_by(username=username).first()
         if not user:
-            # database ORM object
-            # insert user
-            self.database_session.add(Seller(
-                name=name,
-                username=username,
-                password=generate_password_hash(password)
-            ))
+            self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password)))
             self.database_session.commit()
 
-            return make_response(jsonify({'message': 'REGISTERED_SUCCESSFULLY', 'code': 201, 'status': 'success'}), 201)
+            return make_response(jsonify({'message': 'REGISTERED_SUCCESSFULLY'}), 201)
         else:
             # returns 202 if user already exists
-            return make_response(jsonify({'message': 'USER_EXISTS', 'code': 400, 'status': 'failed'}), 400)
+            return make_response(jsonify({'message': 'USER_EXISTS'}), 400)
 
-    def find_by_username(self, username):
-        user = self.database_session.query(Seller) \
-            .filter_by(username=username) \
-            .first()
-        if not user:
+    def get_seller(self, username):
+        seller = self.database_session.query(Seller).filter_by(username=username).first()
+        if not seller:
             raise HTTPError()
         else:
-            return user
+            return seller
 
     def edit_account(self, data):
-        name, old_username, password, new_username = data.get('name'), data.get('old_username'), \
-                                                     data.get('password'), data.get('new_username')
+        name, old_username, password, new_username = data.get('name'), data.get(
+            'old_username'), data.get('password'), data.get('new_username')
 
-        result = self.database_session.query(Seller).filter_by(username=old_username) \
-            .update(
+        result = self.database_session.query(Seller).filter_by(username=old_username).update(
             {Seller.name: name, Seller.username: new_username, Seller.password: generate_password_hash(password)},
             synchronize_session=False)
 
         if result != 0:
             self.database_session.commit()
-            return make_response(jsonify({'message': 'EDITED_SUCCESSFULLY', 'code': 200, 'status': 'success'}), 200)
-
+            return make_response(jsonify({'message': 'EDITED_SUCCESSFULLY'}), 200)
         else:
-            return make_response(jsonify({'message': 'INVALID_USERNAME', 'code': 400, 'status': 'failed'}), 400)
-
-    def edit_account(self, data):
-        name, old_username, password, new_username = data.get('name'), data.get('old_username'), \
-                                                     data.get('password'), data.get('new_username')
-
-        result = self.database_session.query(Seller).filter_by(username=old_username) \
-            .update(
-            {Seller.name: name, Seller.username: new_username, Seller.password: generate_password_hash(password)},
-            synchronize_session=False)
-
-        if result != 0:
-            self.database_session.commit()
-            return make_response(jsonify({'message': 'EDITED_SUCCESSFULLY', 'code': 200, 'status': 'success'}), 200)
-
-        else:
-            return make_response(jsonify({'message': 'INVALID_USERNAME', 'code': 400, 'status': 'failed'}), 400)
+            return make_response(jsonify({'message': 'INVALID_USERNAME'}), 400)
