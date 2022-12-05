@@ -9,10 +9,11 @@ const AdminPanel = () => {
 
   return (
     <div className={classes.adminPanelRoot}>
-      <div className={classes.adminItem}><Link to='/sellers'>مدیریت فروشندگان</Link></div>
-      <div className={classes.adminItem}><Link to='/customers'>مدیریت مشتری‌ها</Link></div>
+      <div className={classes.adminItem}><Link to='/sellers-mng'>مدیریت فروشندگان</Link></div>
+      <div className={classes.adminItem}><Link to='/customers-mng'>مدیریت مشتری‌ها</Link></div>
       <div className={classes.adminItem}><Link to='/bills'>مشاهده فاکتور‌های ثبت‌شده</Link></div>
       <div className={classes.adminItem}><Link to='/products'>مدیریت محصولات</Link></div>
+      <div className={classes.adminItem}><Link to='/ordering'>ثبت خرید</Link></div>
     </div>
   )
 }
