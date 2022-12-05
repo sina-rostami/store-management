@@ -26,16 +26,44 @@ const styles = createUseStyles({
     },
   },
 
+  pageHeader: {
+    position: 'relative',
+
+    '& img': {
+      position: 'absolute',
+      height: 20,
+      width: 20,
+      verticalAlign: 'middle',
+      cursor: 'pointer',
+    },
+
+    '@media (min-width: 768px)': {
+      '& img': {
+        height: 25,
+        width: 25,
+      },
+    },
+
+    '@media (min-width: 1360px)': {
+      '& img': {
+        height: 30,
+        width: 30,
+      },
+    },
+  },
+
   pageTitle: {
     textAlign: 'center',
     marginBottom: 30,
+    fontSize: 14,
 
     '@media (min-width: 768px)': {
       marginBottom: 40,
+      fontSize: 20,
     },
     '@media (min-width: 1360px)': {
       marginBottom: 50,
-
+      fontSize: 28,
     },
   },
 
@@ -80,9 +108,9 @@ const styles = createUseStyles({
     width: '30%',
 
     '@media (min-width: 768px)': {
-      width: '25%',
-
+      width: '20%',
     },
+
     '@media (min-width: 1360px)': {
 
     },
@@ -90,12 +118,12 @@ const styles = createUseStyles({
 
   customerHeader: {
     display: 'flex',
-    width: '23%',
+    width: '25%',
 
     '@media (min-width: 768px)': {
-      width: '21%',
-
+      width: '20%',
     },
+
     '@media (min-width: 1360px)': {
 
     },
@@ -107,6 +135,7 @@ const styles = createUseStyles({
     fontSize: 12,
 
     '@media (min-width: 768px)': {
+      width: '15%',
 
     },
 
@@ -119,8 +148,8 @@ const styles = createUseStyles({
     display: 'none',
 
     '@media (min-width: 768px)': {
+      width: '35%',
       display: 'flex',
-      width: '20%',
     },
 
     '@media (min-width: 1360px)': {
@@ -153,22 +182,15 @@ const styles = createUseStyles({
 
   indexContainer: {
     display: 'flex',
-    width: '10%',
+    width: '13%',
+
+    '& span': {
+      width: 25,
+      textAlign: 'center',
+    },
 
     '@media (min-width: 768px)': {
-
-    },
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  customerContainer: {
-    display: 'flex',
-    width: '30%',
-
-    '@media (min-width: 768px)': {
-
+      width: '10%',
     },
 
     '@media (min-width: 1360px)': {
@@ -181,7 +203,20 @@ const styles = createUseStyles({
     width: '30%',
 
     '@media (min-width: 768px)': {
+      width: '20%',
+    },
 
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+
+  customerContainer: {
+    display: 'flex',
+    width: '25%',
+
+    '@media (min-width: 768px)': {
+      width: '20%',
     },
 
     '@media (min-width: 1360px)': {
@@ -193,8 +228,17 @@ const styles = createUseStyles({
     display: 'flex',
     width: '15%',
 
-    '@media (min-width: 768px)': {
+    '& span': {
+      width: 25,
+      textAlign: 'center',
+    },
 
+    '@media (min-width: 768px)': {
+      width: '15%',
+
+      '& span': {
+        width: 32,
+      },
     },
 
     '@media (min-width: 1360px)': {
@@ -206,8 +250,8 @@ const styles = createUseStyles({
     display: 'none',
 
     '@media (min-width: 768px)': {
-      display: 'flex',
       width: '20%',
+      display: 'flex',
     },
 
     '@media (min-width: 1360px)': {
