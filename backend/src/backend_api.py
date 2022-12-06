@@ -5,6 +5,7 @@ from flask_cors import CORS
 from werkzeug.exceptions import BadRequest
 
 from backend import Backend
+from backend.src.security.security import token_required
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -20,6 +21,7 @@ class StatusCode(Enum):
 backend = Backend()
 
 @app.route('/order', methods=['POST'])
+@token_required
 def place_order():
     try:
         did_success, message = backend.place_order(request.json)
