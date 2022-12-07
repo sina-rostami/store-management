@@ -5,11 +5,12 @@ from flask_cors import CORS
 from werkzeug.exceptions import BadRequest
 
 from backend import Backend
-from backend.src.security.security import token_required
+from security.security import token_required
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 CORS(app)
+
 
 class StatusCode(Enum):
     NOT_FOUND = 404
@@ -18,7 +19,9 @@ class StatusCode(Enum):
     INTERNAL_ERROR = 500
     WRONG_PASSWORD = 401
 
+
 backend = Backend()
+
 
 @app.route('/order', methods=['POST'])
 @token_required
@@ -36,6 +39,7 @@ def place_order():
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
 
+
 @app.route('/order', methods=['GET'])
 def get_orders():
     try:
@@ -44,6 +48,7 @@ def get_orders():
         return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
+
 
 @app.route('/customer', methods=['GET'])
 def get_customers():
@@ -54,6 +59,7 @@ def get_customers():
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
 
+
 @app.route('/product', methods=['GET'])
 def get_products():
     try:
@@ -63,6 +69,7 @@ def get_products():
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
 
+
 @app.route('/seller', methods=['GET'])
 def get_sellers():
     try:
@@ -71,4 +78,3 @@ def get_sellers():
         return jsonify({'message': f'{e.description}'}), StatusCode.BAD_REQUEST.value
     except Exception as e:
         return jsonify({'message': f'An error occurred while placing order : {e}'}), StatusCode.INTERNAL_ERROR.value
-
