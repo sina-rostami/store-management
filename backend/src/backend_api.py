@@ -14,6 +14,7 @@ app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'your secret key'
 CORS(app)
 
+
 backend = Backend(app.config['SECRET_KEY'])
 
 
@@ -96,6 +97,7 @@ def place_order(current_user):
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+
 @app.route('/order', methods=['GET'])
 @normal_authorization
 def get_orders(current_user):
@@ -106,6 +108,7 @@ def get_orders(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting orders : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
 
 
 @app.route('/customer', methods=['GET'])
@@ -187,6 +190,7 @@ def edit_product(current_user, product_id):
         return jsonify({'message': f'An error occurred while editting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+
 @app.route('/product', methods=['GET'])
 @normal_authorization
 def get_products(current_user):
@@ -196,6 +200,7 @@ def get_products(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
 
 
 @app.route('/seller', methods=['GET'])
