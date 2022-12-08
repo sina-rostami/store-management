@@ -5,6 +5,7 @@ from database_handler import DatabaseHandler, Seller, Customer, Category, Payer,
 
 from seller_manager import SellerManager
 from customer_manager import CustomerManager
+from product_manager import ProductManager
 
 
 class Backend:
@@ -12,6 +13,7 @@ class Backend:
         self.database_session = DatabaseHandler('sqlite:///test.db').get_session()
         self.seller_manager = SellerManager(self.database_session)
         self.customer_manager = CustomerManager(self.database_session)
+        self.product_manager = ProductManager(self.database_session)
         self.add_defaults_to_database()
         self.add_mock_values_to_db()
 
@@ -49,11 +51,3 @@ class Backend:
     def get_hash(self, password):
         return hashlib.md5(bytes(password, 'utf-8')).hexdigest()
 
-    def get_product_as_json(self, product):
-        return {'id': product.id,
-                'name': product.name,
-                'category_id': product.category_id,
-                'price': product.price}
-
-    def get_all_products_as_json(self):
-        return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
