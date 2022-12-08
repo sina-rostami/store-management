@@ -1,10 +1,10 @@
-import React from 'react'
-
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
 const AccessibilityContainer = styled.div`
     display: flex;
-`
+
+`;
 
 const LoginButton = styled.button`
     border: 0;
@@ -25,7 +25,7 @@ const LoginButton = styled.button`
         margin-rigt: 7px;
 
     }
-`
+`;
 
 const RegisterButton = styled.button`
     border: 0;
@@ -45,10 +45,10 @@ const RegisterButton = styled.button`
     &:not(:last-of-type){
         margin-rigt: 7px;
     }
-`
-export function Accessibility (props) {
-  return <AccessibilityContainer>
-    <RegisterButton>Register</RegisterButton>
-    <LoginButton>Login</LoginButton>
-  </AccessibilityContainer>
+`;
+export function Accessibility(props){
+    return <AccessibilityContainer>
+        <RegisterButton>Register</RegisterButton>
+        <LoginButton>Login</LoginButton>
+    </AccessibilityContainer>
 }
