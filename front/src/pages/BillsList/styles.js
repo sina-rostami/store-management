@@ -10,6 +10,10 @@ const styles = createUseStyles({
       fontSize: 12,
     },
 
+    '& span': {
+      fontSize: 12,
+    },
+
     '@media (min-width: 768px)': {
       padding: [0, 50, 80],
 
