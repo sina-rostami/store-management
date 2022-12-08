@@ -31,12 +31,11 @@ def normal_authorization(f):
             current_user = backend.seller_manager.get_seller(data['username'])
             if not current_user:
                 current_user = backend.find_admin(data['username'])
-        except ExpiredSignatureError:
+        except ExpiredSignatureError as e:
             return jsonify({
                 'message': 'Token is Expired !!'
             }), HTTPStatus.UNAUTHORIZED
-
-        except:
+        except Exception as e:
             return jsonify({
                 'message': 'Token is invalid !!'
             }), HTTPStatus.UNAUTHORIZED
@@ -57,11 +56,11 @@ def admin_authorization(f):
         try:
             data = decode(token, app.config['SECRET_KEY'], "HS256")
             current_user = backend.find_admin(data['username'])
-        except ExpiredSignatureError:
+        except ExpiredSignatureError as e:
             return jsonify({
                 'message': 'Token is Expired !!'
             }), HTTPStatus.UNAUTHORIZED
-        except:
+        except Exception as e:
             return jsonify({
                 'message': 'Token is invalid !!'
             }), HTTPStatus.UNAUTHORIZED
