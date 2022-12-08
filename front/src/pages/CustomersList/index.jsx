@@ -110,7 +110,7 @@ const CustomersList = () => {
               <span>{customer.entryDate}</span>
             </div>
             <div className={classes.seeMoreContainer}>
-              <img src="./asset/images/chevron-left.png" alt="" />
+              <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />
             </div>
           </div>
         ))}
