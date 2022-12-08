@@ -83,7 +83,7 @@ def check_fields(data, fields):
 
 @app.route('/order', methods=['POST'])
 @normal_authorization
-def place_order():
+def place_order(current_user):
     try:
         did_success, message = backend.seller_manager.place_order(request.json)
         if not did_success:
@@ -100,7 +100,7 @@ def place_order():
 
 @app.route('/order', methods=['GET'])
 @normal_authorization
-def get_orders():
+def get_orders(current_user):
     try:
         # every seller gets its own placed order
         return jsonify(backend.seller_manager.get_all_orders_as_json()), HTTPStatus.OK
@@ -112,7 +112,7 @@ def get_orders():
 
 @app.route('/customer', methods=['GET'])
 @normal_authorization
-def get_customers():
+def get_customers(current_user):
     try:
         return jsonify(backend.customer_manager.get_all_customers_as_json()), HTTPStatus.OK
     except BadRequest as e:
@@ -123,7 +123,7 @@ def get_customers():
 
 @app.route('/product', methods=['GET'])
 @normal_authorization
-def get_products():
+def get_products(current_user):
     try:
         return jsonify(backend.product_manager.get_all_products_as_json()), HTTPStatus.OK
     except BadRequest as e:
@@ -134,7 +134,7 @@ def get_products():
 
 @app.route('/seller', methods=['GET'])
 @admin_authorization
-def get_sellers():
+def get_sellers(current_user):
     try:
         return jsonify(backend.seller_manager.get_all_sellers_as_json()), HTTPStatus.OK
     except BadRequest as e:
