@@ -34,7 +34,7 @@ class Security:
             # generates the JWT Token
             token = jwt.encode({
                 'username': user.username,
-                'exp': datetime.utcnow() + timedelta(minutes=30)
+                'exp': datetime.utcnow() + timedelta(days=1)
             }, app.config['SECRET_KEY'], "HS256")
 
             return make_response(jsonify({'token': token, 'code': 200, 'status': 'success'}), 200)

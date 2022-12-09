@@ -1,6 +1,5 @@
 import datetime
 
-import shortuuid as shortuuid
 from flask import make_response, jsonify
 from werkzeug.security import generate_password_hash
 
@@ -76,12 +75,28 @@ class SellerManager:
             ))
             self.database_session.commit()
 
-            return make_response(jsonify({'message': 'Registered Successfully', 'code': 200, 'status': 'success'}), 200)
+            return make_response(jsonify({'message': 'REGISTERED_SUCCESSFULLY', 'code': 201, 'status': 'success'}), 201)
         else:
             # returns 202 if user already exists
-            return make_response(jsonify({'message': 'User exists', 'code': 400, 'status': 'failed'}), 400)
+            return make_response(jsonify({'message': 'USER_EXISTS', 'code': 400, 'status': 'failed'}), 400)
 
     def find_by_username(self, username):
         return self.database_session.query(Seller) \
             .filter_by(username=username) \
             .first()
+
+    def edit_account(self, data):
+        name, old_username, password, new_username = data.get('name'), data.get('old_username'), \
+                                                     data.get('password'), data.get('new_username')
+
+        result = self.database_session.query(Seller).filter_by(username=old_username) \
+            .update(
+            {Seller.name: name, Seller.username: new_username, Seller.password: generate_password_hash(password)},
+            synchronize_session=False)
+
+        if result != 0:
+            self.database_session.commit()
+            return make_response(jsonify({'message': 'EDITED_SUCCESSFULLY', 'code': 200, 'status': 'success'}), 200)
+
+        else:
+            return make_response(jsonify({'message': 'INVALID_USERNAME', 'code': 400, 'status': 'failed'}), 400)
