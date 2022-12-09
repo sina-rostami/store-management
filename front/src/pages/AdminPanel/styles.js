@@ -2,7 +2,6 @@ import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
   adminPanelRoot: {
-    // minHeight: '100vh',
     padding: [0, 60],
     display: 'flex',
     flexDirection: 'column',

@@ -4,13 +4,13 @@ const styles = createUseStyles({
   customersListRoot: {
     display: 'flex',
     flexDirection: 'column',
-    padding: [60, 30],
+    padding: [0, 30, 60],
 
     '@media (min-width: 768px)': {
-      padding: [80, 50],
+      padding: [0, 50, 80],
     },
     '@media (min-width: 1360px)': {
-      padding: [100, 60],
+      padding: [0, 60, 100],
     },
   },
 

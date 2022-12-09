@@ -2,14 +2,14 @@ import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
   productsRoot: {
-    padding: [0, 60],
+    padding: [0, 60, 60],
 
     '@media (min-width: 768px)': {
-      padding: [0, 80],
+      padding: [0, 80, 80],
     },
 
     '@media (min-width: 1360px)': {
-      padding: [0, 100],
+      padding: [0, 100, 100],
     },
   },
 
@@ -42,12 +42,14 @@ const styles = createUseStyles({
   },
 
   product: {
-    border: '1px solid black',
     height: 170,
     width: 170,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    border: '1px solid black',
+    borderRadius: 10,
+    cursor: 'pointer',
 
     '@media (min-width: 768px)': {
       height: 250,
