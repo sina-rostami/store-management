@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
-
+from security import Security
 from backend import Backend
 from database_handler import Seller
 
@@ -246,6 +246,36 @@ def edit_profile(current_user):
     except BadRequest as e:
         return make_response(
             jsonify({'message': e.description, }), HTTPStatus.BAD_REQUEST)
+
+
+if __name__ == "__main__":
+    # setting debug to True enables hot reload
+    # and also provides a debugger shell
+    # if you hit an error while running the server
+    app.run(debug=True)
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    # creates dictionary of form data
+    auth = request.form
+    if not auth or not auth.get('username') or not auth.get('password'):
+        # returns 401 if any email or / and password is missing
+        return jsonify(
+            'USERNAME_AND_PASSWORD_REQUIRED',
+            400,
+            {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
+        )
+    return backend.security.authorize(auth)
+
+
+@app.route('/add-seller', methods=['POST'])
+@token_required
+def add_seller(f):
+    # creates a dictionary of the form data
+    data = request.json
+
+    return backend.seller_manager.create_seller(data)
 
 
 if __name__ == "__main__":
