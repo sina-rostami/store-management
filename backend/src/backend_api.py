@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
+
 from backend import Backend
 from database_handler import Seller
 
@@ -290,7 +291,6 @@ def edit_seller(current_user, seller_id):
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting customers : {e}'}), \
                HTTPStatus.INTERNAL_SERVER_ERROR
-
 
 if __name__ == "__main__":
     # setting debug to True enables hot reload
