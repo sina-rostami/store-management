@@ -210,10 +210,17 @@ def login():
 @app.route('/add-seller', methods=['POST'])
 @token_required
 def add_seller(f):
-    # creates a dictionary of the form data
     data = request.json
 
     return backend.seller_manager.create_seller(data)
+
+
+@app.route('/edit-account', methods=['POST'])
+@token_required
+def edit_profile(f):
+    data = request.json
+
+    return backend.seller_manager.edit_account(data)
 
 
 if __name__ == "__main__":
