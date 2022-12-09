@@ -4,21 +4,21 @@ const styles = createUseStyles({
   billsListRoot: {
     display: 'flex',
     flexDirection: 'column',
-    padding: [60, 30],
+    padding: [0, 30, 60],
 
     '& span': {
       fontSize: 12,
     },
 
     '@media (min-width: 768px)': {
-      padding: [80, 50],
+      padding: [0, 50, 80],
 
       '& span': {
         fontSize: 14,
       },
     },
     '@media (min-width: 1360px)': {
-      padding: [100, 60],
+      padding: [0, 60, 100],
 
       '& span': {
         fontSize: 16,
@@ -32,7 +32,6 @@ const styles = createUseStyles({
 
     '@media (min-width: 768px)': {
       marginBottom: 40,
-
     },
     '@media (min-width: 1360px)': {
       marginBottom: 50,
