@@ -11,7 +11,7 @@ const SellerPanel = () => {
     <div className={classes.sellerPanelRoot}>
       <div className={classes.sellerItem}><Link to='/customers'>مدیریت مشتری‌ها</Link></div>
       <div className={classes.sellerItem}><Link to='/bills'>مشاهده فاکتور‌های ثبت‌شده</Link></div>
-      <div className={classes.sellerItem}><Link>مدیریت محصولات</Link></div>
+      <div className={classes.sellerItem}><Link to='/products'>مدیریت محصولات</Link></div>
     </div>
   )
 }
