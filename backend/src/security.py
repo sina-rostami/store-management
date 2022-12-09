@@ -7,6 +7,7 @@ from flask import Flask, jsonify, make_response
 from werkzeug.security import check_password_hash
 
 from seller_manager import Seller
+from database_handler import Scratch
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
@@ -23,17 +24,22 @@ class Security:
             .first()
 
         if not user:
-            # returns 401 if user does not exist
-            return make_response(
-                'INVALID_USER_NAME',
-                401,
-                {'User Does not exists'}
-            )
+            username = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
+            if username.value == auth.get('username'):
+                password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
+            else:
+                return make_response(
+                    'INVALID_USER_NAME',
+                    401
+                )
+        else:
+            username = user.username
+            password = user.password
 
-        if check_password_hash(user.password, auth.get('password')):
+        if check_password_hash(password, auth.get('password')):
             # generates the JWT Token
             token = jwt.encode({
-                'username': user.username,
+                'username': username,
                 'exp': datetime.utcnow() + timedelta(days=1)
             }, app.config['SECRET_KEY'], "HS256")
 
@@ -41,6 +47,5 @@ class Security:
         # returns 403 if password is wrong
         return make_response(
             'INVALID_PASSWORD',
-            403,
-            {'Invalid password'}
+            403
         )
