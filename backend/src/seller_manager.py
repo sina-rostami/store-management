@@ -1,6 +1,7 @@
 import datetime
 
 from flask import make_response, jsonify
+from requests import HTTPError
 from werkzeug.security import generate_password_hash
 
 from database_handler import Seller, Product, Customer, OrderProduct, Order
@@ -81,9 +82,13 @@ class SellerManager:
             return make_response(jsonify({'message': 'USER_EXISTS', 'code': 400, 'status': 'failed'}), 400)
 
     def find_by_username(self, username):
-        return self.database_session.query(Seller) \
+        user = self.database_session.query(Seller) \
             .filter_by(username=username) \
             .first()
+        if not user:
+            raise HTTPError()
+        else:
+            return user
 
     def edit_account(self, data):
         name, old_username, password, new_username = data.get('name'), data.get('old_username'), \
