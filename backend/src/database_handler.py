@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 
-class DatabaseHandler():
+class DatabaseHandler:
     def __init__(self, db_uri, echo=False) -> None:
         self.engine = create_engine(db_uri, echo=echo,connect_args={'check_same_thread': False})
         Base.metadata.create_all(self.engine)
@@ -23,9 +23,10 @@ class Seller(Base):
     id = Column(Integer, Identity(start=1), primary_key=True)
     name = Column(Text, nullable=False)
     username = Column(Text, nullable=False)
+    password = Column(Text, nullable=False)
 
     def __repr__(self) -> str:
-        return f'Seller(id={self.id}, name={self.name}, username={self.username})'
+        return f'Seller(id={self.id}, name={self.name}, username={self.username}, password{self.password})'
 
 
 class Customer(Base):

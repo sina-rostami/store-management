@@ -1,11 +1,15 @@
 import hashlib
 import datetime
 
-from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Order, OrderProduct, Payment, Scratch
+from werkzeug.security import generate_password_hash
+
+from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Order, OrderProduct, Payment, \
+    Scratch
 
 from seller_manager import SellerManager
 from customer_manager import CustomerManager
 from product_manager import ProductManager
+from security import Security
 
 
 class Backend:
@@ -14,6 +18,7 @@ class Backend:
         self.seller_manager = SellerManager(self.database_session)
         self.customer_manager = CustomerManager(self.database_session)
         self.product_manager = ProductManager(self.database_session)
+        self.security = Security(self.database_session)
         self.add_defaults_to_database()
         self.add_mock_values_to_db()
 
@@ -32,7 +37,7 @@ class Backend:
         if self.database_session.query(Seller).filter_by(name='ali').first():
             return
 
-        self.database_session.add(Seller(name='ali', username='user0'))
+        self.database_session.add(Seller(name='ali', username='user0', password=generate_password_hash('password')))
         self.database_session.add(Customer(
             name='asghar', credit=10000.0, join_date=datetime.datetime.now(),
             is_active=True, phone_number='09101010203'))
@@ -50,4 +55,3 @@ class Backend:
 
     def get_hash(self, password):
         return hashlib.md5(bytes(password, 'utf-8')).hexdigest()
-
