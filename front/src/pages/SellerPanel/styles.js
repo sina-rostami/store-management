@@ -1,8 +1,7 @@
 import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
-  adminPanelRoot: {
-    // minHeight: '100vh',
+  sellerPanelRoot: {
     padding: [0, 60],
     display: 'flex',
     flexDirection: 'column',
@@ -24,7 +23,7 @@ const styles = createUseStyles({
     },
   },
 
-  adminItem: {
+  sellerItem: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
