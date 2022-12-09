@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
-from security import Security
+
 from backend import Backend
 from database_handler import Seller
 
@@ -97,7 +97,6 @@ def place_order(current_user):
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-
 @app.route('/order', methods=['GET'])
 @normal_authorization
 def get_orders(current_user):
@@ -108,7 +107,6 @@ def get_orders(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting orders : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
-
 
 
 @app.route('/customer', methods=['GET'])
@@ -190,7 +188,6 @@ def edit_product(current_user, product_id):
         return jsonify({'message': f'An error occurred while editting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-
 @app.route('/product', methods=['GET'])
 @normal_authorization
 def get_products(current_user):
@@ -200,7 +197,6 @@ def get_products(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
-
 
 
 @app.route('/seller', methods=['GET'])
@@ -299,32 +295,45 @@ if __name__ == "__main__":
 
 @app.route('/login', methods=['POST'])
 def login():
-    # creates dictionary of form data
     auth = request.form
-    if not auth or not auth.get('username') or not auth.get('password'):
-        # returns 401 if any email or / and password is missing
-        return jsonify(
-            'USERNAME_AND_PASSWORD_REQUIRED',
-            400,
-            {'WWW-Authenticate': 'Basic realm ="Login required !!"'}
-        )
-    return backend.security.authorize(auth)
+    try:
+        check_fields(auth, {'username', 'password'})
+        return backend.security.authorize(auth)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
 
 
-@app.route('/add-seller', methods=['POST'])
-@token_required
-def add_seller(f):
+@app.route('/seller', methods=['POST'])
+@admin_authorization
+def add_seller(current_user):
+    data = request.json
+    try:
+        check_fields(data, {'username', 'name', 'password'})
+        return backend.seller_manager.create_seller(data)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
+
+
+@app.route('/seller', methods=['PUT'])
+@normal_authorization
+def edit_profile(current_user):
     data = request.json
 
-    return backend.seller_manager.create_seller(data)
+    if isinstance(current_user, Seller) and current_user.username != data.get('old_username'):
+        return make_response(jsonify({'message': 'FORBIDDEN', 'code': HTTPStatus.FORBIDDEN, 'status': 'failed'}),
+                             HTTPStatus.FORBIDDEN)
 
-
-@app.route('/edit-account', methods=['POST'])
-@token_required
-def edit_profile(f):
-    data = request.json
-
-    return backend.seller_manager.edit_account(data)
+    try:
+        check_fields(data, {'username', 'name', 'password'})
+        return backend.seller_manager.edit_account(data, current_user)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
 
 
 if __name__ == "__main__":
