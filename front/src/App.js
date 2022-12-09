@@ -7,6 +7,7 @@ import AdminPanel from './pages/AdminPanel/index.jsx'
 import BillsList from './pages/BillsList/index.jsx'
 import CustomersList from './pages/CustomersList/index.jsx'
 import NotFound from './pages/NotFound/index.jsx'
+import SellerPanel from './pages/SellerPanel/index.jsx'
 import SellersList from './pages/SellersList/index.jsx'
 import SignIn from './pages/SignIn/index.jsx'
 
@@ -19,6 +20,7 @@ const App = () => {
       <Route path='/sellers' element={<SellersList />} />
       <Route path='/bills' element={<BillsList />} />
       <Route path='/admin-panel' element={<AdminPanel />} />
+      <Route path='/seller-panel' element={<SellerPanel />} />
       <Route path='/not-found' element={<NotFound />} />
       <Route path='*' element={<Navigate to='/not-found' />} />
     </Routes>
