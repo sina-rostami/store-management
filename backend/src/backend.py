@@ -62,6 +62,6 @@ class Backend:
             return {
                 'username': admin_name,
                 'password': password
-            }
+}
         else:
             raise HTTPError()
