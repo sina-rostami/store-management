@@ -76,7 +76,7 @@ def check_fields(data, fields):
             jsonify({'message': 'EXPECTED_DATA', 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
             HTTPStatus.BAD_REQUEST)
     for x in fields:
-        if not data.get(x):
+        if data.get(x) == None:
             raise BadRequest("EXPECTED_" + x.upper())
 
 
@@ -114,6 +114,22 @@ def get_orders(current_user):
 def get_customers(current_user):
     try:
         return jsonify(backend.customer_manager.get_all_customers_as_json()), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/product', methods=['POST'])
+@normal_authorization
+def add_product(current_user):
+    try:
+        check_fields(request.json, ['name', 'price', 'category_id'])
+        did_success, message = backend.product_manager.add_product(request.json)
+        if not did_success:
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.CREATED
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
