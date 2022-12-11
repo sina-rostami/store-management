@@ -17,6 +17,7 @@ const NavBarContainer = styled.div`
   align-items: center;
   padding: 0 1.5em;
   margin-bottom: 30px;
+  background-color: #74b9ff;
 `;
 
 const LeftSection = styled.div`
