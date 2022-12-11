@@ -67,10 +67,11 @@ class Product(Base):
     id = Column(Integer, Identity(start=1), primary_key=True)
     name = Column(Text)
     price = Column(Float)
+    stock_number = Column(Integer)
     category_id = Column(Integer, ForeignKey("Category.id"), nullable=False)
 
     def __repr__(self) -> str:
-        return f'Product(id={self.id}, name={self.name}, price={self.price}, category_id={self.category_id})'
+        return f'Product(id={self.id}, name={self.name}, price={self.price}, stock_number={self.stock_number}, category_id={self.category_id})'
 
 
 class Order(Base):
