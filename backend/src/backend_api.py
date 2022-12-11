@@ -136,6 +136,24 @@ def add_product(current_user):
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+@app.route('/product', methods=['PUT'])
+@normal_authorization
+def edit_product(current_user):
+    try:
+        check_fields(request.json, ['id', 'name', 'price', 'category_id'])
+        did_success, message = backend.product_manager.edit_product(request.json)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 @app.route('/product', methods=['GET'])
 @normal_authorization
 def get_products(current_user):
