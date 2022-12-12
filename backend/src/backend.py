@@ -1,11 +1,9 @@
-import hashlib
 import datetime
 
 from requests import HTTPError
 from werkzeug.security import generate_password_hash
 
-from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Order, OrderProduct, Payment, \
-    Scratch
+from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Scratch
 
 from seller_manager import SellerManager
 from customer_manager import CustomerManager
@@ -26,7 +24,7 @@ class Backend:
     def add_defaults_to_database(self):
         default_rows = {
             'admin_username': 'admin',
-            'admin_password': '12345',
+            'admin_password': generate_password_hash('12345'),
             'maximum_debt': '5000',
         }
 
@@ -58,7 +56,7 @@ class Backend:
     def find_admin(self, username):
         admin_name = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
         if admin_name == username:
-            password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value;
+            password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
             return {
                 'username': admin_name,
                 'password': password
