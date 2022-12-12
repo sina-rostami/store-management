@@ -8,9 +8,12 @@ const Logo = () => {
   const classes = styles()
   
   return (
+    <>
+    <img className={classes.logoImg} src={LogoImg} />
+    <div className={classes.logoText}/>
     <div className={classes.logoWrapper}>
     </div>
-    
+    </>
   )
 }
 
