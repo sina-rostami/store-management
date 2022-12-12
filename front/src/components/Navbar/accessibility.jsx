@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-
+import { useAuthDispatch } from '../../context/index.js'
 
 const AccessibilityContainer = styled.div`
     display: flex;
@@ -74,8 +74,16 @@ const Exit = styled.button`
     }
 `;
 export function Accessibility(props){
+    const authDispatch = useAuthDispatch()
+
+    const logoutHandler = () => {
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('role')
+        authDispatch({ type: 'logout' })
+    }
+
     return <AccessibilityContainer>
-        <Exit>
+        <Exit onClick={logoutHandler}>
             خروج
         </Exit>
     </AccessibilityContainer>
