@@ -62,7 +62,9 @@ const styles = createUseStyles({
   },
 
   submitBtn: {
-    display: 'block',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     margin: '0 auto',
     marginBottom: 20,
   },
