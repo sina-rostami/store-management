@@ -24,15 +24,16 @@ class Backend:
         self.add_mock_values_to_db()
 
     def add_defaults_to_database(self):
-        ADMIN_USERNAME = ('admin_username', 'admin')
-        ADMIN_PASSWORD = ('admin_password', '12345')
-        if not self.database_session.query(Scratch).filter_by(key=ADMIN_USERNAME[0]).first():
-            self.database_session.add(Scratch(ADMIN_USERNAME[0], ADMIN_USERNAME[1]))
-            self.database_session.commit()
+        default_rows = {
+            'admin_username': 'admin',
+            'admin_password': '12345',
+            'maximum_debt': '5000',
+        }
 
-        if not self.database_session.query(Scratch).filter_by(key=ADMIN_PASSWORD[0]).first():
-            self.database_session.add(Scratch(ADMIN_PASSWORD[0], generate_password_hash(ADMIN_PASSWORD[1])))
-            self.database_session.commit()
+        for key, value in default_rows.items():
+            if not self.database_session.query(Scratch).filter_by(key=key).first():
+                self.database_session.add(Scratch(key, value))
+                self.database_session.commit()
 
     def add_mock_values_to_db(self):
         if self.database_session.query(Seller).filter_by(name='ali').first():
