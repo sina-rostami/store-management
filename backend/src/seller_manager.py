@@ -4,7 +4,7 @@ from flask import make_response, jsonify
 from requests import HTTPError
 from werkzeug.security import generate_password_hash
 
-from database_handler import Seller, Product, Customer, OrderProduct, Order
+from database_handler import Seller, Product, Customer, OrderProduct, Order, Scratch
 
 
 class SellerManager:
@@ -21,8 +21,9 @@ class SellerManager:
         total_price = sum(self.database_session.query(Product).filter_by(id=product_id).first().price
                           for product_id in products_ids)
         customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
+        maximum_debt = float(self.database_session.query(Scratch).filter_by(key='maximum_debt').first().value)
 
-        if total_price > customer.credit:
+        if total_price > customer.credit + maximum_debt:
             return False, 'credit is not enough'
 
         order = Order(seller_id=seller_id, customer_id=customer_id, total_price=total_price,
