@@ -11,6 +11,7 @@ import getProducts from '../../services/getProducts'
 const Ordering = () => {
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState({ items: [], totalPrice: 0 })
+  const [isOrderingFinished, setIsOrderingFinished] = useState(false)
   const classes = styles()
   const navigate = useNavigate()
 
@@ -46,6 +47,8 @@ const Ordering = () => {
           setCart({ ...cart, items: cartItems })
         }
       }
+    } else if (action === 'removeAll') {
+      setCart({ items: [], totalPrice: 0 })
     }
   }
 
@@ -53,7 +56,7 @@ const Ordering = () => {
     <div className={classes.productsRoot}>
       <div className={classes.pageHeader}>
         <img src="./asset/images/back.png" alt="بازگشت" title='بازگشت' onClick={() => navigate(-1)} />
-        <h3 className={classes.pageTitle}>ثبت خرید</h3>
+        <h3 className={classes.pageTitle}>ثبت فروش</h3>
       </div>
       <div className={classes.products}>
         {products.length === 0
@@ -63,7 +66,7 @@ const Ordering = () => {
           ))
         }
       </div>
-      {!!cart.items.length && <Cart items={cart.items} totalPrice={cart.totalPrice} />}
+      {!!cart.items.length && <Cart items={cart.items} totalPrice={cart.totalPrice} handleCart={handleCart} />}
     </div>
   )
 }
