@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 
 import styles from './styles'
+import addProduct from '../../services/addProduct.js'
+
+import { ToastContainer, toast } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 const AddProduct = () => {
   const classes = styles()
@@ -25,10 +30,41 @@ const AddProduct = () => {
     }
   }
 
+  const showToastMessage = (type, message) => {
+    if (type === 'success') {
+      toast.success('!ثبت محصول با موفقیت انجام شد', {
+        position: toast.POSITION.TOP_CENTER,
+      })
+    } else if (type === 'error') {
+      toast.error(message, {
+        position: toast.POSITION.TOP_CENTER,
+      })
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsLoading(true)
-    // addProduct(name)
+    addProduct({
+      name,
+      category_id: 1,
+      price: +price,
+      stock_number: counter,
+    }).then(res =>{
+      setIsLoading(false)
+      if (res.succeeded) {
+        showToastMessage('success')
+        setCounter(0)
+        setName('')
+        setPrice('')
+      } else {
+        const { message } = res.response.data
+
+        // if (message === 'CREDIT_NOT_ENOUGH') {
+        //   showToastMessage('error', '!موجودی حساب مشتری کافی نمی باشد')
+        // }
+      }
+    })
   }
 
   return (
@@ -56,6 +92,7 @@ const AddProduct = () => {
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت محصول'}</button>
       </form>
+      <ToastContainer />
     </div>
   )
 }
