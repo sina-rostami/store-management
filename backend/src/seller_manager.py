@@ -1,7 +1,5 @@
 import datetime
 
-from flask import make_response, jsonify
-from requests import HTTPError
 from werkzeug.security import generate_password_hash
 
 from database_handler import Seller, Product, Customer, OrderProduct, Order, Scratch
@@ -59,35 +57,38 @@ class SellerManager:
     def get_all_sellers_as_json(self):
         return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all()]
 
-    def create_seller(self, data):
+    def add_seller(self, data):
         name, username, password = data.get('name'), data.get('username'), data.get('password')
 
-        user = self.database_session.query(Seller).filter_by(username=username).first()
-        if not user:
-            self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password)))
-            self.database_session.commit()
+        old_seller = self.database_session.query(Seller).filter_by(username=username).first()
+        if old_seller:
+            return False, 'ALREADY_EXISTS'
 
-            return make_response(jsonify({'message': 'REGISTERED_SUCCESSFULLY'}), 201)
-        else:
-            # returns 202 if user already exists
-            return make_response(jsonify({'message': 'USER_EXISTS'}), 400)
+        self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password)))
+        self.database_session.commit()
+
+        return True, 'SUCCESS'
+
+    def edit_account(self, id, data):
+        name, password, username = data.get('name'), data.get('password'), data.get('username')
+
+        old_seller = self.database_session.query(Seller).filter_by(id=id).first()
+        if not old_seller:
+            return False, 'NOT_EXIST'
+
+        same_seller = self.database_session.query(Seller).filter_by(username=username).first()
+        if same_seller and same_seller.id != id:
+            return False, 'ALREADY_EXISTS'
+
+        old_seller.name = name
+        old_seller.password = password
+        old_seller.username = username
+
+        self.database_session.commit()
+
+        return True, 'SUCCESS'
 
     def get_seller(self, username):
         seller = self.database_session.query(Seller).filter_by(username=username).first()
 
         return seller if seller else None
-
-
-    def edit_account(self, data):
-        name, old_username, password, new_username = data.get('name'), data.get(
-            'old_username'), data.get('password'), data.get('new_username')
-
-        result = self.database_session.query(Seller).filter_by(username=old_username).update(
-            {Seller.name: name, Seller.username: new_username, Seller.password: generate_password_hash(password)},
-            synchronize_session=False)
-
-        if result != 0:
-            self.database_session.commit()
-            return make_response(jsonify({'message': 'EDITED_SUCCESSFULLY'}), 200)
-        else:
-            return make_response(jsonify({'message': 'INVALID_USERNAME'}), 400)
