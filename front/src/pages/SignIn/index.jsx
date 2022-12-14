@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography'
 import { prefixer } from 'stylis'
 import rtlPlugin from 'stylis-plugin-rtl'
 
-import { useAuthDispatch } from '../../context/index.js'
+import { useAuthDispatch, useAuthState } from '../../context/index.js'
 import signIn from '../../services/signIn'
 
 document.dir = 'rtl'
@@ -54,6 +54,7 @@ const SignIn = () => {
     showPassword: false,
   })
   const authDispatch = useAuthDispatch()
+  const { authStatus, role } = useAuthState()
 
   const handleClickShowPassword = () => {
     setValues({
@@ -96,76 +97,82 @@ const SignIn = () => {
     })
   }
 
-  return (
-    <CacheProvider value={cacheRtl}>
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-            ورود
-            </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                fullWidth
-                id="username"
-                label="نام کاربری"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                value={values.username}
-                onChange={handleChange('username')}
-              />
-              <TextField
-                margin="normal"
-                fullWidth
-                id="password"
-                label="رمز عبور"
-                name="password"
-                autoComplete="password"
-                value={values.password}
-                onChange={handleChange('password')}
-                type={values.showPassword ? 'text' : 'password'}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                ورود
-              </Button>
+  if (authStatus === 'loggedIn' && role === 'admin') {
+    window.location.replace('/admin-panel')
+  } else if (authStatus === 'loggedIn' && role === 'seller') {
+    window.location.replace('/seller-panel')
+  } else if (authStatus === 'loggedOut') {
+    return (
+      <CacheProvider value={cacheRtl}>
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+              ورود
+              </Typography>
+              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  id="username"
+                  label="نام کاربری"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  value={values.username}
+                  onChange={handleChange('username')}
+                />
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  id="password"
+                  label="رمز عبور"
+                  name="password"
+                  autoComplete="password"
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  type={values.showPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  ورود
+                </Button>
+              </Box>
             </Box>
-          </Box>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
-        </Container>
-      </ThemeProvider>
-    </CacheProvider>
-  )
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+          </Container>
+        </ThemeProvider>
+      </CacheProvider>
+    )
+  }
 }
 
 export default SignIn
