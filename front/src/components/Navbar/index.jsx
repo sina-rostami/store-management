@@ -38,7 +38,7 @@ const RightSection = styled.div`
 export function Navbar(props){
   const { authStatus } = useAuthState()
 
-  if (authStatus === 'loggedOut') {
+  if (authStatus === 'loggedOut' || authStatus == 'Loading') {
     return null
   }
 
