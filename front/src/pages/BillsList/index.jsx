@@ -7,7 +7,7 @@ import styles from './styles'
 import getBills from '../../services/getBills.js'
 
 const BillsList = () => {
-  const [bills, setBills] = useState([])
+  const [bills, setBills] = useState(null)
   const classes = styles()
   const navigate = useNavigate()
 
@@ -19,7 +19,7 @@ const BillsList = () => {
     <div className={classes.billsListRoot}>
       <div className={classes.pageHeader}>
         <img src="./asset/images/back.png" alt="بازگشت" title='بازگشت' onClick={() => navigate(-1)} />
-        <h3 className={classes.pageTitle}>لیست فاکتور ها</h3>
+        <h3 className={classes.pageTitle}>لیست فاکتور‌ها</h3>
       </div>
       <div className={classes.headerRow}>
         <div className={classes.indexHeader}><span>شماره</span></div>
@@ -28,20 +28,29 @@ const BillsList = () => {
         <div className={classes.idHeader}><span>شناسه</span></div>
         <div className={classes.submitDateHeader}><span>تاریخ ثبت</span></div>
       </div>
-      {bills.length === 0
-        ? <span>Loading ...</span>
-        : bills.map((bill, index) => (
-          <div className={classes.billRow} key={bill.id}>
-            <div className={classes.indexContainer}><span>{index + 1}</span></div>
-            <div className={classes.sellerContainer}><span>{bill.sellerName}</span></div>
-            <div className={classes.customerContainer}><span>{bill.customerName}</span></div>
-            <div className={classes.idContainer}><span>{bill.id}</span></div>
-            <div className={classes.submitDateContainer}><span>{bill.submitDate}</span></div>
-            <div className={classes.seeMoreContainer}>
-              <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />
-            </div>
-          </div>
-        ))}
+      <div className={classes.billsContainer}>
+        {bills=== null
+          ? <span className={classes.noItem}>در حال دریافت اطلاعات ...</span>
+          : (
+            bills.length === 0
+              ? <span className={classes.noItem}>موردی یافت نشد!</span>
+              : (
+                bills.map((bill, index) => (
+                  <div className={classes.billRow} key={bill.id}>
+                    <div className={classes.indexContainer}><span>{index + 1}</span></div>
+                    <div className={classes.sellerContainer}><span>{bill.sellerName}</span></div>
+                    <div className={classes.customerContainer}><span>{bill.customerName}</span></div>
+                    <div className={classes.idContainer}><span>{bill.id}</span></div>
+                    <div className={classes.submitDateContainer}><span>{bill.submitDate}</span></div>
+                    <div className={classes.seeMoreContainer}>
+                      <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />
+                    </div>
+                  </div>
+                ))
+              )
+          )
+        }
+      </div>
     </div>
   )
 }
