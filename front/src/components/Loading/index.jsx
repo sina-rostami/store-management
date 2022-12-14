@@ -7,7 +7,7 @@ const Loading = () => {
 
   return (
     <div className={classes.loadingContainer}>
-      ... Loading
+      در حال بارگذاری ...
     </div>
   )
 }
