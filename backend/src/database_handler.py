@@ -10,7 +10,7 @@ Base = declarative_base()
 
 class DatabaseHandler:
     def __init__(self, db_uri, echo=False) -> None:
-        self.engine = create_engine(db_uri, echo=echo,connect_args={'check_same_thread': False})
+        self.engine = create_engine(db_uri, echo=echo, connect_args={'check_same_thread': False})
         Base.metadata.create_all(self.engine)
         self.session = sessionmaker()
 
@@ -24,6 +24,7 @@ class Seller(Base):
     name = Column(Text, nullable=False)
     username = Column(Text, nullable=False)
     password = Column(Text, nullable=False)
+    is_active = Column(Boolean, nullable=False)
 
     def __repr__(self) -> str:
         return f'Seller(id={self.id}, name={self.name}, username={self.username}, password{self.password})'
@@ -35,6 +36,7 @@ class Customer(Base):
     name = Column(Text)
     credit = Column(Float)
     join_date = Column(DateTime)
+    leave_date = Column(DateTime)
     is_active = Column(Boolean)
     phone_number = Column(Text)
 
@@ -88,10 +90,8 @@ class Order(Base):
 
 class OrderProduct(Base):
     __tablename__ = "OrderProduct"
-    order_id = Column(Integer, ForeignKey("Order.id"),
-                      primary_key=True, nullable=False)
-    product_id = Column(Integer, ForeignKey("Product.id"),
-                        primary_key=True, nullable=False)
+    order_id = Column(Integer, ForeignKey("Order.id"), primary_key=True, nullable=False)
+    product_id = Column(Integer, ForeignKey("Product.id"), primary_key=True, nullable=False)
 
     def __repr__(self) -> str:
         return f'OrderProduct(order_id={self.order_id}, product_id={self.product_id})'
