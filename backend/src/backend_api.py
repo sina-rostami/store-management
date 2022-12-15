@@ -1,10 +1,9 @@
 from functools import wraps
 from http import HTTPStatus
 
-import jwt
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
-from jwt import ExpiredSignatureError
+from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
 
 from backend import Backend
@@ -15,7 +14,7 @@ app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'your secret key'
 CORS(app)
 
-backend = Backend()
+backend = Backend(app.config['SECRET_KEY'])
 
 
 # decorator for verifying the JWT
@@ -26,21 +25,21 @@ def normal_authorization(f):
         if 'x-access-token' in request.headers:
             token = request.headers.get('x-access-token')
         if not token:
-            return jsonify({'message': 'Token is missing !!'}), 401
+            return jsonify({'message': 'Token is missing !!'}), HTTPStatus.UNAUTHORIZED
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
+            data = decode(token, app.config['SECRET_KEY'], "HS256")
             current_user = backend.seller_manager.find_by_username(data['username'])
             if not current_user:
                 current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError:
             return jsonify({
                 'message': 'Token is Expired !!'
-            }), 401
+            }), HTTPStatus.UNAUTHORIZED
 
         except:
             return jsonify({
                 'message': 'Token is invalid !!'
-            }), 401
+            }), HTTPStatus.UNAUTHORIZED
 
         return f(current_user, *args, **kwargs)
 
@@ -54,18 +53,18 @@ def admin_authorization(f):
         if 'x-access-token' in request.headers:
             token = request.headers.get('x-access-token')
         if not token:
-            return jsonify({'message': 'Token is missing !!'}), 401
+            return jsonify({'message': 'Token is missing !!'}), HTTPStatus.UNAUTHORIZED
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
+            data = decode(token, app.config['SECRET_KEY'], "HS256")
             current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError:
             return jsonify({
                 'message': 'Token is Expired !!'
-            }), 401
+            }), HTTPStatus.UNAUTHORIZED
         except:
             return jsonify({
                 'message': 'Token is invalid !!'
-            }), 401
+            }), HTTPStatus.UNAUTHORIZED
 
         return f(current_user, *args, **kwargs)
 
