@@ -14,7 +14,6 @@ app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'your secret key'
 CORS(app)
 
-
 backend = Backend(app.config['SECRET_KEY'])
 
 
@@ -284,6 +283,34 @@ def edit_profile(f):
     data = request.json
 
     return backend.seller_manager.edit_account(data)
+
+
+@app.route('/user', methods=['GET'])
+@normal_authorization
+def get_user(current_user):
+    try:
+        if isinstance(current_user, Seller):
+            role = 'SELLER'
+        else:
+            role = 'ADMIN'
+
+        return make_response(
+            jsonify(
+                {
+                    'message': 'USER_RETURNED',
+                    'code': 200,
+                    'status': 'success',
+                    'data': {
+                        'username': current_user.username,
+                        'role': role
+                    }
+                }
+            )
+            , 200)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
 
 
 if __name__ == "__main__":
