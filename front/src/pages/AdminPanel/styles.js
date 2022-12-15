@@ -7,19 +7,19 @@ const styles = createUseStyles({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    fontSize: 14,
+    fontSize: 16,
 
     '@media (min-width: 768px)': {
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
       padding: [0, 80],
-      fontSize: 18,
+      fontSize: 22,
     },
 
     '@media (min-width: 1360px)': {
       padding: [0, 100],
-      fontSize: 22,
+      fontSize: 30,
     },
   },
 
