@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-import { baseUrl } from './serviceAddress'
+// import { baseUrl } from './serviceAddress'
+const baseUrl = 'http://192.168.0.121:5000'
 
 function apiService ({ endpoint, url, method, data }) {
   const options = {
