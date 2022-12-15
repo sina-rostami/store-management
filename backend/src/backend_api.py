@@ -28,7 +28,7 @@ def normal_authorization(f):
             return jsonify({'message': 'Token is missing !!'}), HTTPStatus.UNAUTHORIZED
         try:
             data = decode(token, app.config['SECRET_KEY'], "HS256")
-            current_user = backend.seller_manager.find_by_username(data['username'])
+            current_user = backend.seller_manager.get_seller(data['username'])
             if not current_user:
                 current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError:
@@ -99,8 +99,10 @@ def place_order():
 
 
 @app.route('/order', methods=['GET'])
+@normal_authorization
 def get_orders():
     try:
+        # every seller gets its own placed order
         return jsonify(backend.seller_manager.get_all_orders_as_json()), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
@@ -109,6 +111,7 @@ def get_orders():
 
 
 @app.route('/customer', methods=['GET'])
+@normal_authorization
 def get_customers():
     try:
         return jsonify(backend.customer_manager.get_all_customers_as_json()), HTTPStatus.OK
@@ -119,6 +122,7 @@ def get_customers():
 
 
 @app.route('/product', methods=['GET'])
+@normal_authorization
 def get_products():
     try:
         return jsonify(backend.product_manager.get_all_products_as_json()), HTTPStatus.OK
@@ -129,6 +133,7 @@ def get_products():
 
 
 @app.route('/seller', methods=['GET'])
+@admin_authorization
 def get_sellers():
     try:
         return jsonify(backend.seller_manager.get_all_sellers_as_json()), HTTPStatus.OK
@@ -146,8 +151,7 @@ def login():
         return backend.security.authorize(auth)
     except BadRequest as e:
         return make_response(
-            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
-            HTTPStatus.BAD_REQUEST)
+            jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
 
 
 @app.route('/seller', methods=['POST'])
@@ -159,8 +163,7 @@ def add_seller(current_user):
         return backend.seller_manager.create_seller(data)
     except BadRequest as e:
         return make_response(
-            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
-            HTTPStatus.BAD_REQUEST)
+            jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
 
 
 @app.route('/seller', methods=['PUT'])
@@ -169,16 +172,14 @@ def edit_profile(current_user):
     data = request.json
 
     if isinstance(current_user, Seller) and current_user.username != data.get('old_username'):
-        return make_response(jsonify({'message': 'FORBIDDEN', 'code': HTTPStatus.FORBIDDEN, 'status': 'failed'}),
-                             HTTPStatus.FORBIDDEN)
+        return make_response(jsonify({'message': 'FORBIDDEN'}), HTTPStatus.FORBIDDEN)
 
     try:
         check_fields(data, {'username', 'name', 'password'})
         return backend.seller_manager.edit_account(data, current_user)
     except BadRequest as e:
         return make_response(
-            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
-            HTTPStatus.BAD_REQUEST)
+            jsonify({'message': e.description, }), HTTPStatus.BAD_REQUEST)
 
 
 if __name__ == "__main__":
