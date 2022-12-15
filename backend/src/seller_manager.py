@@ -46,6 +46,13 @@ class SellerManager:
                 'total_price': order.total_price,
                 'date': order.date.timestamp()}
 
+    def get_order_as_json_by_id(self, id):
+        order = self.database_session.query(Order).filter_by(id=id).first()
+        if not order:
+            return False, 'NOT_EXIST'
+
+        return True, self.get_order_as_json(order)
+
     def get_all_orders_as_json(self):
         return [self.get_order_as_json(order) for order in self.database_session.query(Order).all()]
 
@@ -53,6 +60,13 @@ class SellerManager:
         return {'id': seller.id,
                 'name': seller.name,
                 'username': seller.username}
+
+    def get_seller_as_json_by_id(self, id):
+        seller = self.database_session.query(Seller).filter_by(id=id).first()
+        if not seller:
+            return False, 'NOT_EXIST'
+
+        return True, self.get_seller_as_json(seller)
 
     def get_all_sellers_as_json(self):
         return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all()]

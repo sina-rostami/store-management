@@ -68,7 +68,7 @@ paths:
         - order
       summary: get orders
       description: get orders
-      operationId: getOrder
+      operationId: getOrders
       parameters:
         - in: header
           name: x-access-token
@@ -86,6 +86,51 @@ paths:
                   $ref: '#/components/schemas/Order'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /order/{id}:
+    get:
+      tags:
+        - order
+      summary: get order
+      description: get order
+      operationId: getOrder
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The order ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Order not found
           content:
             application/json:
               schema:
@@ -139,7 +184,7 @@ paths:
         - customer
       summary: get customers
       description: get customers
-      operationId: getCustomer
+      operationId: getCustomers
       parameters:
         - in: header
           name: x-access-token
@@ -212,6 +257,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+    get:
+      tags:
+        - customer
+      summary: get customer
+      description: get customer
+      operationId: getCustomer
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The customer ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
   /seller:
     post:
       tags:
@@ -255,7 +344,7 @@ paths:
         - seller
       summary: get sellers
       description: get sellers
-      operationId: getSeller
+      operationId: getSellers
       parameters:
         - in: header
           name: x-access-token
@@ -323,7 +412,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
         '404':
-          description: Product not found
+          description: Seller not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    get:
+      tags:
+        - seller
+      summary: get seller
+      description: get seller
+      operationId: getSeller
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The seller ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Seller'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Seller not found
           content:
             application/json:
               schema:
@@ -377,7 +510,7 @@ paths:
         - product
       summary: get products
       description: get products
-      operationId: getProduct
+      operationId: getProducts
       parameters:
         - in: header
           name: x-access-token
@@ -438,6 +571,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    get:
+      tags:
+        - product
+      summary: get product
+      description: get product
+      operationId: getProduct
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The product ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
         '400':
           description: Bad request
           content:
