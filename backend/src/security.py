@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta
 
-# imports for PyJWT authentication
 import jwt
 from flask import Flask, jsonify, make_response
-# creates Flask object
 from werkzeug.security import check_password_hash
 
 from seller_manager import Seller
@@ -19,11 +17,14 @@ class Security:
 
     def authorize(self, input_data):
         user = self.database_session.query(Seller).filter_by(username=input_data.get('username')).first()
-        admin_username = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
+        role = 'seller'
 
         if not user:
+            admin_username = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
             if admin_username == input_data.get('username'):
+                username = admin_username
                 password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
+                role = 'admin'
             else:
                 return make_response('INVALID_USER_NAME', 401)
         else:
@@ -36,6 +37,6 @@ class Security:
                 'exp': datetime.utcnow() + timedelta(days=1)
             }, app.config['SECRET_KEY'], "HS256")
 
-            return make_response(jsonify({'token': token}), 200)
+            return make_response(jsonify({'token': token, 'role': role}), 200)
 
         return make_response('INVALID_PASSWORD', 401)
