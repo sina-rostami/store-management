@@ -7,7 +7,7 @@ class ProductManager:
 
     def add_product(self, data):
         old_product = self.database_session.query(Product).filter_by(
-            name=data['name'], price=data['price'], stock_number=data['stock_number'], category_id=data['category_id']).first()
+            name=data['name'], price=data['price'], category_id=data['category_id']).first()
 
         if old_product:
             return False, 'ALREADY_EXISTS'
@@ -16,7 +16,12 @@ class ProductManager:
         if data['price'] < 0:
             return False, 'NEGATIVE_PRICE'
 
-        self.database_session.add(Product(name=data['name'], price=data['price'], stock_number=data['stock_number'], category_id=data['category_id']))
+        self.database_session.add(
+            Product(
+                name=data['name'],
+                price=data['price'],
+                stock_number=data['stock_number'],
+                category_id=data['category_id']))
         self.database_session.commit()
 
         return True, 'SUCCESS'
@@ -30,6 +35,11 @@ class ProductManager:
             return False, 'CATEGORY_NOT_EXIST'
         if data['price'] < 0:
             return False, 'NEGATIVE_PRICE'
+
+        same_product = self.database_session.query(Product).filter_by(
+            name=data['name'], price=data['price'], category_id=data['category_id']).first()
+        if same_product and same_product.id != id:
+            return False, 'ALREADY_EXISTS'
 
         old_product.name = data['name']
         old_product.price = data['price']
