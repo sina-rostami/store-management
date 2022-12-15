@@ -1,19 +1,18 @@
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
-import jwt
-from flask import Flask, jsonify, make_response
+from jwt import encode
+from flask import jsonify, make_response
 from werkzeug.security import check_password_hash
 
 from seller_manager import Seller
 from database_handler import Scratch
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your secret key'
-
 
 class Security:
-    def __init__(self, database_session) -> None:
+    def __init__(self, database_session, app_secret_key) -> None:
         self.database_session = database_session
+        self.app_secret_key = app_secret_key
 
     def authorize(self, input_data):
         user = self.database_session.query(Seller).filter_by(username=input_data.get('username')).first()
@@ -26,17 +25,17 @@ class Security:
                 password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
                 role = 'admin'
             else:
-                return make_response('INVALID_USER_NAME', 401)
+                return make_response(jsonify({'message': 'INVALID_USER_NAME'}), HTTPStatus.UNAUTHORIZED)
         else:
             username = user.username
             password = user.password
 
         if check_password_hash(password, input_data.get('password')):
-            token = jwt.encode({
+            token = encode({
                 'username': username,
                 'exp': datetime.utcnow() + timedelta(days=1)
-            }, app.config['SECRET_KEY'], "HS256")
+            }, self.app_secret_key, "HS256")
 
-            return make_response(jsonify({'token': token, 'role': role}), 200)
+            return make_response(jsonify({'token': token, 'role': role}), HTTPStatus.OK)
 
-        return make_response('INVALID_PASSWORD', 401)
+        return make_response(jsonify({'message': 'INVALID_PASSWORD'}), HTTPStatus.UNAUTHORIZED)
