@@ -1,9 +1,9 @@
 import apiService from './apiService'
 
-const submitOrder = async ({ data, method }) => {
+const addSeller = async (data) => {
   try {
     const response = await apiService(
-      { endpoint: '/order', method, data, authTokenNeeded: true },
+      { endpoint: '/seller', method: 'post', data, authTokenNeeded: true },
     )
     if (!response.data) return { succeeded: true }
 
@@ -15,4 +15,4 @@ const submitOrder = async ({ data, method }) => {
   }
 }
 
-export default submitOrder
+export default addSeller

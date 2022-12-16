@@ -5,7 +5,7 @@ export function AuthReducer (state, action) {
   case 'login':
     return { ...state, authStatus: 'loggedIn' }
   case 'logout':
-    return { ...state, authStatus: 'loggedOut' }
+    return { ...state, authStatus: 'loggedOut', role: '' }
   case 'loading':
     return { ...state, authStatus: 'loading' }
   case 'setRole':
