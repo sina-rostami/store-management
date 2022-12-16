@@ -1,5 +1,9 @@
 import React from "react"
 import styled from "styled-components"
+import { Link } from 'react-router-dom'
+import styles from "./styles"
+import { menuItems } from "./menuItems"
+import { useAuthState } from "../../context/index.js"
 
 
 const NavLinksContainer = styled.div`
@@ -21,7 +25,7 @@ const LinkItem = styled.li`
   padding: 0 1.1em;
   color: #222;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 16px;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -33,30 +37,23 @@ const LinkItem = styled.li`
   }
 `;
 
-const Link = styled.a`
-  text-decoration: none;
-  color: inherit;
-  fontsize: inherit;
-`;
+export function NavLinks(props) {
+  const { role } = useAuthState()
+  const classes = styles()
 
-export function NavLinks(props){
   return <NavLinksContainer>
     <LinksWrapper>
-    <LinkItem>
-        <Link href="http://localhost:8080/sellers"> مدیریت فروشندگان </Link>
-      </LinkItem>
-      <LinkItem>
-        <Link href="http://localhost:8080/customers"> مدیریت مشتری ها </Link>
-      </LinkItem>
-      <LinkItem>
-        <Link href="http://localhost:8080/bills"> مشاهده فاکتورها </Link>
-      </LinkItem>
-      <LinkItem>
-        <Link href="http://localhost:8080/products"> محصولات </Link>
-      </LinkItem>
-      <LinkItem>
-        <Link href="http://localhost:8080/admin-panel"> پنل ادمین </Link>
-      </LinkItem>
+      {
+        menuItems.map(menuItem => {
+          if (menuItem.roles.includes(role)) {
+            return (
+              <LinkItem key={menuItem.path}>
+                <Link className={classes.link} to={menuItem.path}>{menuItem.item}</Link>
+              </LinkItem>
+            )
+          }
+        })
+      }
     </LinksWrapper>
   </NavLinksContainer>
 }

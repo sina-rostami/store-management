@@ -1,12 +1,6 @@
 import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
-
-  navbarContainer : {
-
-    //Tablet
-    '@media (min-width: 992px)': {
-
   navbarContainer: {
     width: '100%',
     height: 60,
@@ -23,6 +17,13 @@ const styles = createUseStyles({
     '@media (min-width: 1360px)': {
       marginBottom: 50,
     },
+  },
+
+  link: {
+    textDecoration: 'none',
+    color: 'inherit',
+    fontSize: 'inherit',
+    cursor: 'pointer',
   },
 })
 
