@@ -39,7 +39,7 @@ class Backend:
 
         self.database_session.add(Seller(name='ali', username='user0', password=generate_password_hash('password')))
         self.database_session.add(Customer(
-            name='asghar', credit=10000.0, join_date=datetime.datetime.now(),
+            name='asghar', credit=100000000.0, join_date=datetime.datetime.now(),
             is_active=True, phone_number='09101010203'))
         self.database_session.add(Payer(name='asghar-payer', phone_number='09111010203'))
         self.database_session.add(Category(name='خوراکی'))
