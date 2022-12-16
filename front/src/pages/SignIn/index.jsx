@@ -9,10 +9,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
 import Container from '@mui/material/Container'
 import CssBaseline from '@mui/material/CssBaseline'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import Link from '@mui/material/Link'
@@ -21,6 +19,9 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { prefixer } from 'stylis'
 import rtlPlugin from 'stylis-plugin-rtl'
+
+import { useAuthDispatch } from '../../context/index.js'
+import signIn from '../../services/signIn'
 
 document.dir = 'rtl'
 
@@ -52,6 +53,7 @@ const SignIn = () => {
     password: '',
     showPassword: false,
   })
+  const authDispatch = useAuthDispatch()
 
   const handleClickShowPassword = () => {
     setValues({
@@ -71,9 +73,26 @@ const SignIn = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
+
+    signIn({
+      data: {
+        username: data.get('username'),
+        password: data.get('password'),
+      },
+    }).then(res => {
+      if (res && res.token && res.role) {
+        const { role, token } = res
+
+        localStorage.setItem('auth_token', token)
+        localStorage.setItem('role', role)
+
+        authDispatch({ type: 'login' })
+        if (role === 'seller') {
+          window.location.replace('/seller-panel')
+        } else if (role === 'admin') {
+          window.location.replace('/admin-panel')
+        }
+      }
     })
   }
 
@@ -131,10 +150,6 @@ const SignIn = () => {
                     </InputAdornment>
                   ),
                 }}
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="مرا به خاطر بسپار"
               />
               <Button
                 type="submit"
