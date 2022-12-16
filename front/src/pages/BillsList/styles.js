@@ -6,23 +6,11 @@ const styles = createUseStyles({
     flexDirection: 'column',
     padding: [0, 30, 60],
 
-    '& span': {
-      fontSize: 12,
-    },
-
     '@media (min-width: 768px)': {
       padding: [0, 50, 80],
-
-      '& span': {
-        fontSize: 14,
-      },
     },
     '@media (min-width: 1360px)': {
       padding: [0, 60, 100],
-
-      '& span': {
-        fontSize: 16,
-      },
     },
   },
 
@@ -37,10 +25,18 @@ const styles = createUseStyles({
       cursor: 'pointer',
     },
 
+    '& span': {
+      fontSize: 12,
+    },
+
     '@media (min-width: 768px)': {
       '& img': {
         height: 25,
         width: 25,
+      },
+
+      '& span': {
+        fontSize: 14,
       },
     },
 
@@ -48,6 +44,10 @@ const styles = createUseStyles({
       '& img': {
         height: 30,
         width: 30,
+      },
+
+      '& span': {
+        fontSize: 16,
       },
     },
   },
@@ -77,16 +77,28 @@ const styles = createUseStyles({
     marginBottom: 15,
     padding: [0, 10],
 
+    '& span': {
+      fontSize: 12,
+    },
+
     '@media (min-width: 768px)': {
       height: 50,
       marginBottom: 20,
       padding: [0, 15],
+
+      '& span': {
+        fontSize: 14,
+      },
     },
 
     '@media (min-width: 1360px)': {
       height: 60,
       marginBottom: 25,
       padding: [0, 20],
+
+      '& span': {
+        fontSize: 16,
+      },
     },
   },
 
@@ -136,7 +148,6 @@ const styles = createUseStyles({
 
     '@media (min-width: 768px)': {
       width: '15%',
-
     },
 
     '@media (min-width: 1360px)': {
@@ -157,6 +168,23 @@ const styles = createUseStyles({
     },
   },
 
+  noItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: 16,
+    marginTop: 200,
+
+    '@media (min-width: 768px)': {
+      fontSize: 22,
+      marginTop: 215,
+    },
+
+    '@media (min-width: 1360px)': {
+      fontSize: 30,
+      marginTop: 230,
+    },
+  },
+
   billRow: {
     display: 'flex',
     flexDirection: 'row',
@@ -167,20 +195,33 @@ const styles = createUseStyles({
     marginBottom: 15,
     padding: [0, 10],
     backgroundColor: 'rgba(175,194,212,100)',
+
     '& hover': {
       backgroundColor: 'rgba(175,194,212,50)',
-
     },
+
+    '& span': {
+      fontSize: 12,
+    },
+
     '@media (min-width: 768px)': {
       height: 50,
       marginBottom: 20,
       padding: [0, 15],
+
+      '& span': {
+        fontSize: 14,
+      },
     },
 
     '@media (min-width: 1360px)': {
       height: 60,
       marginBottom: 25,
       padding: [0, 20],
+
+      '& span': {
+        fontSize: 16,
+      },
     },
   },
 
