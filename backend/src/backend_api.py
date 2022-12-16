@@ -120,11 +120,45 @@ def get_customers(current_user):
         return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+@app.route('/customer', methods=['POST'])
+@normal_authorization
+def add_customer(current_user):
+    try:
+        check_fields(request.json, ['name', 'phone_number', 'credit'])
+        did_success, message = backend.customer_manager.add_customer(request.json)
+        if not did_success:
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.CREATED
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/customer/<int:customer_id>', methods=['PUT'])
+@normal_authorization
+def edit_customer(current_user, customer_id):
+    try:
+        check_fields(request.json, ['name', 'phone_number', 'credit', 'is_active'])
+        did_success, message = backend.customer_manager.edit_customer(customer_id, request.json)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.CREATED
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 @app.route('/product', methods=['POST'])
 @normal_authorization
 def add_product(current_user):
     try:
-        check_fields(request.json, ['name', 'price', 'category_id'])
+        check_fields(request.json, ['name', 'price', 'stock_number', 'category_id'])
         did_success, message = backend.product_manager.add_product(request.json)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
@@ -136,12 +170,12 @@ def add_product(current_user):
         return jsonify({'message': f'An error occurred while adding product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.route('/product', methods=['PUT'])
+@app.route('/product/<int:product_id>', methods=['PUT'])
 @normal_authorization
-def edit_product(current_user):
+def edit_product(current_user, product_id):
     try:
-        check_fields(request.json, ['id', 'name', 'price', 'category_id'])
-        did_success, message = backend.product_manager.edit_product(request.json)
+        check_fields(request.json, ['name', 'price', 'stock_number', 'category_id'])
+        did_success, message = backend.product_manager.edit_product(product_id, request.json)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
