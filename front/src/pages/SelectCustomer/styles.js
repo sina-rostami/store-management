@@ -1,7 +1,7 @@
 import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
-  billsListRoot: {
+  customersListRoot: {
     display: 'flex',
     flexDirection: 'column',
     padding: [0, 30, 60],
@@ -11,174 +11,6 @@ const styles = createUseStyles({
     },
     '@media (min-width: 1360px)': {
       padding: [0, 60, 100],
-    },
-  },
-
-  pageHeader: {
-    position: 'relative',
-
-    '& img': {
-      position: 'absolute',
-      height: 20,
-      width: 20,
-      verticalAlign: 'middle',
-      cursor: 'pointer',
-    },
-
-    '& span': {
-      fontSize: 12,
-    },
-
-    '@media (min-width: 768px)': {
-      '& img': {
-        height: 25,
-        width: 25,
-      },
-
-      '& span': {
-        fontSize: 14,
-      },
-    },
-
-    '@media (min-width: 1360px)': {
-      '& img': {
-        height: 30,
-        width: 30,
-      },
-
-      '& span': {
-        fontSize: 16,
-      },
-    },
-  },
-
-  pageTitle: {
-    textAlign: 'center',
-    marginBottom: 30,
-    fontSize: 14,
-
-    '@media (min-width: 768px)': {
-      marginBottom: 40,
-      fontSize: 20,
-    },
-    '@media (min-width: 1360px)': {
-      marginBottom: 50,
-      fontSize: 28,
-    },
-  },
-
-  headerRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 40,
-    border: '1px solid black',
-    borderRadius: 5,
-    marginBottom: 15,
-    padding: [0, 10],
-
-    '& span': {
-      fontSize: 14,
-      fontWeight: 700,
-    },
-
-    '@media (min-width: 768px)': {
-      height: 50,
-      marginBottom: 20,
-      padding: [0, 15],
-
-      '& span': {
-        fontSize: 16,
-      },
-    },
-
-    '@media (min-width: 1360px)': {
-      height: 60,
-      marginBottom: 25,
-      padding: [0, 20],
-
-      '& span': {
-        fontSize: 18,
-      },
-    },
-  },
-
-  indexHeader: {
-    display: 'flex',
-    width: '13%',
-
-    '@media (min-width: 768px)': {
-      width: '10%',
-    },
-
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  sellerHeader: {
-    display: 'flex',
-    width: '30%',
-
-    '@media (min-width: 768px)': {
-      width: '20%',
-    },
-
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  customerHeader: {
-    display: 'flex',
-    width: '25%',
-
-    '@media (min-width: 768px)': {
-      width: '20%',
-    },
-
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  idHeader: {
-    display: 'flex',
-    width: '15%',
-    fontSize: 12,
-
-    '@media (min-width: 768px)': {
-      width: '15%',
-    },
-
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  submitDateHeader: {
-    display: 'none',
-
-    '@media (min-width: 768px)': {
-      width: '15%',
-      display: 'flex',
-    },
-
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  submitTimeHeader: {
-    display: 'none',
-
-    '@media (min-width: 768px)': {
-      width: '20%',
-      display: 'flex',
-    },
-
-    '@media (min-width: 1360px)': {
-
     },
   },
 
@@ -199,20 +31,64 @@ const styles = createUseStyles({
     },
   },
 
-  billRow: {
+  pageHeader: {
+    position: 'relative',
+
+    '& img': {
+      position: 'absolute',
+      height: 20,
+      width: 20,
+      verticalAlign: 'middle',
+      cursor: 'pointer',
+    },
+
+    '@media (min-width: 768px)': {
+      '& img': {
+        height: 25,
+        width: 25,
+      },
+    },
+
+    '@media (min-width: 1360px)': {
+      '& img': {
+        height: 30,
+        width: 30,
+      },
+    },
+  },
+
+  pageTitle: {
+    textAlign: 'center',
+    marginBottom: 30,
+    fontSize: 14,
+
+    '@media (min-width: 768px)': {
+      marginBottom: 40,
+      fontSize: 20,
+    },
+
+    '@media (min-width: 1360px)': {
+      marginBottom: 50,
+      fontSize: 28,
+    },
+  },
+
+  customersContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+
+  headerRow: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     height: 40,
+    width: 300,
     border: '1px solid black',
     borderRadius: 5,
     marginBottom: 15,
     padding: [0, 10],
-    backgroundColor: 'rgba(175,194,212,100)',
-
-    '& hover': {
-      backgroundColor: 'rgba(175,194,212,50)',
-    },
 
     '& span': {
       fontSize: 14,
@@ -220,6 +96,7 @@ const styles = createUseStyles({
     },
 
     '@media (min-width: 768px)': {
+      width: 500,
       height: 50,
       marginBottom: 20,
       padding: [0, 15],
@@ -240,43 +117,81 @@ const styles = createUseStyles({
     },
   },
 
-  indexContainer: {
+  nameHeader: {
     display: 'flex',
-    width: '13%',
+    width: '50%',
+
+    '@media (min-width: 768px)': {
+
+    },
+
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+
+  idHeader: {
+    display: 'flex',
+    width: '45%',
+
+    '@media (min-width: 768px)': {
+
+    },
+
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+
+  customerRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 40,
+    border: '1px solid black',
+    borderRadius: 5,
+    marginBottom: 15,
+    padding: [0, 10],
+    backgroundColor: 'rgba(175,194,212,100)',
+    width: 300,
+
+    '& hover': {
+      backgroundColor: 'rgba(175,194,212,50)',
+    },
 
     '& span': {
-      width: 25,
-      textAlign: 'center',
+      fontSize: 14,
+      fontWeight: 700,
     },
 
     '@media (min-width: 768px)': {
-      width: '10%',
+      width: 500,
+      height: 50,
+      marginBottom: 20,
+      padding: [0, 15],
+
+      '& span': {
+        fontSize: 16,
+      },
     },
 
     '@media (min-width: 1360px)': {
+      height: 60,
+      marginBottom: 25,
+      padding: [0, 20],
 
+      '& span': {
+        fontSize: 18,
+      },
     },
   },
 
-  sellerContainer: {
+  nameContainer: {
     display: 'flex',
-    width: '30%',
+    width: '50%',
 
     '@media (min-width: 768px)': {
-      width: '20%',
-    },
 
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  customerContainer: {
-    display: 'flex',
-    width: '25%',
-
-    '@media (min-width: 768px)': {
-      width: '20%',
     },
 
     '@media (min-width: 1360px)': {
@@ -286,45 +201,16 @@ const styles = createUseStyles({
 
   idContainer: {
     display: 'flex',
-    width: '15%',
+    width: '45%',
+    fontSize: 12,
 
     '& span': {
-      width: 25,
+      width: 35,
       textAlign: 'center',
     },
 
     '@media (min-width: 768px)': {
-      width: '15%',
 
-      '& span': {
-        width: 32,
-      },
-    },
-
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  submitDateContainer: {
-    display: 'none',
-
-    '@media (min-width: 768px)': {
-      width: '15%',
-      display: 'flex',
-    },
-
-    '@media (min-width: 1360px)': {
-
-    },
-  },
-
-  submitTimeContainer: {
-    display: 'none',
-
-    '@media (min-width: 768px)': {
-      width: '15%',
-      display: 'flex',
     },
 
     '@media (min-width: 1360px)': {
@@ -335,7 +221,7 @@ const styles = createUseStyles({
   seeMoreContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    width: '15%',
+    width: '5%',
     cursor: 'pointer',
 
     '& img': {
@@ -355,6 +241,7 @@ const styles = createUseStyles({
     },
 
     '@media (min-width: 1360px)': {
+      width: '5%',
 
       '& img': {
         height: 35,

@@ -5,5 +5,5 @@ export const menuItems = [
   { path: '/customers-mng', item: 'مدیریت مشتری‌ها', roles: ['admin'] },
   { path: '/bills', item: 'مشاهده فاکتور‌ها', roles: ['admin', 'seller'] },
   { path: '/products', item: 'محصولات', roles: ['admin', 'seller'] },
-  { path: '/ordering', item: 'ثبت سفارش', roles: ['admin', 'seller'] },
+  { path: '/select-customer', item: 'ثبت فروش', roles: ['admin', 'seller'] },
 ]

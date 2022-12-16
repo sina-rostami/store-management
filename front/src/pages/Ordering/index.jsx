@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import styles from './styles'
 
@@ -12,8 +12,9 @@ const Ordering = () => {
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState({ items: [], totalPrice: 0 })
   const [isOrderingFinished, setIsOrderingFinished] = useState(false)
-  const classes = styles()
   const navigate = useNavigate()
+  const location = useLocation()
+  const classes = styles()
 
   useEffect(() => {
     getProducts().then(data => setProducts(data))
@@ -58,15 +59,17 @@ const Ordering = () => {
         <img src="./asset/images/back.png" alt="بازگشت" title='بازگشت' onClick={() => navigate(-1)} />
         <h3 className={classes.pageTitle}>ثبت فروش</h3>
       </div>
-      <div className={classes.products}>
         {products.length === 0
-          ? <span>در حال دریافت اطلاعات ...</span>
-          : products.map(product => (
-            <Product product={product} handleCart={handleCart} key={product.id} cart={cart} />
-          ))
+          ? <span className={classes.noItem}>در حال دریافت اطلاعات ...</span>
+          : <div className={classes.products}>
+            {
+              products.map(product => (
+                <Product product={product} handleCart={handleCart} key={product.id} cart={cart} />
+              ))
+            }
+            </div>
         }
-      </div>
-      {!!cart.items.length && <Cart items={cart.items} totalPrice={cart.totalPrice} handleCart={handleCart} />}
+      {!!cart.items.length && <Cart items={cart.items} totalPrice={cart.totalPrice} handleCart={handleCart} customerId={location.state.id} />}
     </div>
   )
 }

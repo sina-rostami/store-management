@@ -82,10 +82,11 @@ const SignIn = () => {
       },
     }).then(res => {
       if (res && res.token && res.role) {
-        const { role, token } = res
+        const { role, token, user_id } = res
 
         localStorage.setItem('auth_token', token)
         localStorage.setItem('role', role)
+        localStorage.setItem('user_id', user_id )
 
         authDispatch({ type: 'login' })
         if (role === 'seller') {

@@ -8,10 +8,14 @@ import styles from './styles'
 
 import 'react-toastify/dist/ReactToastify.css'
 import submitOrder from '../../services/submitOrder'
+import { useNavigate } from 'react-router-dom'
+import { useAuthState } from '../../context/index.js'
 
 function Cart (props) {
-  const { items, totalPrice, handleCart } = props
+  const { items, totalPrice, handleCart, customerId } = props
   const [isBtnLoading, setIsBtnLoading] = useState(false)
+  const navigate = useNavigate('')
+  const { userId } = useAuthState()
   const classes = styles()
 
   const showToastMessage = (type, message) => {
@@ -27,28 +31,32 @@ function Cart (props) {
   }
 
   const submitPurchase = () => {
-    const productIds = items.map(item => item.id)
+    const products = items.map(item => ({ id: item.id, quantity: item.quantity }))
     setIsBtnLoading(true)
     submitOrder({
       data: {
-        seller_id: 1,
-        customer_id: 1,
-        products_ids: [
-          ...productIds,
+        seller_id: +userId,
+        customer_id: customerId,
+        products: [
+          ...products,
         ],
       },
       method: 'post',
     }).then(res => {
       setIsBtnLoading(false)
       if (res.succeeded) {
-        // handleCart(0, 'removeAll')
-        showToastMessage('success')
+        handleCart(0, 'removeAll')
+        navigate('/select-customer')
+        // setTimeout(() => showToastMessage('success'), 1000)
         // window.scrollTo(0, 0)
       } else {
         const { message } = res.response.data
 
         if (message === 'CREDIT_NOT_ENOUGH') {
           showToastMessage('error', '!موجودی حساب مشتری کافی نمی باشد')
+        }
+        if (message === 'SELLER_NOT_ACTIVE') {
+          showToastMessage('error', '!حساب کاربری شما فعال نمی باشد')
         }
       }
     })
