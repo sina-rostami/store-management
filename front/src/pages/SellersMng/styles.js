@@ -1,7 +1,7 @@
 import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
-  sellerPanelRoot: {
+  sellersMngRoot: {
     padding: [0, 60],
     display: 'flex',
     flexDirection: 'column',

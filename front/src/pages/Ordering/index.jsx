@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './styles'
 
+import Cart from '../../components/Cart/index.jsx'
 import Product from '../../components/Product/index.jsx'
 import getProducts from '../../services/getProducts'
 
@@ -62,6 +63,7 @@ const Ordering = () => {
           ))
         }
       </div>
+      {!!cart.items.length && <Cart items={cart.items} totalPrice={cart.totalPrice} />}
     </div>
   )
 }

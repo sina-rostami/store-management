@@ -1,7 +1,7 @@
 import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
-  sellerPanelRoot: {
+  customersMngRoot: {
     padding: [0, 60],
     display: 'flex',
     flexDirection: 'column',
@@ -23,7 +23,7 @@ const styles = createUseStyles({
     },
   },
 
-  sellerItem: {
+  customerItem: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -48,6 +48,7 @@ const styles = createUseStyles({
       height: 200,
     },
   },
+
 })
 
 export default styles

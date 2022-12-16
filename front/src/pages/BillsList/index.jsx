@@ -4,87 +4,93 @@ import { useNavigate } from 'react-router-dom'
 
 import styles from './styles'
 
+import getBills from '../../services/getBills.js'
+
 const BillsList = () => {
   const [bills, setBills] = useState([])
   const classes = styles()
   const navigate = useNavigate()
 
+  // useEffect(() => {
+  //   setBills([
+  //     {
+  //       id: 1,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 2,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 3,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 4,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 5,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 6,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 7,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 8,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 9,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 10,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 11,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //     {
+  //       id: 12,
+  //       submitDate: '1400/03/10',
+  //       sellerName: 'کبوان رضایی',
+  //       customerName: 'سینا رستمی',
+  //     },
+  //   ])
+  // }, [])
+
   useEffect(() => {
-    setBills([
-      {
-        id: 1,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 2,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 3,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 4,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 5,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 6,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 7,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 8,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 9,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 10,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 11,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-      {
-        id: 12,
-        submitDate: '1400/03/10',
-        sellerName: 'کبوان رضایی',
-        customerName: 'سینا رستمی',
-      },
-    ])
-  }, [])
+    getBills().then(res => setBills(res))
+  })
 
   return (
     <div className={classes.billsListRoot}>

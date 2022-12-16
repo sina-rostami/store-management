@@ -48,7 +48,6 @@ const styles = createUseStyles({
       height: 200,
     },
   },
-
 })
 
 export default styles
