@@ -17,37 +17,6 @@ const styles = createUseStyles({
 
     },
   },
-
-  navLinksContainer : {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-  },
-
-  linksWrapper : {
-    margin: 0,
-    padding: 0,
-    display: 'flex',
-    height: '100%',
-  },
-
-  linkItem : {
-    height: '100%',
-    padding: '0 1.1em',
-    fontWeight: 500,
-    fontSize: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-
-  },
-
-  link: {
-    textDecoration: 'none',
-    color: 'inherit',
-    fontSize: 'inherit',
-    
-  }
 })
 
 export default styles

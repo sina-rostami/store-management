@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from "styled-components";
 import { Logo } from '../Logo/index.jsx';
+import Navlinks, { NavLinks } from './NavLinks.jsx';
 
 const NavBarContainer = styled.div`
   width: 100%;
@@ -32,7 +33,9 @@ export function Navbar(props){
     <LeftSection>
       <Logo />
     </LeftSection>
-    <MiddleSection></MiddleSection>
+    <MiddleSection>
+      <NavLinks />
+    </MiddleSection>
     <RightSection>
     </RightSection>
   </NavBarContainer>
