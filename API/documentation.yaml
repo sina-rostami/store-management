@@ -231,6 +231,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
   /product:
+    post:
+      tags:
+        - product
+      summary: new product
+      description: Create new product in the store
+      operationId: addProduct
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addProduct'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
     get:
       tags:
         - product
@@ -378,6 +415,18 @@ components:
         username:
           type: string
           example: "ali_ahmadi"
+    addProduct:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Ali"
+        category_id:
+          type: integer
+          example: 0
+        price:
+          type: number
+          example: 10.5
     Product:
       type: object
       properties:
@@ -387,7 +436,7 @@ components:
         name:
           type: string
           example: "Ali"
-        category:
+        category_id:
           type: integer
           example: 0
         price:
