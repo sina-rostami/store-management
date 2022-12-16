@@ -74,10 +74,9 @@ class SellerManager:
 
     def get_seller(self, username):
         seller = self.database_session.query(Seller).filter_by(username=username).first()
-        if not seller:
-            raise HTTPError()
-        else:
-            return seller
+
+        return seller if seller else None
+
 
     def edit_account(self, data):
         name, old_username, password, new_username = data.get('name'), data.get(
