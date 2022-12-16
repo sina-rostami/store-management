@@ -5,24 +5,12 @@ const path = require('path')
 
 module.exports = () => {
   return {
-    resolve: {
-      fallback: {
-        http: false,
-        https: false,
-        zlib: false,
-        stream: false,
-        url: false,
-        assert: false,
-      },
-    },
     entry: './src/index.js',
     output: {
       path: path.join(__dirname, '/build'),
       filename: 'bundle.js',
     },
-    devServer: {
-      historyApiFallback: true,
-    },
+
     plugins: [
       new HTMLWebpackPlugin({
         template: './public/index.html',
@@ -31,6 +19,7 @@ module.exports = () => {
         path: './.env',
       }),
     ],
+
     module: {
       rules: [
         {
