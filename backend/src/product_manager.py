@@ -14,22 +14,22 @@ class ProductManager:
         if not self.database_session.query(Category).filter_by(id=data['category_id']).first():
             return False, 'CATEGORY_NOT_EXIST'
         if data['price'] < 0:
-            return False, 'PRICE_NEGATIVE'
+            return False, 'NEGATIVE_PRICE'
 
         self.database_session.add(Product(name=data['name'], price=data['price'], stock_number=data['stock_number'], category_id=data['category_id']))
         self.database_session.commit()
 
         return True, 'SUCCESS'
 
-    def edit_product(self, data):
-        old_product = self.database_session.query(Product).filter_by(id=data['id']).first()
+    def edit_product(self, id, data):
+        old_product = self.database_session.query(Product).filter_by(id=id).first()
 
         if not old_product:
             return False, 'NOT_EXIST'
         if not self.database_session.query(Category).filter_by(id=data['category_id']).first():
             return False, 'CATEGORY_NOT_EXIST'
         if data['price'] < 0:
-            return False, 'PRICE_NEGATIVE'
+            return False, 'NEGATIVE_PRICE'
 
         old_product.name = data['name']
         old_product.price = data['price']

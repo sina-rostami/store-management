@@ -73,8 +73,7 @@ def admin_authorization(f):
 def check_fields(data, fields):
     if not data:
         return make_response(
-            jsonify({'message': 'EXPECTED_DATA', 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
-            HTTPStatus.BAD_REQUEST)
+            jsonify({'message': 'EXPECTED_DATA'}), HTTPStatus.BAD_REQUEST)
     for x in fields:
         if data.get(x) == None:
             raise BadRequest("EXPECTED_" + x.upper())
