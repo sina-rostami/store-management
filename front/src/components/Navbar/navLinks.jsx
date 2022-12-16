@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
+
 const NavLinksContainer = styled.div`
   height: 100%;
   display: flex;
@@ -24,6 +25,12 @@ const LinkItem = styled.li`
   align-items: center;
   justify-content: center;
   display: flex;
+  border-top: 2px solid transparent:
+  transition: all 220ms ease-in-out;
+
+  &:hover {
+    border-top: 2px solid #2980b9;
+  }
 `;
 
 const Link = styled.a`
