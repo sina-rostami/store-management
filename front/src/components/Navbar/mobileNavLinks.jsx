@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
-
+import MenuToggle from "../MenuToggle/index.jsx";
+import { Accessibility } from "./accessibility.jsx";
 
 const NavLinksContainer = styled.div`
   height: 100%;
@@ -14,23 +15,22 @@ const LinksWrapper = styled.ul`
   display: flex;
   height: 100%;
   list-style: none;
+  background-color: #fff;
+  width: 100%;
+  flex-direction: column;
+  position: fixed;
+  top: 65px;
+  left: 0;
 `;
 
 const LinkItem = styled.li`
-  height: 100%;
+  width: 100%;
   padding: 0 1.1em;
   color: #222;
   font-weight: 500;
-  font-size: 14px;
-  align-items: center;
-  justify-content: center;
+  font-size: 18px;
   display: flex;
-  border-top: 2px solid transparent:
-  transition: all 220ms ease-in-out;
-
-  &:hover {
-    border-top: 2px solid #2980b9;
-  }
+  margin-bottom: 10px;
 `;
 
 const Link = styled.a`
@@ -39,9 +39,17 @@ const Link = styled.a`
   fontsize: inherit;
 `;
 
-export function NavLinks(props){
-  return <NavLinksContainer>
-    <LinksWrapper>
+const Marginer = styled.div`
+  height: 1em;
+`;
+
+export function MobileNavLinks(props){
+  const [isOpen, setOpen] = useState(false);  
+
+  return ( 
+  <NavLinksContainer>
+    <MenuToggle isOpen = {isOpen} toggle= {() => setOpen(!isOpen)}  />
+    {isOpen && <LinksWrapper>
     <LinkItem>
         <Link href="http://localhost:8080/sellers"> مدیریت فروشندگان </Link>
       </LinkItem>
@@ -57,8 +65,11 @@ export function NavLinks(props){
       <LinkItem>
         <Link href="http://localhost:8080/admin-panel"> پنل ادمین </Link>
       </LinkItem>
-    </LinksWrapper>
+      <Marginer />
+      <Accessibility />
+    </LinksWrapper>}
   </NavLinksContainer>
+  )
 }
 
-export default NavLinks
+export default MobileNavLinks
