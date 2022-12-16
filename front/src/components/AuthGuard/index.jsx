@@ -17,7 +17,7 @@ const AuthGuard = ({ component, adminGuard = false, sellerGuard = false }) => {
   if (authStatus === 'loggedIn') {
     return component
   } else if (authStatus === 'loggedOut') {
-    window.location.replace('/sign-in')
+    window.location.replace('/')
   }
 
   return <Loading />
