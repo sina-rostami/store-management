@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 
+import { useState } from 'react'
 import AuthGuard from './components/AuthGuard/index.jsx'
 import Navbar from './components/Navbar/index.jsx'
 import { AuthProvider } from './context/index.js'
@@ -19,7 +20,7 @@ import SellersMng from './pages/SellersMng/index.jsx'
 import SignIn from './pages/SignIn/index.jsx'
 
 const App = () => {
-
+  const [color, setColor] = useState("#dfe6e9")
   return (
     <AuthProvider>
       <Navbar />

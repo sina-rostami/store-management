@@ -143,7 +143,11 @@ const styles = createUseStyles({
     borderRadius: 5,
     marginBottom: 15,
     padding: [0, 10],
+    backgroundColor: 'rgba(175,194,212,100)',
+    '& hover': {
+      backgroundColor: 'rgba(175,194,212,50)',
 
+    },
     '@media (min-width: 768px)': {
       height: 50,
       marginBottom: 20,
