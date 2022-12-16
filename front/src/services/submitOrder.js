@@ -3,7 +3,7 @@ import apiService from './apiService'
 const submitOrder = async ({ data, method }) => {
   try {
     const response = await apiService(
-      { endpoint: '/order', method, data },
+      { endpoint: '/order', method, data, authTokenNeeded: true },
     )
     if (!response.data) return { succeeded: true }
 

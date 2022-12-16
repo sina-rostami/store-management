@@ -12,8 +12,6 @@ const Products = () => {
   const navigate = useNavigate()
   const classes = styles()
 
-  console.log(products)
-
   useEffect(() => {
     getProducts().then(data => setProducts(data))
   }, [])

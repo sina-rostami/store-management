@@ -28,6 +28,7 @@ const AddProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsLoading(true)
+    // addProduct(name)
   }
 
   return (

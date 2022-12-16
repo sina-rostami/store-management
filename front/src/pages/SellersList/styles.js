@@ -134,20 +134,6 @@ const styles = createUseStyles({
     },
   },
 
-  pageTitle: {
-    textAlign: 'center',
-    marginBottom: 30,
-
-    '@media (min-width: 768px)': {
-      marginBottom: 40,
-
-    },
-    '@media (min-width: 1360px)': {
-      marginBottom: 50,
-
-    },
-  },
-
   sellersRow: {
     display: 'flex',
     flexDirection: 'row',
