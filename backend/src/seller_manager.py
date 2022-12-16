@@ -21,7 +21,16 @@ class SellerManager:
         seller_id = request_data['seller_id']
         products = request_data['products']
 
-        # check existance of customer & seller & products
+        # check existance of products
+        seller = self.database_session.query(Seller).filter_by(id=seller_id).first()
+        if not seller:
+            return False, 'SELLER_NOT_EXISTS'
+        elif not seller.is_active:
+            return False, 'SELLER_NOT_ACTIVE'
+
+        customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
+        if not customer:
+            return False, 'CUSTOMER_NOT_EXISTS'
 
         total_price = sum(
             self.database_session.query(Product).filter_by(id=product['id']).first().price * product['quantity']
@@ -70,7 +79,7 @@ class SellerManager:
         return [self.get_order_as_json(order) for order in self.database_session.query(Order).all()]
 
     def get_seller_as_json(self, seller):
-        return {'id': seller.id, 'name': seller.name, 'username': seller.username}
+        return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active}
 
     def get_seller_as_json_by_id(self, id):
         seller = self.database_session.query(Seller).filter_by(id=id).first()
@@ -80,7 +89,7 @@ class SellerManager:
         return True, self.get_seller_as_json(seller)
 
     def get_all_sellers_as_json(self):
-        return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all()]
+        return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all() if seller.id != 0]
 
     def add_seller(self, data):
         name, username, password = data.get('name'), data.get('username'), data.get('password')

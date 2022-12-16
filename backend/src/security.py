@@ -15,20 +15,22 @@ class Security:
         self.app_secret_key = app_secret_key
 
     def authorize(self, input_data):
-        user = self.database_session.query(Seller).filter_by(username=input_data.get('username')).first()
-        role = 'seller'
-
-        if not user:
-            admin_username = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
-            if admin_username == input_data.get('username'):
-                username = admin_username
-                password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
-                role = 'admin'
-            else:
-                return make_response(jsonify({'message': 'INVALID_USER_NAME'}), HTTPStatus.UNAUTHORIZED)
+        admin_username = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
+        id = 0
+        if admin_username == input_data.get('username'):
+            username = admin_username
+            password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
+            role = 'admin'
         else:
+            user = self.database_session.query(Seller).filter_by(username=input_data.get('username')).first()
+            role = 'seller'
+            if not user:
+                return make_response(jsonify({'message': 'INVALID_USER_NAME'}), HTTPStatus.UNAUTHORIZED)
+
             username = user.username
             password = user.password
+            id = user.id
+
 
         if check_password_hash(password, input_data.get('password')):
             token = encode({
@@ -36,6 +38,6 @@ class Security:
                 'exp': datetime.utcnow() + timedelta(days=1)
             }, self.app_secret_key, "HS256")
 
-            return make_response(jsonify({'token': token, 'role': role}), HTTPStatus.OK)
+            return make_response(jsonify({'token': token, 'role': role, 'user_id': id}), HTTPStatus.OK)
 
         return make_response(jsonify({'message': 'INVALID_PASSWORD'}), HTTPStatus.UNAUTHORIZED)
