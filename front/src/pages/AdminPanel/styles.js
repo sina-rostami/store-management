@@ -32,6 +32,7 @@ const styles = createUseStyles({
     height: 50,
     width: '100%',
     marginBottom: 20,
+    backgroundColor: 'rgba(175,194,212,100)',
 
     '& a': {
       cursor: 'pointer',

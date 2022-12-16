@@ -2,11 +2,11 @@ import React from 'react'
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 
+import { useState } from 'react'
 import AuthGuard from './components/AuthGuard/index.jsx'
 import Navbar from './components/Navbar/index.jsx'
 import { AuthProvider } from './context/index.js'
 import AddProduct from './pages/AddProduct/index.jsx'
-import Ordering from './components/Ordering/index.jsx'
 import AdminPanel from './pages/AdminPanel/index.jsx'
 import BillsList from './pages/BillsList/index.jsx'
 import CustomersList from './pages/CustomersList/index.jsx'
@@ -20,7 +20,7 @@ import SellersMng from './pages/SellersMng/index.jsx'
 import SignIn from './pages/SignIn/index.jsx'
 
 const App = () => {
-
+  const [color, setColor] = useState("#dfe6e9")
   return (
     <AuthProvider>
       <Navbar />
