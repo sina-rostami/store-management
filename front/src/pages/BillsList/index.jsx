@@ -90,7 +90,7 @@ const BillsList = () => {
 
   useEffect(() => {
     getBills().then(res => setBills(res))
-  })
+  }, [])
 
   return (
     <div className={classes.billsListRoot}>
