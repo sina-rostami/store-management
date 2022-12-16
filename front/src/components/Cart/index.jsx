@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
@@ -10,16 +10,17 @@ import 'react-toastify/dist/ReactToastify.css'
 import submitOrder from '../../services/submitOrder'
 
 function Cart (props) {
-  const { items, totalPrice } = props
+  const { items, totalPrice, handleCart } = props
+  const [isBtnLoading, setIsBtnLoading] = useState(false)
   const classes = styles()
 
-  const showToastMessage = (type) => {
+  const showToastMessage = (type, message) => {
     if (type === 'success') {
-      toast.success('ثبت سفارش با موفقیت انجام شد!', {
+      toast.success('!ثبت سفارش با موفقیت انجام شد', {
         position: toast.POSITION.TOP_CENTER,
       })
     } else if (type === 'error') {
-      toast.error('ثبت سفارش موفقیت آمیز نبود!', {
+      toast.error(message, {
         position: toast.POSITION.TOP_CENTER,
       })
     }
@@ -27,6 +28,7 @@ function Cart (props) {
 
   const submitPurchase = () => {
     const productIds = items.map(item => item.id)
+    setIsBtnLoading(true)
     submitOrder({
       data: {
         seller_id: 1,
@@ -37,17 +39,24 @@ function Cart (props) {
       },
       method: 'post',
     }).then(res => {
+      setIsBtnLoading(false)
       if (res.succeeded) {
+        // handleCart(0, 'removeAll')
         showToastMessage('success')
+        // window.scrollTo(0, 0)
       } else {
-        showToastMessage('error')
+        const { message } = res.response.data
+
+        if (message === 'CREDIT_NOT_ENOUGH') {
+          showToastMessage('error', '!موجودی حساب مشتری کافی نمی باشد')
+        }
       }
     })
   }
 
   return (
     <div className={classes.cartContainer}>
-      <span className={classes.title}>سبد خرید</span>
+      <span className={classes.title}>سبد فروش</span>
       <Grid container className={classes.headerContainer}>
         <Grid className={classes.gridHeader} item xs={3} sm={3} md={3} lg={3}>
           کالا
@@ -67,7 +76,7 @@ function Cart (props) {
         items.map((item) => (
           <Grid className={classes.cartItem} container key={item.id}>
             <Grid className={classes.gridItem} item xs={3} sm={3} md={3} lg={3}>
-              <img src={`./asset/images/${item.id}.png`} alt="" />
+              {item.name}
             </Grid>
             <Grid className={classes.gridItem} item xs={3} sm={3} md={3} lg={3}>
               {item.price}
@@ -82,9 +91,11 @@ function Cart (props) {
         ))
       }
       <span className={classes.totalPrice}>جمع کل: {totalPrice} تومان</span>
-      <Button className={classes.submitBtn} variant="contained" onClick={submitPurchase}>
-        ثبت خرید
-      </Button>
+      <div className={classes.submitBtn}>
+        <Button variant="contained" onClick={submitPurchase}>
+          {isBtnLoading ? 'در حال ثبت' : 'ثبت فروش'}
+        </Button>
+      </div>
       <ToastContainer />
     </div>
   )
