@@ -85,7 +85,10 @@ const CustomersList = () => {
 
   return (
     <div className={classes.customersListRoot}>
-      <h3 className={classes.pageTitle}>لیست مشتری ها</h3>
+      <div className={classes.pageHeader}>
+        <img src="./asset/images/back.png" alt="بازگشت" title='بازگشت' onClick={() => navigate(-1)} />
+        <h3 className={classes.pageTitle}>لیست مشتری‌ها</h3>
+      </div>
       <div className={classes.headerRow}>
         <div className={classes.indexHeader}><span>شماره</span></div>
         <div className={classes.imgHeader}><span>تصویر</span></div>
