@@ -13,15 +13,44 @@ const styles = createUseStyles({
     },
   },
 
+  pageHeader: {
+    position: 'relative',
+
+    '& img': {
+      position: 'absolute',
+      height: 20,
+      width: 20,
+      verticalAlign: 'middle',
+      cursor: 'pointer',
+    },
+
+    '@media (min-width: 768px)': {
+      '& img': {
+        height: 25,
+        width: 25,
+      },
+    },
+
+    '@media (min-width: 1360px)': {
+      '& img': {
+        height: 30,
+        width: 30,
+      },
+    },
+  },
+
   pageTitle: {
     textAlign: 'center',
     marginBottom: 30,
+    fontSize: 14,
 
     '@media (min-width: 768px)': {
       marginBottom: 40,
+      fontSize: 20,
     },
     '@media (min-width: 1360px)': {
       marginBottom: 50,
+      fontSize: 28,
     },
   },
 
@@ -47,23 +76,59 @@ const styles = createUseStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column',
     border: '1px solid black',
     borderRadius: 10,
-    cursor: 'pointer',
+
+    '& img': {
+      height: 60,
+      width: 60,
+      marginBottom: 15,
+    },
+
+    '& span': {
+      fontSize: 14,
+    },
 
     '@media (min-width: 768px)': {
       height: 250,
       width: 250,
+
+      '& img': {
+        height: 100,
+        width: 100,
+        marginBottom: 25,
+      },
+
+      '& span': {
+        fontSize: 18,
+      },
     },
 
     '@media (min-width: 1360px)': {
       height: 300,
       width: 300,
+
+      '& img': {
+        height: 150,
+        width: 150,
+        marginBottom: 35,
+      },
+
+      '& span': {
+        fontSize: 22,
+      },
     },
   },
 
   addProduct: {
     fontSize: 80,
+
+    '& a': {
+      cursor: 'pointer',
+      textDecoration: 'none',
+      color: '#000',
+    },
 
     '@media (min-width: 768px)': {
       fontSize: 100,
