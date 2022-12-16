@@ -5,7 +5,6 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
-
 from backend import Backend
 from database_handler import Seller
 
@@ -13,7 +12,6 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = 'your secret key'
 CORS(app)
-
 
 backend = Backend(app.config['SECRET_KEY'])
 
@@ -97,7 +95,6 @@ def place_order(current_user):
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-
 @app.route('/order', methods=['GET'])
 @normal_authorization
 def get_orders(current_user):
@@ -108,7 +105,6 @@ def get_orders(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting orders : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
-
 
 
 @app.route('/customer', methods=['GET'])
@@ -193,7 +189,6 @@ def edit_product(current_user, product_id):
         return jsonify({'message': f'An error occurred while editting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-
 @app.route('/product', methods=['GET'])
 @normal_authorization
 def get_products(current_user):
@@ -203,7 +198,6 @@ def get_products(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
-
 
 
 @app.route('/seller', methods=['GET'])
@@ -226,6 +220,7 @@ def login():
     except BadRequest as e:
         return make_response(
             jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
+
 
 @app.route('/user', methods=['GET'])
 @normal_authorization
@@ -291,6 +286,7 @@ def edit_seller(current_user, seller_id):
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting customers : {e}'}), \
                HTTPStatus.INTERNAL_SERVER_ERROR
+
 
 if __name__ == "__main__":
     # setting debug to True enables hot reload
