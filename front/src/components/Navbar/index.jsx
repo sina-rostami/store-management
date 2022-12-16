@@ -1,13 +1,14 @@
 import React from 'react';
 
 import styled from "styled-components";
+import { Logo } from '../Logo/index.jsx';
 
-const navBarContainer = styled.div`
+const NavBarContainer = styled.div`
   width: 100%;
-  height: 60;
-  boxShadow: 0 1px 3px rgba(15,15,0.13); 
+  height: 60px;
+  box-shadow: 0 1px 3px rgba(15,15,0.13); 
   display: flex;
-  alignItems: center;
+  align-items: center;
   padding: 0 1.5em;
 `;
 
@@ -19,7 +20,7 @@ const MiddleSection = styled.div`
   display: flex;
   flex: 2;
   height: 100%;
-  justifyContent: center;
+  justify-content: center;
 `;
 
 const RightSection = styled.div`
@@ -27,9 +28,14 @@ const RightSection = styled.div`
 `;
 
 export function Navbar(props){
-  return <navBarContainer>
-    <LeftSection></LeftSection>
+  return <NavBarContainer>
+    <LeftSection>
+      <Logo />
+    </LeftSection>
     <MiddleSection></MiddleSection>
-    <RightSection></RightSection>
-  </navBarContainer>
+    <RightSection>
+    </RightSection>
+  </NavBarContainer>
 }
+
+export default Navbar
