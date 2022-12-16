@@ -1,20 +1,37 @@
 import React from 'react'
-import LogoImg from '../../../public/asset/images/logo.png'
-
-
 import styles from './styles'
+import styled from 'styled-components'
+import HouseLogo from '../../../public/asset/images/logo.png'
 
-const Logo = () => {
-  const classes = styles()
-  
-  return (
-    <>
-    <img className={classes.logoImg} src={LogoImg} />
-    <div className={classes.logoText}/>
-    <div className={classes.logoWrapper}>
-    </div>
-    </>
-  )
+
+const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const LogoImg = styled.div`
+  width: 29px;
+  height: 29px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const LogoText = styled.h2`
+  font-size: 16px;
+  margin: 0;
+  margin-left: 4px;
+  color: #222;
+  font-weight: 500;
+`;
+
+export function Logo(props){
+  return <LogoWrapper>
+    <LogoImg><img src={HouseLogo} alt="مدیریت فروشگاه"/></LogoImg>
+    <LogoText>مدیریت فروشگاه</LogoText>
+  </LogoWrapper>
 }
 
-export default Logo
+export default Logo;
