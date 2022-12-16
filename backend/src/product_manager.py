@@ -7,7 +7,7 @@ class ProductManager:
 
     def add_product(self, data):
         old_product = self.database_session.query(Product).filter_by(
-            name=data['name'], price=data['price'], category_id=data['category_id']).first()
+            name=data['name'], price=data['price'], stock_number=data['stock_number'], category_id=data['category_id']).first()
 
         if old_product:
             return False, 'ALREADY_EXISTS'
@@ -16,7 +16,7 @@ class ProductManager:
         if data['price'] < 0:
             return False, 'PRICE_NEGATIVE'
 
-        self.database_session.add(Product(name=data['name'], price=data['price'], category_id=data['category_id']))
+        self.database_session.add(Product(name=data['name'], price=data['price'], stock_number=data['stock_number'], category_id=data['category_id']))
         self.database_session.commit()
 
         return True, 'SUCCESS'
@@ -34,6 +34,7 @@ class ProductManager:
         old_product.name = data['name']
         old_product.price = data['price']
         old_product.category_id = data['category_id']
+        old_product.stock_number = data['stock_number']
 
         self.database_session.commit()
 
@@ -42,6 +43,7 @@ class ProductManager:
     def get_product_as_json(self, product):
         return {'id': product.id,
                 'name': product.name,
+                'stock_number': product.stock_number,
                 'category_id': product.category_id,
                 'price': product.price}
 
