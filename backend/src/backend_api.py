@@ -285,6 +285,84 @@ def edit_profile(f):
     return backend.seller_manager.edit_account(data)
 
 
+@app.route('/user', methods=['GET'])
+@normal_authorization
+def get_user(current_user):
+    try:
+        if isinstance(current_user, Seller):
+            role = 'SELLER'
+        else:
+            role = 'ADMIN'
+
+        return make_response(
+            jsonify(
+                {
+                    'message': 'USER_RETURNED',
+                    'code': 200,
+                    'status': 'success',
+                    'data': {
+                        'username': current_user.username,
+                        'role': role
+                    }
+                }
+            )
+            , 200)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
+
+
+if __name__ == "__main__":
+    # setting debug to True enables hot reload
+    # and also provides a debugger shell
+    # if you hit an error while running the server
+    app.run(debug=True)
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    auth = request.form
+    try:
+        check_fields(auth, {'username', 'password'})
+        return backend.security.authorize(auth)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
+
+
+@app.route('/seller', methods=['POST'])
+@admin_authorization
+def add_seller(current_user):
+    data = request.json
+    try:
+        check_fields(data, {'username', 'name', 'password'})
+        return backend.seller_manager.create_seller(data)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
+
+
+@app.route('/seller', methods=['PUT'])
+@normal_authorization
+def edit_profile(current_user):
+    data = request.json
+
+    if isinstance(current_user, Seller) and current_user.username != data.get('old_username'):
+        return make_response(jsonify({'message': 'FORBIDDEN', 'code': HTTPStatus.FORBIDDEN, 'status': 'failed'}),
+                             HTTPStatus.FORBIDDEN)
+
+    try:
+        check_fields(data, {'username', 'name', 'password'})
+        return backend.seller_manager.edit_account(data, current_user)
+    except BadRequest as e:
+        return make_response(
+            jsonify({'message': e.description, 'code': HTTPStatus.BAD_REQUEST, 'status': 'failed'}),
+            HTTPStatus.BAD_REQUEST)
+
+
 if __name__ == "__main__":
     # setting debug to True enables hot reload
     # and also provides a debugger shell
