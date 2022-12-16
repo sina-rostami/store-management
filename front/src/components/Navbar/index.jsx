@@ -7,12 +7,12 @@ import { Accessibility } from './accessibility.jsx';
 import { NavLinks } from './navLinks.jsx';
 import { DeviceSize } from '../Responsive/index.jsx';
 import MobileNavLinks from './mobileNavLinks.jsx';
-
+import { useAuthState } from '../../context/index.js'
 
 const NavBarContainer = styled.div`
   width: 100%;
   height: 60px;
-  box-shadow: 0 1px 3px rgba(15,15,0.13); 
+  box-shadow: 0 1px 3px rgba(15,15,0.13);
   display: flex;
   align-items: center;
   padding: 0 1.5em;
@@ -36,6 +36,12 @@ const RightSection = styled.div`
 `;
 
 export function Navbar(props){
+  const { authStatus } = useAuthState()
+
+  if (authStatus === 'loggedOut') {
+    return null
+  }
+
   const isMobile = useMediaQuery({ maxWidth: DeviceSize.mobile });
   return <NavBarContainer>
     <LeftSection>
