@@ -7,6 +7,8 @@ import AuthGuard from './components/AuthGuard/index.jsx'
 import Navbar from './components/Navbar/index.jsx'
 import { AuthProvider } from './context/index.js'
 import AddProduct from './pages/AddProduct/index.jsx'
+import AddCustomer from './pages/AddCustomer/index.jsx'
+import AddSeller from './pages/AddSeller/index.jsx'
 import AdminPanel from './pages/AdminPanel/index.jsx'
 import BillsList from './pages/BillsList/index.jsx'
 import CustomersList from './pages/CustomersList/index.jsx'
@@ -20,13 +22,11 @@ import SellersMng from './pages/SellersMng/index.jsx'
 import SignIn from './pages/SignIn/index.jsx'
 
 const App = () => {
-  const [color, setColor] = useState("#dfe6e9")
   return (
     <AuthProvider>
       <Navbar />
       <Routes>
-        <Route index path='/' element={<AuthGuard component={<Ordering />} />} />
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/" element={<SignIn />} />
         <Route path='/customers-mng' element={<AuthGuard component={<CustomersMng />} />} />
         <Route path='/customers' element={<AuthGuard component={<CustomersList />} />} />
         <Route path='/sellers-mng' element={<AuthGuard adminGuard component={<SellersMng />} />} />
@@ -34,6 +34,8 @@ const App = () => {
         <Route path='/bills' element={<AuthGuard component={<BillsList />} />} />
         <Route path='/products' element={<AuthGuard component={<Products />} />} />
         <Route path='/add-product' element={<AuthGuard component={<AddProduct />} />} />
+        <Route path='/add-customer' element={<AuthGuard component={<AddCustomer />} />} />
+        <Route path='/add-seller' element={<AuthGuard component={<AddSeller />} />} />
         <Route path='/admin-panel' element={<AuthGuard adminGuard component={<AdminPanel />} />} />
         <Route path='/seller-panel' element={<AuthGuard sellerGuard component={<SellerPanel />} />} />
         <Route path='/ordering' element={<AuthGuard component={<Ordering />} />} />

@@ -1,86 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import getCustomers from '../../services/getCustomers'
 
 import styles from './styles'
 
 const CustomersList = () => {
   const [customers, setCustomers] = useState([])
+  const navigate = useNavigate()
   const classes = styles()
 
   useEffect(() => {
-    setCustomers([
-      {
-        id: 1,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 2,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 3,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 4,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 5,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 6,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 7,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 8,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 9,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 10,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 11,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-      {
-        id: 12,
-        name: 'کیوان رضایی',
-        imageUri: '',
-        entryDate: '1400/03/10',
-      },
-    ])
+    getCustomers().then(res => setCustomers(res))
   }, [])
 
   return (
