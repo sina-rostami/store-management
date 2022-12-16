@@ -12,6 +12,7 @@ const LogoWrapper = styled.div`
 const LogoImg = styled.div`
   width: 29px;
   height: 29px;
+  margin-left: 10px;
 
   img {
     width: 100%;
@@ -20,11 +21,11 @@ const LogoImg = styled.div`
 `;
 
 const LogoText = styled.h2`
-  font-size: 16px;
+  font-size: 22px;
   margin: 0;
   margin-left: 4px;
   color: #222;
-  font-weight: 500;
+  font-weight: 800;
 `;
 
 export function Logo(props){
