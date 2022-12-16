@@ -37,7 +37,7 @@ class SellerManager:
 
         self.database_session.commit()
 
-        return True, self.get_order_as_json(order)
+        return True, 'SUCCESS'
 
     def get_order_as_json(self, order):
         order_products = self.database_session.query(OrderProduct).filter_by(order_id=order.id).all()
