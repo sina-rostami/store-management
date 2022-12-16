@@ -7,17 +7,34 @@ class ProductManager:
 
     def add_product(self, data):
         old_product = self.database_session.query(Product).filter_by(
-            name=data['name'], price=data['price'], category_id=data['category-id']).first()
+            name=data['name'], price=data['price'], category_id=data['category_id']).first()
 
         if old_product:
             return False, 'ALREADY_EXISTS'
-        if not self.database_session.query(Category).filter_by(id=data['category-id']).first():
-            print(self.database_session.query(Category).filter_by(id=data['category-id']).first())
+        if not self.database_session.query(Category).filter_by(id=data['category_id']).first():
             return False, 'CATEGORY_NOT_EXIST'
         if data['price'] < 0:
             return False, 'PRICE_NEGATIVE'
 
-        self.database_session.add(Product(name=data['name'], price=data['price'], category_id=data['category-id']))
+        self.database_session.add(Product(name=data['name'], price=data['price'], category_id=data['category_id']))
+        self.database_session.commit()
+
+        return True, 'SUCCESS'
+
+    def edit_product(self, data):
+        old_product = self.database_session.query(Product).filter_by(id=data['id']).first()
+
+        if not old_product:
+            return False, 'NOT_EXIST'
+        if not self.database_session.query(Category).filter_by(id=data['category_id']).first():
+            return False, 'CATEGORY_NOT_EXIST'
+        if data['price'] < 0:
+            return False, 'PRICE_NEGATIVE'
+
+        old_product.name = data['name']
+        old_product.price = data['price']
+        old_product.category_id = data['category_id']
+
         self.database_session.commit()
 
         return True, 'SUCCESS'
