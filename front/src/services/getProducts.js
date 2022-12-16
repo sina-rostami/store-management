@@ -3,7 +3,7 @@ import apiService from './apiService'
 const getProducts = async () => {
   try {
     const response = await apiService(
-      { url: 'http://65.21.114.82:5000/product' },
+      { endpoint: '/product', authTokenNeeded: true },
     )
     const result = response?.data || []
 
