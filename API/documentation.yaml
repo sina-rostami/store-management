@@ -216,8 +216,8 @@ paths:
     post:
       tags:
         - seller
-      summary: add sellers
-      description: add sellers
+      summary: new seller
+      description: Create new seller in the store
       operationId: addSeller
       parameters:
         - in: header
@@ -225,48 +225,19 @@ paths:
           schema:
             type: string
           required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addSeller'
+        required: true
       responses:
-        '200':
+        '201':
           description: Successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Seller'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
                 $ref: '#/components/schemas/ApiResponse'
-        '500':
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-    put:
-      tags:
-        - seller
-      summary: edit sellers
-      description: edit sellers
-      operationId: editSeller
-      parameters:
-        - in: header
-          name: x-access-token
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Seller'
         '400':
           description: Bad request
           content:
@@ -302,6 +273,57 @@ paths:
                   $ref: '#/components/schemas/Seller'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /seller/{id}:
+    put:
+      tags:
+        - seller
+      summary: update seller
+      description: Update seller in the store
+      operationId: updateSeller
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The seller ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addSeller'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Product not found
           content:
             application/json:
               schema:
@@ -548,6 +570,18 @@ components:
         phone_number:
           type: string
           example: "01232312342"
+    addSeller:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Ali"
+        username:
+          type: string
+          example: "ali_ahmadi"
+        password:
+          type: string
+          example: "12345"
     Seller:
       type: object
       properties:
