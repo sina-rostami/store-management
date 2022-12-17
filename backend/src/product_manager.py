@@ -57,5 +57,12 @@ class ProductManager:
                 'category_id': product.category_id,
                 'price': product.price}
 
+    def get_product_as_json_by_id(self, id):
+        product = self.database_session.query(Product).filter_by(id=id).first()
+        if not product:
+            return False, 'NOT_EXIST'
+
+        return True, self.get_product_as_json(product)
+
     def get_all_products_as_json(self):
         return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
