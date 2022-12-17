@@ -96,6 +96,23 @@ def place_order(current_user):
         return jsonify({'message': f'An error occurred while placing order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+@app.route('/order/<int:order_id>', methods=['GET'])
+@normal_authorization
+def get_order(current_user, order_id):
+    try:
+        did_success, message = backend.seller_manager.get_order_as_json_by_id(order_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify(message), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting order : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 @app.route('/order', methods=['GET'])
 @normal_authorization
 def get_orders(current_user):
@@ -117,6 +134,23 @@ def get_customers(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/customer/<int:customer_id>', methods=['GET'])
+@normal_authorization
+def get_customer(current_user, customer_id):
+    try:
+        did_success, message = backend.customer_manager.get_customer_as_json_by_id(customer_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify(message), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting customer : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/customer', methods=['POST'])
@@ -198,6 +232,23 @@ def get_products(current_user):
         return jsonify({'message': f'An error occurred while getting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+@app.route('/product/<int:product_id>', methods=['GET'])
+@normal_authorization
+def get_product(current_user, product_id):
+    try:
+        did_success, message = backend.product_manager.get_product_as_json_by_id(product_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify(message), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 @app.route('/seller', methods=['GET'])
 @admin_authorization
 def get_sellers(current_user):
@@ -207,6 +258,23 @@ def get_sellers(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting sellers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/seller/<int:seller_id>', methods=['GET'])
+@normal_authorization
+def get_seller(current_user, seller_id):
+    try:
+        did_success, message = backend.seller_manager.get_seller_as_json_by_id(seller_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify(message), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting seller : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/seller', methods=['POST'])
