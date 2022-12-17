@@ -31,6 +31,11 @@ class CustomerManager:
         elif data['credit'] < 0:
             return False, 'NEGATIVE_CREDIT'
 
+        same_customer = self.database_session.query(Customer).filter_by(
+            name=data['name'], phone_number=data['phone_number']).first()
+        if same_customer and same_customer.id != id:
+            return False, 'AREADY_EXISTS'
+
         old_customer.name = data['name']
         old_customer.credit = data['credit']
         old_customer.phone_number = data['phone_number']
