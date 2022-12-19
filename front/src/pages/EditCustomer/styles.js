@@ -50,7 +50,7 @@ const styles = createUseStyles({
     padding: 10,
   },
 
-  usernameInput: {
+  creditInput: {
     width: 300,
     height: 50,
     borderRadius: 10,
@@ -58,7 +58,7 @@ const styles = createUseStyles({
     padding: 10,
   },
 
-  passwordInput: {
+  phoneNumberInput: {
     width: 300,
     height: 50,
     borderRadius: 10,

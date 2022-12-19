@@ -7,11 +7,15 @@ import styles from './styles'
 
 const SellersList = () => {
   const [sellers, setSellers] = useState([])
-  const classes = styles()
   const navigate = useNavigate()
+  const classes = styles()
 
   useEffect(() => {
-    getSellers().then(res => setSellers(res))
+    getSellers().then(res =>{
+      if (Array.isArray(res)) {
+        setSellers(res.reverse())
+      }
+    })
   }, [])
 
   return (
@@ -24,10 +28,10 @@ const SellersList = () => {
         <div className={classes.indexHeader}><span>شماره</span></div>
         <div className={classes.imgHeader}><span>عکس</span></div>
         <div className={classes.nameHeader}><span>نام و نام خانوادگی</span></div>
-        <div className={classes.entryDateHeader}><span>تاریخ ورود</span></div>
+        <div className={classes.usernameHeader}><span>نام کاربری</span></div>
       </div>
       {sellers.length === 0
-        ? <span>Loading ...</span>
+        ? <span className={classes.noItem}>در حال دریافت اطلاعات ...</span>
         : sellers.map((seller, index) => (
           <div className={classes.sellersRow} key={seller.id}>
             <div className={classes.indexContainer}><span>{index + 1}</span></div>
@@ -40,10 +44,10 @@ const SellersList = () => {
             <div className={classes.nameContainer}>
               <span>{seller.name}</span>
             </div>
-            <div className={classes.entryDateContainer}>
-              <span>{seller.entryDate}</span>
+            <div className={classes.usernameContainer}>
+              <span>{seller.username}</span>
             </div>
-            <div className={classes.seeMoreContainer}>
+            <div className={classes.seeMoreContainer} onClick={() => navigate('/edit-seller', { state: { id: seller.id } })}>
               <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />
             </div>
           </div>

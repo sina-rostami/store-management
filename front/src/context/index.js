@@ -23,9 +23,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const authToken = localStorage.getItem('auth_token')
     const role = localStorage.getItem('role')
+    const userId = localStorage.getItem('user_id')
+    
     if (authToken && role) {
       dispatch({ type: 'login' })
       dispatch({ type: 'setRole', payload: role })
+      dispatch({ type: 'setUserId', payload: userId })
     } else {
       dispatch({ type: 'logout' })
     }

@@ -1,4 +1,4 @@
-export const initialAuthState = { authStatus: 'loading', role: '' }
+export const initialAuthState = { authStatus: 'loading', role: '', userId: null }
 
 export function AuthReducer (state, action) {
   switch (action.type) {
@@ -10,6 +10,8 @@ export function AuthReducer (state, action) {
     return { ...state, authStatus: 'loading' }
   case 'setRole':
     return { ...state, role: action.payload }
+  case 'setUserId':
+    return { ...state, userId: action.payload }
   default:
     throw new Error()
   }

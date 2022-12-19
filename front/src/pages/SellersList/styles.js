@@ -40,6 +40,23 @@ const styles = createUseStyles({
     },
   },
 
+  noItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: 16,
+    marginTop: 200,
+
+    '@media (min-width: 768px)': {
+      fontSize: 22,
+      marginTop: 215,
+    },
+
+    '@media (min-width: 1360px)': {
+      fontSize: 30,
+      marginTop: 230,
+    },
+  },
+
   pageTitle: {
     textAlign: 'center',
     marginBottom: 30,
@@ -65,16 +82,29 @@ const styles = createUseStyles({
     marginBottom: 15,
     padding: [0, 10],
 
+    '& span': {
+      fontSize: 14,
+      fontWeight: 700,
+    },
+
     '@media (min-width: 768px)': {
       height: 50,
       marginBottom: 20,
       padding: [0, 15],
+
+      '& span': {
+        fontSize: 16,
+      },
     },
 
     '@media (min-width: 1360px)': {
       height: 60,
       marginBottom: 25,
       padding: [0, 20],
+
+      '& span': {
+        fontSize: 18,
+      },
     },
   },
 
@@ -120,7 +150,7 @@ const styles = createUseStyles({
     },
   },
 
-  entryDateHeader: {
+  usernameHeader: {
     display: 'none',
 
     '@media (min-width: 768px)': {
@@ -144,20 +174,34 @@ const styles = createUseStyles({
     marginBottom: 15,
     padding: [0, 10],
     backgroundColor: 'rgba(175,194,212,100)',
+
     '& hover': {
       backgroundColor: 'rgba(175,194,212,50)',
-
     },
+
+    '& span': {
+      fontSize: 14,
+      fontWeight: 700,
+    },
+
     '@media (min-width: 768px)': {
       height: 50,
       marginBottom: 20,
       padding: [0, 15],
+
+      '& span': {
+        fontSize: 16,
+      },
     },
 
     '@media (min-width: 1360px)': {
       height: 60,
       marginBottom: 25,
       padding: [0, 20],
+
+      '& span': {
+        fontSize: 18,
+      },
     },
   },
 
@@ -223,7 +267,7 @@ const styles = createUseStyles({
     },
   },
 
-  entryDateContainer: {
+  usernameContainer: {
     display: 'none',
 
     '@media (min-width: 768px)': {
