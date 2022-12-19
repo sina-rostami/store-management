@@ -8,7 +8,8 @@ class CustomerManager:
         self.database_session = database_session
 
     def add_customer(self, data):
-        old_customer = self.database_session.query(Customer).filter_by(name=data['name'], phone_number=data['phone_number']).first()
+        old_customer = self.database_session.query(Customer).filter_by(
+            name=data['name'], phone_number=data['phone_number']).first()
 
         if old_customer:
             return False, 'ALREADY_EXISTS'
@@ -16,8 +17,8 @@ class CustomerManager:
             return False, 'NEGATIVE_CREDIT'
 
         self.database_session.add(
-            Customer(name=data['name'], credit=data['credit'], phone_number=data['phone_number'], join_date=datetime.datetime.now(),
-                     is_active=True))
+            Customer(name=data['name'], credit=data['credit'], phone_number=data['phone_number'],
+                     join_date=datetime.datetime.now(), is_active=True))
         self.database_session.commit()
 
         return True, 'SUCCESS'
@@ -30,7 +31,8 @@ class CustomerManager:
         elif data['credit'] < 0:
             return False, 'NEGATIVE_CREDIT'
 
-        same_customer = self.database_session.query(Customer).filter_by(name=data['name'], phone_number=data['phone_number']).first()
+        same_customer = self.database_session.query(Customer).filter_by(
+            name=data['name'], phone_number=data['phone_number']).first()
         if same_customer and same_customer.id != id:
             return False, 'ALREADY_EXISTS'
 
@@ -44,6 +46,7 @@ class CustomerManager:
 
     def get_customer_as_json(self, customer):
         return {'id': customer.id, 'name': customer.name, 'credit': customer.credit, 'join_date': customer.join_date.timestamp(),
+                'leave_date': customer.leave_date.timestamp() if customer.leave_date else None,
                 'is_active': customer.is_active, 'phone_number': customer.phone_number}
 
     def get_customer_as_json_by_id(self, id):
