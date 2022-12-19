@@ -9,15 +9,27 @@ class SellerManager:
     def __init__(self, database_session) -> None:
         self.database_session = database_session
 
+    def are_enough_products_available_in_stock(self, products):
+        for product in products:
+            product_db_object = self.database_session.query(Product).filter_by(id=product['id']).first()
+            if product_db_object.stock_number < product['quantity']:
+                return False
+        return True
+
     def place_order(self, request_data):
         customer_id = request_data['customer_id']
         seller_id = request_data['seller_id']
-        products_ids = request_data['products_ids']
+        products = request_data['products']
 
         # check existance of customer & seller & products
 
-        total_price = sum(self.database_session.query(Product).filter_by(id=product_id).first().price
-                          for product_id in products_ids)
+        total_price = sum(
+            self.database_session.query(Product).filter_by(id=product['id']).first().price * product['quantity']
+            for product in products)
+
+        if not self.are_enough_products_available_in_stock(products):
+            return False, 'NOT_IN_STOCK'
+
         customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
         maximum_debt = float(self.database_session.query(Scratch).filter_by(key='maximum_debt').first().value)
 
@@ -30,8 +42,8 @@ class SellerManager:
         customer.credit -= total_price
         self.database_session.commit()
 
-        for product_id in products_ids:
-            self.database_session.add(OrderProduct(order_id=order.id, product_id=product_id))
+        for product in products:
+            self.database_session.add(OrderProduct(order_id=order.id, product_id=product['id']))
 
         self.database_session.commit()
 
