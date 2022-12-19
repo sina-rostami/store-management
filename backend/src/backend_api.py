@@ -32,13 +32,9 @@ def normal_authorization(f):
             if not current_user:
                 current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError as e:
-            return jsonify({
-                'message': 'Token is Expired !!'
-            }), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'Token is Expired !!'}), HTTPStatus.UNAUTHORIZED
         except Exception as e:
-            return jsonify({
-                'message': 'Token is invalid !!'
-            }), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'Token is invalid !!'}), HTTPStatus.UNAUTHORIZED
 
         return f(current_user, *args, **kwargs)
 
@@ -57,13 +53,9 @@ def admin_authorization(f):
             data = decode(token, app.config['SECRET_KEY'], "HS256")
             current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError as e:
-            return jsonify({
-                'message': 'Token is Expired !!'
-            }), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'Token is Expired !!'}), HTTPStatus.UNAUTHORIZED
         except Exception as e:
-            return jsonify({
-                'message': 'Token is invalid !!'
-            }), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'Token is invalid !!'}), HTTPStatus.UNAUTHORIZED
 
         return f(current_user, *args, **kwargs)
 
@@ -72,8 +64,7 @@ def admin_authorization(f):
 
 def check_fields(data, fields):
     if not data:
-        return make_response(
-            jsonify({'message': 'EXPECTED_DATA'}), HTTPStatus.BAD_REQUEST)
+        return make_response(jsonify({'message': 'EXPECTED_DATA'}), HTTPStatus.BAD_REQUEST)
     for x in fields:
         if data.get(x) == None:
             raise BadRequest("EXPECTED_" + x.upper())
@@ -154,7 +145,7 @@ def get_customer(current_user, customer_id):
 
 
 @app.route('/customer', methods=['POST'])
-@normal_authorization
+@admin_authorization
 def add_customer(current_user):
     try:
         check_fields(request.json, ['name', 'phone_number', 'credit'])
@@ -170,7 +161,7 @@ def add_customer(current_user):
 
 
 @app.route('/customer/<int:customer_id>', methods=['PUT'])
-@normal_authorization
+@admin_authorization
 def edit_customer(current_user, customer_id):
     try:
         check_fields(request.json, ['name', 'phone_number', 'credit', 'is_active'])
@@ -290,12 +281,11 @@ def add_seller(current_user):
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while creating seller : {e}'}), \
-            HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({'message': f'An error occurred while creating seller : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/seller/<int:seller_id>', methods=['PUT'])
-@normal_authorization
+@admin_authorization
 def edit_seller(current_user, seller_id):
     try:
         check_fields(request.json, {'username', 'name', 'password'})
@@ -309,8 +299,7 @@ def edit_seller(current_user, seller_id):
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while updating seller : {e}'}), \
-            HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({'message': f'An error occurred while updating seller : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/login', methods=['POST'])
@@ -320,8 +309,24 @@ def login():
         check_fields(auth, {'username', 'password'})
         return backend.security.authorize(auth)
     except BadRequest as e:
-        return make_response(
-            jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
+        return make_response(jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
+
+
+@app.route('/customer/<int:customer_id>', methods=['DELETE'])
+@admin_authorization
+def delete_customer(current_user, customer_id):
+    try:
+        did_success, message = backend.customer_manager.delete_customer(customer_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.CREATED
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 if __name__ == "__main__":
