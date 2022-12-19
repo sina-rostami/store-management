@@ -9,10 +9,9 @@ const SellerPanel = () => {
 
   return (
     <div className={classes.sellerPanelRoot}>
-      <div className={classes.sellerItem}><Link to='/customers-mng'>مدیریت مشتری‌ها</Link></div>
       <div className={classes.sellerItem}><Link to='/bills'>مشاهده فاکتور‌های ثبت‌شده</Link></div>
       <div className={classes.sellerItem}><Link to='/products'>مدیریت محصولات</Link></div>
-      <div className={classes.sellerItem}><Link to='/ordering'>ثبت فروش</Link></div>
+      <div className={classes.sellerItem}><Link to='/select-customer'>ثبت فروش</Link></div>
     </div>
   )
 }

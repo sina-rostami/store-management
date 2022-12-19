@@ -66,6 +66,14 @@ const styles = createUseStyles({
     padding: 10,
   },
 
+  checkboxLabel: {
+    marginBottom: 20,
+  },
+
+  checkboxInput: {
+    marginRight: 5,
+  },
+
   submitBtn: {
     width: 150,
     height: 30,

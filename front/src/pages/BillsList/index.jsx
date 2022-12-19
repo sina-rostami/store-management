@@ -12,7 +12,7 @@ const BillsList = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    getBills().then(res => setBills(res))
+    getBills().then(res => setBills(res.reverse()))
   }, [])
 
   return (
@@ -22,11 +22,12 @@ const BillsList = () => {
         <h3 className={classes.pageTitle}>لیست فاکتور‌ها</h3>
       </div>
       <div className={classes.headerRow}>
-        <div className={classes.indexHeader}><span>شماره</span></div>
+        <div className={classes.indexHeader}><span>ردیف</span></div>
         <div className={classes.sellerHeader}><span>فروشنده</span></div>
         <div className={classes.customerHeader}><span>خریدار</span></div>
         <div className={classes.idHeader}><span>شناسه</span></div>
         <div className={classes.submitDateHeader}><span>تاریخ ثبت</span></div>
+        <div className={classes.submitTimeHeader}><span>ساعت ثبت</span></div>
       </div>
       <div className={classes.billsContainer}>
         {bills=== null
@@ -38,10 +39,19 @@ const BillsList = () => {
                 bills.map((bill, index) => (
                   <div className={classes.billRow} key={bill.id}>
                     <div className={classes.indexContainer}><span>{index + 1}</span></div>
-                    <div className={classes.sellerContainer}><span>{bill.sellerName}</span></div>
-                    <div className={classes.customerContainer}><span>{bill.customerName}</span></div>
+                    <div className={classes.sellerContainer}><span>{bill.seller_name}</span></div>
+                    <div className={classes.customerContainer}><span>{bill.customer_name}</span></div>
                     <div className={classes.idContainer}><span>{bill.id}</span></div>
-                    <div className={classes.submitDateContainer}><span>{bill.submitDate}</span></div>
+                    <div className={classes.submitDateContainer}>
+                      <span>
+                        {Intl.DateTimeFormat('fa', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(bill.date * 1000)}
+                      </span>
+                    </div>
+                    <div className={classes.submitTimeContainer}>
+                      <span>
+                        {Intl.DateTimeFormat('fa', {hour: '2-digit', minute: '2-digit',second: '2-digit' }).format(bill.date * 1000)}
+                      </span>
+                    </div>
                     <div className={classes.seeMoreContainer}>
                       <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />
                     </div>

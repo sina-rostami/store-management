@@ -13,6 +13,23 @@ const styles = createUseStyles({
     },
   },
 
+  noItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: 16,
+    marginTop: 200,
+
+    '@media (min-width: 768px)': {
+      fontSize: 22,
+      marginTop: 215,
+    },
+
+    '@media (min-width: 1360px)': {
+      fontSize: 30,
+      marginTop: 230,
+    },
+  },
+
   pageHeader: {
     position: 'relative',
 
