@@ -16,14 +16,16 @@ class SellerManager:
 
         # check existance of customer & seller & products
 
-        total_price = sum(self.database_session.query(Product).filter_by(id=product_id).first().price for product_id in products_ids)
+        total_price = sum(self.database_session.query(Product).filter_by(id=product_id).first().price
+                          for product_id in products_ids)
         customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
         maximum_debt = float(self.database_session.query(Scratch).filter_by(key='maximum_debt').first().value)
 
         if total_price > customer.credit + maximum_debt:
             return False, 'CREDIT_NOT_ENOUGH'
 
-        order = Order(seller_id=seller_id, customer_id=customer_id, total_price=total_price, date=datetime.datetime.now())
+        order = Order(seller_id=seller_id, customer_id=customer_id,
+                      total_price=total_price, date=datetime.datetime.now())
         self.database_session.add(order)
         customer.credit -= total_price
         self.database_session.commit()
@@ -37,9 +39,13 @@ class SellerManager:
 
     def get_order_as_json(self, order):
         order_products = self.database_session.query(OrderProduct).filter_by(order_id=order.id).all()
-        return {'id': order.id, 'customer_id': order.customer_id, 'seller_id': order.seller_id,
-                'products_ids': [order_product.product_id for order_product in order_products], 'total_price': order.total_price,
-                'date': order.date.timestamp()}
+        seller = self.database_session.query(Seller).filter_by(id=order.seller_id).first()
+        customer = self.database_session.query(Customer).filter_by(id=order.customer_id).first()
+
+        return {'id': order.id, 'customer_id': order.customer_id, 'customer_name': customer.name,
+                'seller_id': order.seller_id, 'seller_name': seller.name,
+                'products_ids': [order_product.product_id for order_product in order_products],
+                'total_price': order.total_price, 'date': order.date.timestamp()}
 
     def get_order_as_json_by_id(self, id):
         order = self.database_session.query(Order).filter_by(id=id).first()
@@ -71,13 +77,17 @@ class SellerManager:
         if old_seller:
             return False, 'ALREADY_EXISTS'
 
-        self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password), is_active=True))
+        self.database_session.add(
+            Seller(
+                name=name, username=username, password=generate_password_hash(password),
+                is_active=True))
         self.database_session.commit()
 
         return True, 'SUCCESS'
 
     def edit_account(self, id, data):
-        name, password, username, is_active = data.get('name'), data.get('password'), data.get('username'), data.get('is_active')
+        name, password, username, is_active = data.get('name'), data.get(
+            'password'), data.get('username'), data.get('is_active')
 
         old_seller = self.database_session.query(Seller).filter_by(id=id).first()
         if not old_seller:
