@@ -22,11 +22,7 @@ class Backend:
         self.add_mock_values_to_db()
 
     def add_defaults_to_database(self):
-        default_rows = {
-            'admin_username': 'admin',
-            'admin_password': generate_password_hash('12345'),
-            'maximum_debt': '5000',
-        }
+        default_rows = {'admin_username': 'admin', 'admin_password': generate_password_hash('12345'), 'maximum_debt': '5000', }
 
         for key, value in default_rows.items():
             if not self.database_session.query(Scratch).filter_by(key=key).first():
@@ -37,10 +33,9 @@ class Backend:
         if self.database_session.query(Seller).filter_by(name='ali').first():
             return
 
-        self.database_session.add(Seller(name='ali', username='user0', password=generate_password_hash('password')))
-        self.database_session.add(Customer(
-            name='asghar', credit=100000000.0, join_date=datetime.datetime.now(),
-            is_active=True, phone_number='09101010203'))
+        self.database_session.add(Seller(name='ali', username='user0', password=generate_password_hash('password'), is_active=True))
+        self.database_session.add(
+            Customer(name='asghar', credit=100000000.0, join_date=datetime.datetime.now(), is_active=True, phone_number='09101010203'))
         self.database_session.add(Payer(name='asghar-payer', phone_number='09111010203'))
         self.database_session.add(Category(name='خوراکی'))
         self.database_session.add(Product(name='چای', price=1000, stock_number=5, category_id=1))
@@ -57,9 +52,6 @@ class Backend:
         admin_name = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
         if admin_name == username:
             password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
-            return {
-                'username': admin_name,
-                'password': password
-            }
+            return {'username': admin_name, 'password': password}
         else:
             raise HTTPError()
