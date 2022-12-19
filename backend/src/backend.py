@@ -30,9 +30,10 @@ class Backend:
                 self.database_session.commit()
 
     def add_mock_values_to_db(self):
-        if self.database_session.query(Seller).filter_by(name='ali').first():
+        if self.database_session.query(Seller).filter_by(username='admin').first():
             return
 
+        self.database_session.add(Seller(id=0, name='Admin', username='admin', password=generate_password_hash('12345'), is_active=True))
         self.database_session.add(Seller(name='ali', username='user0', password=generate_password_hash('password'), is_active=True))
         self.database_session.add(
             Customer(name='asghar', credit=100000000.0, join_date=datetime.datetime.now(), is_active=True, phone_number='09101010203'))
