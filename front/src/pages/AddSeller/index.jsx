@@ -98,7 +98,7 @@ const AddSeller = () => {
           type='password'
           onChange={e => changeHandler(e, 'password')}
         />
-        <ImageUpload /> 
+        <ImageUpload />
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت فروشنده'}</button>
       </form>
