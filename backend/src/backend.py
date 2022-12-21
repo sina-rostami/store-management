@@ -45,8 +45,8 @@ class Backend:
         self.database_session.add(Product(name='نان', price=9000, stock_number=10, category_id=1))
         self.database_session.add(Product(name='املت', price=2000, stock_number=1, category_id=1))
         self.database_session.add(Product(name='سیب', price=3000, stock_number=10, category_id=1))
-        self.database_session.add(Product(name='گوجه', price=5000, stock_number=3, category_id=1))
-        self.database_session.add(Product(name='دوغ', price=6000, stock_number=2, category_id=1))
+        self.database_session.add(Product(name='سیگار', price=5000, stock_number=3, category_id=1))
+        self.database_session.add(Product(name='گوجه', price=6000, stock_number=2, category_id=1))
         self.database_session.commit()
 
     def find_admin(self, username):
