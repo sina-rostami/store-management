@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import addSeller from '../../services/addSeller.js'
 import { useNavigate } from 'react-router-dom'
+import ImageUpload from '../../components/ImageUpload/ImageUpload'
 
 const AddSeller = () => {
   const classes = styles()
@@ -97,6 +98,7 @@ const AddSeller = () => {
           type='password'
           onChange={e => changeHandler(e, 'password')}
         />
+        <ImageUpload /> 
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت فروشنده'}</button>
       </form>

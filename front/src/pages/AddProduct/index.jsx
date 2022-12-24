@@ -6,6 +6,7 @@ import addProduct from '../../services/addProduct.js'
 import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
+import ImageUpload from '../../components/ImageUpload/ImageUpload'
 
 const AddProduct = () => {
   const classes = styles()
@@ -89,6 +90,7 @@ const AddProduct = () => {
           <div className={classes.qtyInput}>{counter}</div>
           <div className={classes.qtyBtn} onClick={() => handleCounter('sub')}>-</div>
         </div>
+        <ImageUpload /> 
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت محصول'}</button>
       </form>
