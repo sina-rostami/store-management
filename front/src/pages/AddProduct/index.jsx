@@ -6,7 +6,7 @@ import addProduct from '../../services/addProduct.js'
 import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
-import ImageUpload from '../../components/ImageUpload/ImageUpload'
+import ImageUpload from '../../components/ImageUpload/index.jsx'
 
 const AddProduct = () => {
   const classes = styles()

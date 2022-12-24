@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
-import ImageUpload from '../../components/ImageUpload/ImageUpload'
+import ImageUpload from '../../components/ImageUpload/index.jsx'
 
 const AddCustomer = () => {
   const classes = styles()
