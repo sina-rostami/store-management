@@ -23,7 +23,7 @@ import EditCustomer from './pages/EditCustomer/index.jsx'
 import EditSeller from './pages/EditSeller/index.jsx'
 import SelectCustomer from './pages/SelectCustomer/index.jsx'
 import SignIn from './pages/SignIn/index.jsx'
-import ImageUpload from './components/ImageUpload/ImageUpload.js'
+import ImageUpload from './components/ImageUpload/index.jsx'
 
 const App = () => {
   return (
