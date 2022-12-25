@@ -9,6 +9,8 @@ import addSeller from '../../services/addSeller.js'
 import { useNavigate } from 'react-router-dom'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
 
+import { passwordPattern } from '../../constants/regex.js'
+
 const AddSeller = () => {
   const classes = styles()
   const [firstName, setFirstName] = useState('')
@@ -17,6 +19,18 @@ const AddSeller = () => {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+
+  const showToastMessage = (type, message) => {
+    if (type === 'success') {
+      toast.success('!افزودن فروشنده با موفقیت انجام شد', {
+        position: toast.POSITION.TOP_CENTER,
+      })
+    } else if (type === 'error') {
+      toast.error(message, {
+        position: toast.POSITION.TOP_CENTER,
+      })
+    }
+  }
 
   const changeHandler = (e, type) => {
     if (type === 'firstName') {
@@ -30,43 +44,73 @@ const AddSeller = () => {
     }
   }
 
-  const showToastMessage = (type, message) => {
-    if (type === 'success') {
-      toast.success('!ثبت سفارش با موفقیت انجام شد', {
-        position: toast.POSITION.TOP_CENTER,
-      })
-    } else if (type === 'error') {
-      console.log(type, message)
-      toast.error(message, {
-        position: toast.POSITION.TOP_CENTER,
-      })
+  const checkIsFormValid = () => {
+    if (username.length < 4) {
+      showToastMessage('error', 'نام کاربری باید حداقل شامل چهار کاراکتر باشد!')
+
+      return false
     }
+
+    if (!passwordPattern.test(password)) {
+      showToastMessage('error', 'رمز عبور باید شامل حروف انگلیسی بزرگ و کوچک، عدد و کاراکتر خاص باشد!')
+
+      return false
+    }
+
+    return true
+  }
+
+  const checkIsFormFilled = () => {
+    const emptyInputs = []
+
+    if (!firstName) {
+      emptyInputs.push('نام')
+    }
+    if (!lastName) {
+      emptyInputs.push('نام خانوادگی')
+    }
+    if (!username) {
+      emptyInputs.push('نام کاربری')
+    }
+    if (!password) {
+      emptyInputs.push('رمز عبور')
+    }
+
+    if (emptyInputs.length !== 0) {
+      showToastMessage('error', `${emptyInputs.join(' و ')} را وارد کنید!`)
+
+      return false
+    }
+
+    return true
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setIsLoading(true)
-    addSeller({
-      name: firstName + ' ' + lastName,
-      username,
-      password,
-    }).then(res =>{
-      setIsLoading(false)
-      if (res.succeeded) {
-        navigate('/sellers')
-        showToastMessage('success')
-        setFirstName('')
-        setLastName('')
-        setUsername('')
-        setPassword('')
-      } else {
-        const { message } = res.response.data
+    if(checkIsFormFilled() && checkIsFormValid()) {
+      setIsLoading(true)
+      addSeller({
+        name: firstName + ' ' + lastName,
+        username,
+        password,
+      }).then(res => {
+        setIsLoading(false)
+        if (res.succeeded) {
+          navigate('/sellers')
+          showToastMessage('success')
+          setFirstName('')
+          setLastName('')
+          setUsername('')
+          setPassword('')
+        } else {
+          const { message } = res.response.data
 
-        if (message === 'ALREADY_EXISTS') {
-          showToastMessage('error', '!این کاربر قبلا ثبت شده است')
+          if (message === 'ALREADY_EXISTS') {
+            showToastMessage('error', '!این کاربر قبلا ثبت شده است')
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   return (

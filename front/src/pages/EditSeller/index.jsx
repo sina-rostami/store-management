@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import getSellerById from '../../services/getSellerById'
+import { passwordPattern } from '../../constants/regex.js'
 
 
 const EditSeller = () => {
@@ -48,46 +49,89 @@ const EditSeller = () => {
 
   const showToastMessage = (type, message) => {
     if (type === 'success') {
-      toast.success('!ثبت سفارش با موفقیت انجام شد', {
+      toast.success('!ویرایش فروشنده با موفقیت انجام شد', {
         position: toast.POSITION.TOP_CENTER,
       })
     } else if (type === 'error') {
-      console.log(type, message)
       toast.error(message, {
         position: toast.POSITION.TOP_CENTER,
       })
     }
   }
 
+  const checkIsFormValid = () => {
+    if (username.length < 4) {
+      showToastMessage('error', 'نام کاربری باید حداقل شامل چهار کاراکتر باشد!')
+
+      return false
+    }
+
+    if (!passwordPattern.test(password)) {
+      showToastMessage('error', 'رمز عبور باید شامل حروف انگلیسی بزرگ و کوچک، عدد و کاراکتر خاص باشد!')
+
+      return false
+    }
+
+    return true
+  }
+
+  const checkIsFormFilled = () => {
+    const emptyInputs = []
+
+    if (!firstName) {
+      emptyInputs.push('نام')
+    }
+    if (!lastName) {
+      emptyInputs.push('نام خانوادگی')
+    }
+    if (!username) {
+      emptyInputs.push('نام کاربری')
+    }
+    if (!password) {
+      emptyInputs.push('رمز عبور')
+    }
+
+    if (emptyInputs.length !== 0) {
+      showToastMessage('error', `${emptyInputs.join(' و ')} را وارد کنید!`)
+
+      return false
+    }
+
+    return true
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    setIsLoading(true)
-    editSeller({
-      id: location.state.id,
-      data: {
-        name: firstName + ' ' + lastName,
-        password,
-        username,
-        is_active: isActive,
-      }
-    }).then(res =>{
-      setIsLoading(false)
-      if (res.succeeded) {
-        navigate('/sellers')
-        showToastMessage('success')
-        setFirstName('')
-        setLastName('')
-        setUsername('')
-        setPassword('')
-        setIsActive(false)
-      } else {
-        const { message } = res.response.data
 
-        if (message === 'ALREADY_EXISTS') {
-          showToastMessage('error', '!این کاربر قبلا ثبت شده است')
+    if(checkIsFormFilled() && checkIsFormValid()) {
+      setIsLoading(true)
+      editSeller({
+        id: location.state.id,
+        data: {
+          name: firstName + ' ' + lastName,
+          password,
+          username,
+          is_active: isActive,
         }
-      }
-    })
+      }).then(res =>{
+        setIsLoading(false)
+        if (res.succeeded) {
+          navigate('/sellers')
+          showToastMessage('success')
+          setFirstName('')
+          setLastName('')
+          setUsername('')
+          setPassword('')
+          setIsActive(false)
+        } else {
+          const { message } = res.response.data
+
+          if (message === 'ALREADY_EXISTS') {
+            showToastMessage('error', '!این کاربر قبلا ثبت شده است')
+          }
+        }
+      })
+    }
   }
 
   return (
