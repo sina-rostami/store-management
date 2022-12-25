@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import getSellers from '../../services/getSellers.js'
 
 import styles from './styles'
+import dltf from '../../utilities/dltf.js'
 
 const SellersList = () => {
   const [sellers, setSellers] = useState([])
@@ -34,7 +35,7 @@ const SellersList = () => {
         ? <span className={classes.noItem}>در حال دریافت اطلاعات ...</span>
         : sellers.map((seller, index) => (
           <div className={classes.sellersRow} key={seller.id}>
-            <div className={classes.indexContainer}><span>{index + 1}</span></div>
+            <div className={classes.indexContainer}><span>{dltf(index + 1)}</span></div>
             <div className={classes.imgContainer}>
               {seller.imageUri
                 ? <img src="" alt="" />

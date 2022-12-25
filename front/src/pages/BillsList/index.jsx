@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import styles from './styles'
 
 import getBills from '../../services/getBills.js'
+import dltf from '../../utilities/dltf.js'
 
 const BillsList = () => {
   const [bills, setBills] = useState(null)
@@ -38,10 +39,10 @@ const BillsList = () => {
               : (
                 bills.map((bill, index) => (
                   <div className={classes.billRow} key={bill.id}>
-                    <div className={classes.indexContainer}><span>{index + 1}</span></div>
+                    <div className={classes.indexContainer}><span>{dltf(index + 1)}</span></div>
                     <div className={classes.sellerContainer}><span>{bill.seller_name}</span></div>
                     <div className={classes.customerContainer}><span>{bill.customer_name}</span></div>
-                    <div className={classes.idContainer}><span>{bill.id}</span></div>
+                    <div className={classes.idContainer}><span>{dltf(bill.id)}</span></div>
                     <div className={classes.submitDateContainer}>
                       <span>
                         {Intl.DateTimeFormat('fa', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(bill.date * 1000)}

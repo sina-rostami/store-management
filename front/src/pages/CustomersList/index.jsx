@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import getCustomers from '../../services/getCustomers'
+import dltf from '../../utilities/dltf'
 
 import styles from './styles'
 
@@ -35,7 +36,7 @@ const CustomersList = () => {
         ? <span className={classes.noItem}>در حال دریافت اطلاعات ...</span>
         : customers.map((customer, index) => (
           <div className={classes.customerRow} key={customer.id}>
-            <div className={classes.indexContainer}><span>{index + 1}</span></div>
+            <div className={classes.indexContainer}><span>{dltf(index + 1)}</span></div>
             <div className={classes.imgContainer}>
               {customer.imageUri
                 ? <img src="" alt="" />
