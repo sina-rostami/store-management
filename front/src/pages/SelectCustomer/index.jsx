@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import getCustomers from '../../services/getCustomers'
 
 import styles from './styles'
+import dltf from '../../utilities/dltf.js'
 
 const SelectCustomer = () => {
   const [customers, setCustomers] = useState([])
@@ -37,7 +38,7 @@ const SelectCustomer = () => {
                 <span>{customer.name}</span>
               </div>
               <div className={classes.idContainer}>
-                <span>{customer.id}</span>
+                <span>{dltf(customer.id)}</span>
               </div>
               <div className={classes.seeMoreContainer} onClick={() => navigate('/ordering', { state: { id: customer.id } })}>
                 <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />

@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify'
 
 import styles from './styles'
 
+import dltf from '../../utilities/dltf.js'
+
 import 'react-toastify/dist/ReactToastify.css'
 import submitOrder from '../../services/submitOrder'
 import { useNavigate } from 'react-router-dom'
@@ -87,18 +89,18 @@ function Cart (props) {
               {item.name}
             </Grid>
             <Grid className={classes.gridItem} item xs={3} sm={3} md={3} lg={3}>
-              {item.price}
+              {dltf(item.price)}
             </Grid>
             <Grid className={classes.gridItem} item xs={3} sm={3} md={3} lg={3}>
-              {item.quantity}
+              {dltf(item.quantity)}
             </Grid>
             <Grid className={classes.gridItem} item xs={3} sm={3} md={3} lg={3}>
-              {item.price * item.quantity}
+              {dltf(item.price * item.quantity)}
             </Grid>
           </Grid>
         ))
       }
-      <span className={classes.totalPrice}>جمع کل: {totalPrice} تومان</span>
+      <span className={classes.totalPrice}>جمع کل: {dltf(totalPrice)} تومان</span>
       <div className={classes.submitBtn}>
         <Button variant="contained" onClick={submitPurchase}>
           {isBtnLoading ? 'در حال ثبت' : 'ثبت فروش'}

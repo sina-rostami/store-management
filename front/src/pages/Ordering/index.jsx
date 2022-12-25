@@ -11,7 +11,6 @@ import getProducts from '../../services/getProducts'
 const Ordering = () => {
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState({ items: [], totalPrice: 0 })
-  const [isOrderingFinished, setIsOrderingFinished] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const classes = styles()
