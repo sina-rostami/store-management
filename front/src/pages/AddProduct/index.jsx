@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
+import dltf from '../../utilities/dltf.js'
 
 const AddProduct = () => {
   const classes = styles()
@@ -87,10 +88,10 @@ const AddProduct = () => {
         <div className={classes.qty}>
           <div className={classes.qtyBtn} onClick={() => handleCounter('add')}>+</div>
           {/* <input className={classes.qtyInput} type="text" value={0} /> */}
-          <div className={classes.qtyInput}>{counter}</div>
+          <div className={classes.qtyInput}>{dltf(counter)}</div>
           <div className={classes.qtyBtn} onClick={() => handleCounter('sub')}>-</div>
         </div>
-        <ImageUpload /> 
+        <ImageUpload />
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت محصول'}</button>
       </form>
