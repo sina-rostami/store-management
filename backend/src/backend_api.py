@@ -334,7 +334,7 @@ def delete_customer(current_user, customer_id):
 def edit_admin(current_user):
     auth = request.json
     try:
-        check_fields(request.json, {'username', 'password'})
+        check_fields(auth, {'username', 'password'})
         did_success, message = backend.admin_manager.edit_admin(auth)
         replace_token = backend.security.create_token(auth.get('username'))
         if not did_success:
@@ -343,6 +343,25 @@ def edit_admin(current_user):
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
         return jsonify({'message': message, 'replace_token': replace_token}), HTTPStatus.CREATED
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting admins : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/balance/<int:customer_id>', methods=['PUT'])
+@admin_authorization
+def edit_balance(current_user, customer_id):
+    data = request.json
+    try:
+        check_fields(data, {'balance'})
+        did_success, message = backend.customer_manager.edit_balance(customer_id, auth)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.CREATED
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
