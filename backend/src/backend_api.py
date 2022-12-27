@@ -334,6 +334,7 @@ def delete_customer(current_user, customer_id):
 def edit_admin(current_user):
     auth = request.json
     try:
+        check_fields(request.json, {'username', 'password'})
         did_success, message = backend.admin_manager.edit_admin(auth)
         replace_token = backend.security.create_token(auth.get('username'))
         if not did_success:
