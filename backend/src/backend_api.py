@@ -329,6 +329,24 @@ def delete_customer(current_user, customer_id):
         return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+@app.route('/admin', methods=['PUT'])
+@admin_authorization
+def edit_admin(current_user):
+    auth = request.json
+    try:
+        did_success, message = backend.admin_manager.edit_admin(auth)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.CREATED
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting admins : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 if __name__ == "__main__":
     # setting debug to True enables hot reload
     # and also provides a debugger shell
