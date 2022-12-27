@@ -67,3 +67,7 @@ class ProductManager:
     def get_all_products_as_json(self):
         return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
 
+    def save_file(self, file, name):
+        if not os.path.exists(self.app_upload_file):
+            os.mkdir(self.app_upload_file)
+        file.save(os.path.join(self.app_upload_file, name + '.' + (file.filename and file.filename.rsplit('.', 1)[1].lower())))
