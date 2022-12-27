@@ -11,7 +11,7 @@ from database_handler import Seller
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
-app.config['SECRET_KEY'] = 'your secret key'
+app.config['SECRET_KEY'] = '7aMpqUuCDCogpSlH1PoR5sy8MyqLWsXW'
 CORS(app)
 
 backend = Backend(app.config['SECRET_KEY'])
@@ -335,6 +335,7 @@ def edit_admin(current_user):
     auth = request.json
     try:
         did_success, message = backend.admin_manager.edit_admin(auth)
+
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND

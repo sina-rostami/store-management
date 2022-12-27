@@ -9,10 +9,15 @@ class AdminManager:
 
     def edit_admin(self, data):
         username, password = data.get('username'), data.get('password')
-        admin_name = self.database_session.query(Scratch).filter_by(key='admin_username').first().value
-        old_password = self.database_session.query(Scratch).filter_by(key='admin_password').first().value
-        admin_name = username
-        old_password = generate_password_hash(password)
+
+        default_rows = {'admin_username': username, 'admin_password': generate_password_hash(password)}
+
+        for key, value in default_rows.items():
+            obj = self.database_session.query(Scratch).filter_by(key=key).first()
+            if self.database_session.query(Scratch).filter_by(key=key).first():
+                self.database_session.delete(obj)
+            self.database_session.add(Scratch(key, value))
+
         self.database_session.commit()
 
-        return {'username': admin_name, 'password': password}
+        return True, 'SUCCESS'
