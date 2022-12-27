@@ -31,13 +31,12 @@ class Security:
             password = user.password
             id = user.id
 
-
         if check_password_hash(password, input_data.get('password')):
-            token = encode({
-                'username': username,
-                'exp': datetime.utcnow() + timedelta(days=1)
-            }, self.app_secret_key, "HS256")
+            self.create_token(username)
 
             return make_response(jsonify({'token': token, 'role': role, 'user_id': id}), HTTPStatus.OK)
 
         return make_response(jsonify({'message': 'INVALID_PASSWORD'}), HTTPStatus.UNAUTHORIZED)
+
+    def create_token(self, username):
+        token = encode({'username': username, 'exp': datetime.utcnow() + timedelta(days=1)}, self.app_secret_key, "HS256")

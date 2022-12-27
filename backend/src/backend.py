@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash
 
 from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Scratch
 
+from admin_manager import AdminManager
 from seller_manager import SellerManager
 from customer_manager import CustomerManager
 from product_manager import ProductManager
@@ -17,6 +18,7 @@ class Backend:
         self.seller_manager = SellerManager(self.database_session)
         self.customer_manager = CustomerManager(self.database_session)
         self.product_manager = ProductManager(self.database_session)
+        self.admin_manager = AdminManager(self.database_session)
         self.security = Security(self.database_session, app_secret_key)
         self.add_defaults_to_database()
         self.add_mock_values_to_db()
