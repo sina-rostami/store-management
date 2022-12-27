@@ -66,7 +66,7 @@ def check_fields(data, fields):
     if not data:
         return make_response(jsonify({'message': 'EXPECTED_DATA'}), HTTPStatus.BAD_REQUEST)
     for x in fields:
-        if data.get(x) == None:
+        if data.get(x) is None or data.get(x) == '':
             raise BadRequest("EXPECTED_" + x.upper())
 
 
