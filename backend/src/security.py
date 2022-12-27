@@ -32,11 +32,11 @@ class Security:
             id = user.id
 
         if check_password_hash(password, input_data.get('password')):
-            self.create_token(username)
+            token = self.create_token(username)
 
             return make_response(jsonify({'token': token, 'role': role, 'user_id': id}), HTTPStatus.OK)
 
         return make_response(jsonify({'message': 'INVALID_PASSWORD'}), HTTPStatus.UNAUTHORIZED)
 
     def create_token(self, username):
-        token = encode({'username': username, 'exp': datetime.utcnow() + timedelta(days=1)}, self.app_secret_key, "HS256")
+        return encode({'username': username, 'exp': datetime.utcnow() + timedelta(days=1)}, self.app_secret_key, "HS256")
