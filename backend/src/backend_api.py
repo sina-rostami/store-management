@@ -7,14 +7,17 @@ from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
 
 from backend import Backend
-from database_handler import Seller
+import os
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = '7aMpqUuCDCogpSlH1PoR5sy8MyqLWsXW'
+app.config['UPLOAD_FILE'] = os.path.abspath(os.curdir).removesuffix("backend\\src") + "public"
 CORS(app)
 
-backend = Backend(app.config['SECRET_KEY'])
+backend = Backend(app.config['SECRET_KEY'], app.config['UPLOAD_FILE'])
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 
 # decorator for verifying the JWT
@@ -64,10 +67,25 @@ def admin_authorization(f):
 
 def check_fields(data, fields):
     if not data:
-        return make_response(jsonify({'message': 'EXPECTED_DATA'}), HTTPStatus.BAD_REQUEST)
+        raise BadRequest("EXPECTED_DATA" + x.upper())
     for x in fields:
         if data.get(x) is None or data.get(x) == '':
             raise BadRequest("EXPECTED_" + x.upper())
+
+
+def check_file():
+    if 'file' not in request.files:
+        raise BadRequest("EXPECTED_FILE")
+    file = request.files['file']
+    if file.filename == '':
+        raise BadRequest("EXPECTED_FILE")
+    if not (file and allowed_file(file.filename)):
+        raise BadRequest("EXPECTED_IMAGE")
+    return file
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/order', methods=['POST'])
@@ -181,9 +199,11 @@ def edit_customer(current_user, customer_id):
 @app.route('/product', methods=['POST'])
 @normal_authorization
 def add_product(current_user):
+    data = request.form
     try:
-        check_fields(request.json, ['name', 'price', 'stock_number', 'category_id'])
-        did_success, message = backend.product_manager.add_product(request.json)
+        check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
+        file = check_file()
+        did_success, message = backend.product_manager.add_product(data, file)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 

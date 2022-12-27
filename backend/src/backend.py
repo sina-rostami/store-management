@@ -13,11 +13,11 @@ from security import Security
 
 
 class Backend:
-    def __init__(self, app_secret_key) -> None:
+    def __init__(self, app_secret_key, app_upload_file) -> None:
         self.database_session = DatabaseHandler('sqlite:///test.db').get_session()
         self.seller_manager = SellerManager(self.database_session)
         self.customer_manager = CustomerManager(self.database_session)
-        self.product_manager = ProductManager(self.database_session)
+        self.product_manager = ProductManager(self.database_session, app_upload_file)
         self.admin_manager = AdminManager(self.database_session)
         self.security = Security(self.database_session, app_secret_key)
         self.add_defaults_to_database()

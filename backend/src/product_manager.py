@@ -1,27 +1,30 @@
+import os
+
+from werkzeug.utils import secure_filename
+
 from database_handler import Category, Product
 
 
 class ProductManager:
-    def __init__(self, database_session) -> None:
+    def __init__(self, database_session, app_upload_file) -> None:
         self.database_session = database_session
+        self.app_upload_file = app_upload_file
 
-    def add_product(self, data):
-        old_product = self.database_session.query(Product).filter_by(
-            name=data['name'], price=data['price'], category_id=data['category_id']).first()
+    def add_product(self, data, file):
+        old_product = self.database_session.query(Product).filter_by(name=data['name'], price=data['price'],
+                                                                     category_id=data['category_id']).first()
 
         if old_product:
             return False, 'ALREADY_EXISTS'
         if not self.database_session.query(Category).filter_by(id=data['category_id']).first():
             return False, 'CATEGORY_NOT_EXIST'
-        if data['price'] < 0:
+        if int(data['price']) < 0:
             return False, 'NEGATIVE_PRICE'
 
-        self.database_session.add(
-            Product(
-                name=data['name'],
-                price=data['price'],
-                stock_number=data['stock_number'],
-                category_id=data['category_id']))
+        self.save_file(file, data['name'])
+
+        self.database_session.add(Product(name=data['name'], price=int(data['price']), stock_number=int(data['stock_number']),
+                                          category_id=int(data['category_id'])))
         self.database_session.commit()
 
         return True, 'SUCCESS'
@@ -36,8 +39,8 @@ class ProductManager:
         if data['price'] < 0:
             return False, 'NEGATIVE_PRICE'
 
-        same_product = self.database_session.query(Product).filter_by(
-            name=data['name'], price=data['price'], category_id=data['category_id']).first()
+        same_product = self.database_session.query(Product).filter_by(name=data['name'], price=data['price'],
+                                                                      category_id=data['category_id']).first()
         if same_product and same_product.id != id:
             return False, 'ALREADY_EXISTS'
 
@@ -51,10 +54,7 @@ class ProductManager:
         return True, 'SUCCESS'
 
     def get_product_as_json(self, product):
-        return {'id': product.id,
-                'name': product.name,
-                'stock_number': product.stock_number,
-                'category_id': product.category_id,
+        return {'id': product.id, 'name': product.name, 'stock_number': product.stock_number, 'category_id': product.category_id,
                 'price': product.price}
 
     def get_product_as_json_by_id(self, id):
@@ -66,3 +66,4 @@ class ProductManager:
 
     def get_all_products_as_json(self):
         return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
+
