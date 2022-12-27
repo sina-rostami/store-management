@@ -355,7 +355,7 @@ def edit_balance(current_user, customer_id):
     data = request.json
     try:
         check_fields(data, {'balance'})
-        did_success, message = backend.customer_manager.edit_balance(customer_id, auth)
+        did_success, message = backend.customer_manager.edit_balance(customer_id, data)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
