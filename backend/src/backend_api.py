@@ -335,13 +335,13 @@ def edit_admin(current_user):
     auth = request.json
     try:
         did_success, message = backend.admin_manager.edit_admin(auth)
-
+        replace_token = backend.security.create_token(auth.get('username'))
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
-        return jsonify({'message': message}), HTTPStatus.CREATED
+        return jsonify({'message': message, 'replace_token': replace_token}), HTTPStatus.CREATED
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
