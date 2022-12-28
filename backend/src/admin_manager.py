@@ -13,6 +13,9 @@ class AdminManager:
         obj = self.database_session.query(Scratch).filter_by(key='admin_username').first()
         obj.value = username
 
+        pass_obj = self.database_session.query(Scratch).filter_by(key='admin_password').first()
+        pass_obj.value = generate_password_hash(password)
+
         self.database_session.commit()
 
         return True, 'SUCCESS'
