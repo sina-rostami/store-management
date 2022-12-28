@@ -17,7 +17,7 @@ CORS(app)
 
 backend = Backend(app.config['SECRET_KEY'], app.config['UPLOAD_FILE'])
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 # decorator for verifying the JWT
@@ -358,8 +358,6 @@ def edit_admin(current_user):
         did_success, message = backend.admin_manager.edit_admin(auth)
         replace_token = backend.security.create_token(auth.get('username'))
         if not did_success:
-            if message == 'NOT_EXIST':
-                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
         return jsonify({'message': message, 'replace_token': replace_token}), HTTPStatus.CREATED
