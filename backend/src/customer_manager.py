@@ -48,7 +48,7 @@ class CustomerManager:
     def get_customer_as_json(self, customer):
         return {'id': customer.id, 'name': customer.name, 'credit': customer.credit, 'join_date': customer.join_date.timestamp(),
                 'leave_date': customer.leave_date.timestamp() if customer.leave_date else None,
-                'is_active': customer.is_active, 'phone_number': customer.phone_number}
+                'is_active': customer.is_active, 'phone_number': customer.phone_number, 'profile': customer.profile}
 
     def get_customer_as_json_by_id(self, id):
         customer = self.database_session.query(Customer).filter_by(id=id).first()
