@@ -318,7 +318,9 @@ def add_seller(current_user):
 def edit_seller(current_user, seller_id):
     try:
         check_fields(request.json, {'username', 'name', 'password'})
-        did_success, message = backend.seller_manager.edit_account(seller_id, request.json)
+        file = check_file()
+        link = backend.save_file(file, data['name'], 'seller')
+        did_success, message = backend.seller_manager.edit_account(seller_id, request.json, link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
