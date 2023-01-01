@@ -167,7 +167,9 @@ def get_customer(current_user, customer_id):
 def add_customer(current_user):
     try:
         check_fields(request.json, ['name', 'phone_number', 'credit'])
-        did_success, message = backend.customer_manager.add_customer(request.json)
+        file = check_file()
+        link = backend.save_file(file, data['name'], 'customer')
+        did_success, message = backend.customer_manager.add_customer(request.json, link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
