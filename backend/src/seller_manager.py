@@ -91,14 +91,15 @@ class SellerManager:
     def get_all_sellers_as_json(self):
         return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all() if seller.id != 0]
 
-    def add_seller(self, data):
+    def add_seller(self, data, link):
         name, username, password = data.get('name'), data.get('username'), data.get('password')
 
         old_seller = self.database_session.query(Seller).filter_by(username=username).first()
         if old_seller:
             return False, 'ALREADY_EXISTS'
 
-        self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password), is_active=True))
+        self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password), is_active=True,
+                                         profile=link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
