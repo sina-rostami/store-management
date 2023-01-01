@@ -1,7 +1,7 @@
 from functools import wraps
 from http import HTTPStatus
 
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, send_from_directory
 from flask_cors import CORS
 from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
@@ -13,9 +13,10 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = '7aMpqUuCDCogpSlH1PoR5sy8MyqLWsXW'
 app.config['UPLOAD_FILE'] = os.path.abspath(os.curdir).removesuffix("backend\\src") + "public"
+app.config['BASE_URL'] = 'http://127.0.0.1:5000'
 CORS(app)
 
-backend = Backend(app.config['SECRET_KEY'], app.config['UPLOAD_FILE'])
+backend = Backend(app.config['SECRET_KEY'], app.config['UPLOAD_FILE'], app.config['BASE_URL'])
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -395,6 +396,14 @@ def edit_balance(current_user, customer_id):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting admins : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/image/<string:kind>/<path:name>', methods=['GET'])
+def get_image(kind, name):
+    try:
+        return send_from_directory(backend.get_image(kind), path=name, as_attachment=True)
+    except FileNotFoundError:
+        return jsonify({'message': 'FILE_NOT_FOUND'}), HTTPStatus.NOT_FOUND
 
 
 if __name__ == "__main__":
