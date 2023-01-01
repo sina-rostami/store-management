@@ -1,16 +1,11 @@
-import os
-
-from werkzeug.utils import secure_filename
-
 from database_handler import Category, Product
 
 
 class ProductManager:
-    def __init__(self, database_session, app_upload_file) -> None:
+    def __init__(self, database_session) -> None:
         self.database_session = database_session
-        self.app_upload_file = app_upload_file
 
-    def add_product(self, data, file):
+    def add_product(self, data):
         old_product = self.database_session.query(Product).filter_by(name=data['name'], price=data['price'],
                                                                      category_id=data['category_id']).first()
 
@@ -20,8 +15,6 @@ class ProductManager:
             return False, 'CATEGORY_NOT_EXIST'
         if int(data['price']) < 0:
             return False, 'NEGATIVE_PRICE'
-
-        self.save_file(file, data['name'])
 
         self.database_session.add(Product(name=data['name'], price=int(data['price']), stock_number=int(data['stock_number']),
                                           category_id=int(data['category_id'])))
@@ -67,7 +60,3 @@ class ProductManager:
     def get_all_products_as_json(self):
         return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
 
-    def save_file(self, file, name):
-        if not os.path.exists(self.app_upload_file):
-            os.mkdir(self.app_upload_file)
-        file.save(os.path.join(self.app_upload_file, name + '.' + (file.filename and file.filename.rsplit('.', 1)[1].lower())))
