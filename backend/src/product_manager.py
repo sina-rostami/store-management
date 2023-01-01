@@ -49,7 +49,7 @@ class ProductManager:
 
     def get_product_as_json(self, product):
         return {'id': product.id, 'name': product.name, 'stock_number': product.stock_number, 'category_id': product.category_id,
-                'price': product.price}
+                'price': product.price, 'link': product.link}
 
     def get_product_as_json_by_id(self, id):
         product = self.database_session.query(Product).filter_by(id=id).first()
