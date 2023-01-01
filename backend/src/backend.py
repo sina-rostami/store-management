@@ -1,15 +1,15 @@
 import datetime
+import os
 
 from requests import HTTPError
 from werkzeug.security import generate_password_hash
 
-from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Scratch
-
 from admin_manager import AdminManager
-from seller_manager import SellerManager
 from customer_manager import CustomerManager
+from database_handler import DatabaseHandler, Seller, Customer, Category, Payer, Product, Scratch
 from product_manager import ProductManager
 from security import Security
+from seller_manager import SellerManager
 
 
 class Backend:
@@ -17,9 +17,10 @@ class Backend:
         self.database_session = DatabaseHandler('sqlite:///test.db').get_session()
         self.seller_manager = SellerManager(self.database_session)
         self.customer_manager = CustomerManager(self.database_session)
-        self.product_manager = ProductManager(self.database_session, app_upload_file)
+        self.product_manager = ProductManager(self.database_session)
         self.admin_manager = AdminManager(self.database_session)
         self.security = Security(self.database_session, app_secret_key)
+        self.app_upload_file = app_upload_file
         self.add_defaults_to_database()
         self.add_mock_values_to_db()
 
@@ -58,3 +59,14 @@ class Backend:
             return {'username': admin_name, 'password': password}
         else:
             raise HTTPError()
+
+    def save_file(self, file, name, kind):
+        path_file = os.path.join(self.app_upload_file,
+                                 '\\' + kind + '\\' + name + '.' + (file.filename and file.filename.rsplit('.', 1)[1].lower()))
+        if not os.path.exists(self.app_upload_file):
+            os.mkdir(self.app_upload_file)
+        if not os.path.exists(self.app_upload_file + '\\' + kind + '\\'):
+            os.mkdir(self.app_upload_file + '\\' + kind + '\\')
+        if os.path.exists(path_file):
+            os.remove(path_file)
+        file.save(path_file)
