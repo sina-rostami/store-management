@@ -83,7 +83,13 @@ const styles = createUseStyles({
     marginBottom: 20,
   },
 
+  zeroStock: {
+    color: 'red',
+    fontWeight: 700,
+  },
+
   secondRow: {
+    marginTop: 12,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -94,7 +100,13 @@ const styles = createUseStyles({
     width: '30%',
     height: 30,
     borderRadius: 7,
+    cursor: 'pointer',
   },
+
+  disabledBtn: {
+    cursor: 'default',
+    opacity: 0.5,
+  }
 })
 
 export default styles

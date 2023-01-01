@@ -63,7 +63,7 @@ const Ordering = () => {
           : <div className={classes.products}>
             {
               products.map(product => (
-                <Product product={product} handleCart={handleCart} key={product.id} cart={cart} />
+                product.stock_number !== 0 && <Product product={product} handleCart={handleCart} key={product.id} cart={cart} />
               ))
             }
             </div>
