@@ -300,7 +300,9 @@ def get_seller(current_user, seller_id):
 def add_seller(current_user):
     try:
         check_fields(request.json, {'username', 'name', 'password'})
-        did_success, message = backend.seller_manager.add_seller(request.json)
+        file = check_file()
+        link = backend.save_file(file, data['name'], 'seller')
+        did_success, message = backend.seller_manager.add_seller(request.json, link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
