@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './styles'
 
 import getProducts from '../../services/getProducts'
+import dltf from '../../utilities/dltf'
 
 const Products = () => {
   const [products, setProducts] = useState([])
@@ -32,6 +33,7 @@ const Products = () => {
             <div className={classes.product} key={product.id}>
               <img src={`./asset/images/${product.id}.png`} alt={product.name} title={product.name} />
               <span>{product.name}</span>
+              <span className={cx({[classes.stock]: true, [classes.zeroStock]: !!!product.stock_number})} >موجودی انبار: {dltf(product.stock_number)}</span>
             </div>
           ))
         }

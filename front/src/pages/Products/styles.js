@@ -138,6 +138,15 @@ const styles = createUseStyles({
       fontSize: 120,
     },
   },
+
+  stock: {
+    marginTop: 15,
+  },
+
+  zeroStock: {
+    color: 'red',
+    fontWeight: 700,
+  }
 })
 
 export default styles
