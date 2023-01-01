@@ -23,7 +23,7 @@ class CustomerManager:
 
         return True, 'SUCCESS'
 
-    def edit_customer(self, customer_id, data):
+    def edit_customer(self, customer_id, data, link):
         old_customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
 
         if not old_customer:
@@ -39,6 +39,7 @@ class CustomerManager:
         old_customer.name = data['name']
         old_customer.credit = data['credit']
         old_customer.phone_number = data['phone_number']
+        old_customer.profile = link
 
         self.database_session.commit()
 
