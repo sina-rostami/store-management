@@ -13,7 +13,7 @@ from seller_manager import SellerManager
 
 
 class Backend:
-    def __init__(self, app_secret_key, app_upload_file) -> None:
+    def __init__(self, app_secret_key, app_upload_file, app_base_url) -> None:
         self.database_session = DatabaseHandler('sqlite:///test.db').get_session()
         self.seller_manager = SellerManager(self.database_session)
         self.customer_manager = CustomerManager(self.database_session)
@@ -21,6 +21,7 @@ class Backend:
         self.admin_manager = AdminManager(self.database_session)
         self.security = Security(self.database_session, app_secret_key)
         self.app_upload_file = app_upload_file
+        self.app_base_url = app_base_url
         self.add_defaults_to_database()
         self.add_mock_values_to_db()
 
@@ -61,7 +62,7 @@ class Backend:
             raise HTTPError()
 
     def save_file(self, file, name, kind):
-        path_file = os.path.join(self.app_upload_file,
+        path_file = os.path.join(self.app_upload_file +
                                  '\\' + kind + '\\' + name + '.' + (file.filename and file.filename.rsplit('.', 1)[1].lower()))
         if not os.path.exists(self.app_upload_file):
             os.mkdir(self.app_upload_file)
@@ -70,3 +71,7 @@ class Backend:
         if os.path.exists(path_file):
             os.remove(path_file)
         file.save(path_file)
+        return self.app_base_url + '/image/' + kind + '/' + name
+
+    def get_image(self, kind):
+        return self.app_upload_file + '\\' + kind
