@@ -25,9 +25,10 @@ class Seller(Base):
     username = Column(Text, nullable=False)
     password = Column(Text, nullable=False)
     is_active = Column(Boolean, nullable=False)
+    profile = Column(Text)
 
     def __repr__(self) -> str:
-        return f'Seller(id={self.id}, name={self.name}, username={self.username}, password{self.password})'
+        return f'Seller(id={self.id}, name={self.name}, username={self.username}, password{self.password}, profile{self.profile})'
 
 
 class Customer(Base):
@@ -39,10 +40,11 @@ class Customer(Base):
     leave_date = Column(DateTime)
     is_active = Column(Boolean)
     phone_number = Column(Text)
+    profile = Column(Text)
 
     def __repr__(self) -> str:
         return f'Customer(id={self.id}, name={self.name}, credit={self.credit}, \
-        join_date={self.join_date}, is_active={self.is_active}, phone_number={self.phone_number})'
+        join_date={self.join_date}, is_active={self.is_active}, phone_number={self.phone_number}, profile={self.profile})'
 
 
 class Category(Base):
@@ -71,9 +73,11 @@ class Product(Base):
     price = Column(Float)
     stock_number = Column(Integer)
     category_id = Column(Integer, ForeignKey("Category.id"), nullable=False)
+    link = Column(Text)
 
     def __repr__(self) -> str:
-        return f'Product(id={self.id}, name={self.name}, price={self.price}, stock_number={self.stock_number}, category_id={self.category_id})'
+        return f'Product(id={self.id}, name={self.name}, price={self.price}, stock_number={self.stock_number}, ' \
+               f'category_id={self.category_id}, link={self.link})'
 
 
 class Order(Base):
