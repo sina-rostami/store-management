@@ -185,7 +185,9 @@ def add_customer(current_user):
 def edit_customer(current_user, customer_id):
     try:
         check_fields(request.json, ['name', 'phone_number', 'credit'])
-        did_success, message = backend.customer_manager.edit_customer(customer_id, request.json)
+        file = check_file()
+        link = backend.save_file(file, data['name'], 'customer')
+        did_success, message = backend.customer_manager.edit_customer(customer_id, request.json, link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
