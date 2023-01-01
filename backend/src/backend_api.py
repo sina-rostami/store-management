@@ -79,12 +79,12 @@ def check_file():
     file = request.files['file']
     if file.filename == '':
         raise BadRequest("EXPECTED_FILE")
-    if not (file and allowed_file(file.filename)):
+    if not (file and is_file_type_allowed(file.filename)):
         raise BadRequest("EXPECTED_IMAGE")
     return file
 
 
-def allowed_file(filename):
+def is_file_type_allowed(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
