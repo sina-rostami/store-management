@@ -203,8 +203,8 @@ def add_product(current_user):
     try:
         check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
         file = check_file()
-        backend.save_file(file, data['name'], 'product')
-        did_success, message = backend.product_manager.add_product(data)
+        link = backend.save_file(file, data['name'], 'product')
+        did_success, message = backend.product_manager.add_product(data, link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
@@ -221,8 +221,8 @@ def edit_product(current_user, product_id):
     try:
         check_fields(request.json, ['name', 'price', 'stock_number', 'category_id'])
         file = check_file()
-        backend.save_file(file, data['name'], 'product')
-        did_success, message = backend.product_manager.edit_product(product_id, request.json)
+        link = backend.save_file(file, data['name'], 'product')
+        did_success, message = backend.product_manager.edit_product(product_id, request.json , link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
