@@ -102,7 +102,7 @@ class SellerManager:
 
         return True, 'SUCCESS'
 
-    def edit_account(self, id, data):
+    def edit_account(self, id, data, link):
         name, password, username, is_active = data.get('name'), data.get('password'), data.get('username'), data.get('is_active')
 
         old_seller = self.database_session.query(Seller).filter_by(id=id).first()
@@ -117,6 +117,7 @@ class SellerManager:
         old_seller.password = generate_password_hash(password)
         old_seller.username = username
         old_seller.is_active = is_active
+        old_seller.profile = link
 
         self.database_session.commit()
 
