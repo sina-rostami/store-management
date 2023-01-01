@@ -63,16 +63,15 @@ class Backend:
 
     def save_file(self, file, name, kind):
         extension = '.' + (file.filename and file.filename.rsplit('.', 1)[1].lower())
-        path_file = os.path.join(self.app_upload_file +
-                                 '\\' + kind + '\\' + name + extension)
+        path_file = os.path.join(self.app_upload_file, kind, name + extension)
         if not os.path.exists(self.app_upload_file):
             os.mkdir(self.app_upload_file)
-        if not os.path.exists(self.app_upload_file + '\\' + kind + '\\'):
-            os.mkdir(self.app_upload_file + '\\' + kind + '\\')
+        if not os.path.exists(self.app_upload_file, kind):
+            os.mkdir(self.app_upload_file, kind)
         if os.path.exists(path_file):
             os.remove(path_file)
         file.save(path_file)
         return self.app_base_url + '/image/' + kind + '/' + name + extension
 
     def get_image(self, kind):
-        return self.app_upload_file + '\\' + kind
+        return os.path.join(self.app_upload_file, kind)

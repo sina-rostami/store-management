@@ -21,7 +21,7 @@ class SellerManager:
         seller_id = request_data['seller_id']
         products = request_data['products']
 
-        # check existance of products
+        # check existence of products
         seller = self.database_session.query(Seller).filter_by(id=seller_id).first()
         if not seller:
             return False, 'SELLER_NOT_EXISTS'
@@ -76,8 +76,7 @@ class SellerManager:
         return [self.get_order_as_json(order) for order in self.database_session.query(Order).all()]
 
     def get_seller_as_json(self, seller):
-        return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active,
-                'profile' : seller.profile}
+        return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active, 'profile': seller.profile}
 
     def get_seller_as_json_by_id(self, id):
         seller = self.database_session.query(Seller).filter_by(id=id).first()
@@ -96,8 +95,8 @@ class SellerManager:
         if old_seller:
             return False, 'ALREADY_EXISTS'
 
-        self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password), is_active=True,
-                                         profile=link))
+        self.database_session.add(
+            Seller(name=name, username=username, password=generate_password_hash(password), is_active=True, profile=link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
