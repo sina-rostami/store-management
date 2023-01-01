@@ -12,7 +12,7 @@ import os
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = '7aMpqUuCDCogpSlH1PoR5sy8MyqLWsXW'
-app.config['UPLOAD_FILE'] = os.path.abspath(os.curdir).removesuffix("backend\\src") + "public"
+app.config['UPLOAD_FILE'] = os.path.join(os.path.abspath(os.curdir).removesuffix(os.path.join('backend', 'src')), 'public')
 app.config['BASE_URL'] = 'http://127.0.0.1:5000'
 CORS(app)
 
@@ -74,7 +74,7 @@ def check_fields(data, fields):
             raise BadRequest("EXPECTED_" + x.upper())
 
 
-def check_file():
+def get_request_attached_file():
     if 'file' not in request.files:
         raise BadRequest("EXPECTED_FILE")
     file = request.files['file']
@@ -168,7 +168,7 @@ def get_customer(current_user, customer_id):
 def add_customer(current_user):
     try:
         check_fields(request.json, ['name', 'phone_number', 'credit'])
-        file = check_file()
+        file = get_request_attached_file()
         link = backend.save_file(file, data['name'], 'customer')
         did_success, message = backend.customer_manager.add_customer(request.json, link)
         if not did_success:
@@ -186,7 +186,7 @@ def add_customer(current_user):
 def edit_customer(current_user, customer_id):
     try:
         check_fields(request.json, ['name', 'phone_number', 'credit'])
-        file = check_file()
+        file = get_request_attached_file()
         link = backend.save_file(file, data['name'], 'customer')
         did_success, message = backend.customer_manager.edit_customer(customer_id, request.json, link)
         if not did_success:
@@ -207,7 +207,7 @@ def add_product(current_user):
     data = request.form
     try:
         check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
-        file = check_file()
+        file = get_request_attached_file()
         link = backend.save_file(file, data['name'], 'product')
         did_success, message = backend.product_manager.add_product(data, link)
         if not did_success:
@@ -225,7 +225,7 @@ def add_product(current_user):
 def edit_product(current_user, product_id):
     try:
         check_fields(request.json, ['name', 'price', 'stock_number', 'category_id'])
-        file = check_file()
+        file = get_request_attached_file()
         link = backend.save_file(file, data['name'], 'product')
         did_success, message = backend.product_manager.edit_product(product_id, request.json, link)
         if not did_success:
@@ -301,7 +301,7 @@ def get_seller(current_user, seller_id):
 def add_seller(current_user):
     try:
         check_fields(request.json, {'username', 'name', 'password'})
-        file = check_file()
+        file = get_request_attached_file()
         link = backend.save_file(file, data['name'], 'seller')
         did_success, message = backend.seller_manager.add_seller(request.json, link)
         if not did_success:
@@ -319,7 +319,7 @@ def add_seller(current_user):
 def edit_seller(current_user, seller_id):
     try:
         check_fields(request.json, {'username', 'name', 'password'})
-        file = check_file()
+        file = get_request_attached_file()
         link = backend.save_file(file, data['name'], 'seller')
         did_success, message = backend.seller_manager.edit_account(seller_id, request.json, link)
         if not did_success:
