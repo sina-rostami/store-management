@@ -5,7 +5,7 @@ class ProductManager:
     def __init__(self, database_session) -> None:
         self.database_session = database_session
 
-    def add_product(self, data):
+    def add_product(self, data, link):
         old_product = self.database_session.query(Product).filter_by(name=data['name'], price=data['price'],
                                                                      category_id=data['category_id']).first()
 
@@ -17,12 +17,12 @@ class ProductManager:
             return False, 'NEGATIVE_PRICE'
 
         self.database_session.add(Product(name=data['name'], price=int(data['price']), stock_number=int(data['stock_number']),
-                                          category_id=int(data['category_id'])))
+                                          category_id=int(data['category_id']), link=link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
 
-    def edit_product(self, id, data):
+    def edit_product(self, id, data, link):
         old_product = self.database_session.query(Product).filter_by(id=id).first()
 
         if not old_product:
@@ -41,6 +41,7 @@ class ProductManager:
         old_product.price = data['price']
         old_product.category_id = data['category_id']
         old_product.stock_number = data['stock_number']
+        old_product.link = link
 
         self.database_session.commit()
 
@@ -59,4 +60,3 @@ class ProductManager:
 
     def get_all_products_as_json(self):
         return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
-
