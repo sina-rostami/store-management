@@ -7,7 +7,7 @@ class CustomerManager:
     def __init__(self, database_session) -> None:
         self.database_session = database_session
 
-    def add_customer(self, data, link):
+    def add_customer(self, data, profile_photo_link):
         old_customer = self.database_session.query(Customer).filter_by(name=data['name'], phone_number=data['phone_number']).first()
 
         if old_customer:
@@ -17,12 +17,12 @@ class CustomerManager:
 
         self.database_session.add(
             Customer(name=data['name'], credit=data['credit'], phone_number=data['phone_number'], join_date=datetime.datetime.now(),
-                     is_active=True, profile=link))
+                     is_active=True, profile_photo_link=profile_photo_link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
 
-    def edit_customer(self, customer_id, data, link):
+    def edit_customer(self, customer_id, data, profile_photo_link):
         old_customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
 
         if not old_customer:
@@ -37,7 +37,7 @@ class CustomerManager:
         old_customer.name = data['name']
         old_customer.credit = data['credit']
         old_customer.phone_number = data['phone_number']
-        old_customer.profile = link
+        old_customer.profile_photo_link = profile_photo_link
 
         self.database_session.commit()
 

@@ -13,14 +13,14 @@ from seller_manager import SellerManager
 
 
 class Backend:
-    def __init__(self, app_secret_key, app_upload_file, app_base_url) -> None:
+    def __init__(self, app_secret_key, files_path, app_base_url) -> None:
         self.database_session = DatabaseHandler('sqlite:///test.db').get_session()
         self.seller_manager = SellerManager(self.database_session)
         self.customer_manager = CustomerManager(self.database_session)
         self.product_manager = ProductManager(self.database_session)
         self.admin_manager = AdminManager(self.database_session)
         self.security = Security(self.database_session, app_secret_key)
-        self.app_upload_file = app_upload_file
+        self.files_path = files_path
         self.app_base_url = app_base_url
         self.add_defaults_to_database()
         self.add_mock_values_to_db()
@@ -63,15 +63,17 @@ class Backend:
 
     def save_file(self, file, name, kind):
         extension = '.' + (file.filename and file.filename.rsplit('.', 1)[1].lower())
-        path_file = os.path.join(self.app_upload_file, kind, name + extension)
-        if not os.path.exists(self.app_upload_file):
-            os.mkdir(self.app_upload_file)
-        if not os.path.exists(self.app_upload_file, kind):
-            os.mkdir(self.app_upload_file, kind)
+        path_file = os.path.join(self.files_path, kind, name + extension)
+        if not os.path.exists(self.files_path):
+            os.mkdir(self.files_path)
+
+        kind_directory_path = os.path.join(self.files_path, kind)
+        if not os.path.exists(kind_directory_path):
+            os.mkdir(kind_directory_path)
         if os.path.exists(path_file):
             os.remove(path_file)
         file.save(path_file)
-        return self.app_base_url + '/image/' + kind + '/' + name + extension
+        return os.path.join(self.app_base_url, 'image', kind, name, extension)
 
     def get_image(self, kind):
-        return os.path.join(self.app_upload_file, kind)
+        return os.path.join(self.files_path, kind)
