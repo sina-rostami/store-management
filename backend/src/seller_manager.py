@@ -90,7 +90,7 @@ class SellerManager:
     def get_all_sellers_as_json(self):
         return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all() if seller.id != 0]
 
-    def add_seller(self, data, link):
+    def add_seller(self, data, profile_photo_link):
         name, username, password = data.get('name'), data.get('username'), data.get('password')
 
         old_seller = self.database_session.query(Seller).filter_by(username=username).first()
@@ -98,12 +98,12 @@ class SellerManager:
             return False, 'ALREADY_EXISTS'
 
         self.database_session.add(
-            Seller(name=name, username=username, password=generate_password_hash(password), is_active=True, profile=link))
+            Seller(name=name, username=username, password=generate_password_hash(password), is_active=True, profile_photo_link=profile_photo_link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
 
-    def edit_account(self, id, data, link):
+    def edit_account(self, id, data, profile_photo_link):
         name, password, username, is_active = data.get('name'), data.get('password'), data.get('username'), data.get('is_active')
 
         old_seller = self.database_session.query(Seller).filter_by(id=id).first()
@@ -118,7 +118,7 @@ class SellerManager:
         old_seller.password = generate_password_hash(password)
         old_seller.username = username
         old_seller.is_active = is_active
-        old_seller.profile = link
+        old_seller.profile_photo_link = profile_photo_link
 
         self.database_session.commit()
 
