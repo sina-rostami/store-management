@@ -18,7 +18,7 @@ function ImageUpload() {
     return(
         <div>
             <input type="file" name='file' />
-            <button>Upload</button>
+            <button>بارگذاری تصویر</button>
         </div>
     )
 }
