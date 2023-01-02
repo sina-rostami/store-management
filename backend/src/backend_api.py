@@ -167,10 +167,11 @@ def get_customer(current_user, customer_id):
 @admin_authorization
 def add_customer(current_user):
     try:
-        check_fields(request.json, ['name', 'phone_number', 'credit'])
-        file = get_request_attached_file()
-        link = backend.save_file(file, data['name'], 'customer')
-        did_success, message = backend.customer_manager.add_customer(request.json, link)
+        data = request.json
+        check_fields(data, ['name', 'phone_number', 'credit'])
+        profile_photo = get_request_attached_file()
+        link = backend.save_file(profile_photo, data['name'], 'customer')
+        did_success, message = backend.customer_manager.add_customer(data, link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
@@ -185,10 +186,11 @@ def add_customer(current_user):
 @admin_authorization
 def edit_customer(current_user, customer_id):
     try:
-        check_fields(request.json, ['name', 'phone_number', 'credit'])
-        file = get_request_attached_file()
-        link = backend.save_file(file, data['name'], 'customer')
-        did_success, message = backend.customer_manager.edit_customer(customer_id, request.json, link)
+        data = request.json
+        check_fields(data, ['name', 'phone_number', 'credit'])
+        profile_photo = get_request_attached_file()
+        link = backend.save_file(profile_photo, data['name'], 'customer')
+        did_success, message = backend.customer_manager.edit_customer(customer_id, data, link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
@@ -204,11 +206,11 @@ def edit_customer(current_user, customer_id):
 @app.route('/product', methods=['POST'])
 @normal_authorization
 def add_product(current_user):
-    data = request.form
     try:
+        data = request.json
         check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
-        file = get_request_attached_file()
-        link = backend.save_file(file, data['name'], 'product')
+        profile_photo = get_request_attached_file()
+        link = backend.save_file(profile_photo, data['name'], 'product')
         did_success, message = backend.product_manager.add_product(data, link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
@@ -224,10 +226,11 @@ def add_product(current_user):
 @normal_authorization
 def edit_product(current_user, product_id):
     try:
-        check_fields(request.json, ['name', 'price', 'stock_number', 'category_id'])
-        file = get_request_attached_file()
-        link = backend.save_file(file, data['name'], 'product')
-        did_success, message = backend.product_manager.edit_product(product_id, request.json, link)
+        data = request.json
+        check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
+        profile_photo = get_request_attached_file()
+        link = backend.save_file(profile_photo, data['name'], 'product')
+        did_success, message = backend.product_manager.edit_product(product_id, data, link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
@@ -300,10 +303,11 @@ def get_seller(current_user, seller_id):
 @admin_authorization
 def add_seller(current_user):
     try:
-        check_fields(request.json, {'username', 'name', 'password'})
-        file = get_request_attached_file()
-        link = backend.save_file(file, data['name'], 'seller')
-        did_success, message = backend.seller_manager.add_seller(request.json, link)
+        data = request.json
+        check_fields(data, {'username', 'name', 'password'})
+        profile_photo = get_request_attached_file()
+        link = backend.save_file(profile_photo, data['name'], 'seller')
+        did_success, message = backend.seller_manager.add_seller(data, link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
@@ -318,10 +322,11 @@ def add_seller(current_user):
 @admin_authorization
 def edit_seller(current_user, seller_id):
     try:
-        check_fields(request.json, {'username', 'name', 'password'})
-        file = get_request_attached_file()
-        link = backend.save_file(file, data['name'], 'seller')
-        did_success, message = backend.seller_manager.edit_account(seller_id, request.json, link)
+        data = request.json
+        check_fields(data, {'username', 'name', 'password'})
+        profile_photo = get_request_attached_file()
+        link = backend.save_file(profile_photo, data['name'], 'seller')
+        did_success, message = backend.seller_manager.edit_account(seller_id, data, link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
