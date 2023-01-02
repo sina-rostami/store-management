@@ -53,6 +53,8 @@ class SellerManager:
 
         for product in products:
             self.database_session.add(OrderProduct(order_id=order.id, product_id=product['id']))
+            product_db_object = self.database_session.query(Product).filter_by(id=product['id']).first()
+            product_db_object.stock_number -= product['quantity']
 
         self.database_session.commit()
 
