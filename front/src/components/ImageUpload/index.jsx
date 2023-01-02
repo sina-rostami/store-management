@@ -22,8 +22,9 @@ function ImageUpload() {
     }
     return(
         <div className={classes.container} >
-            <input className={classes.imgInput} accept='image/*' type="file" name='file' />
+            <input onChange={handleImage} className={classes.imgInput} accept='image/*' type="file" name='file' />
             <br />
+            {image && <img src= {`./asset/images/${image}`} />}
             <button>بارگذاری تصویر</button>
         </div>
     )
