@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
+import ImageUpload from '../../components/ImageUpload/ImageUpload'
 
 const AddCustomer = () => {
   const classes = styles()
@@ -95,6 +96,7 @@ const AddCustomer = () => {
           value={phoneNumber}
           onChange={e => changeHandler(e, 'phoneNumber')}
         />
+        <ImageUpload /> 
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت مشتری'}</button>
       </form>
