@@ -672,6 +672,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+  /balance:
+    post:
+      tags:
+        - balance
+      summary: balance
+      description: balance
+      operationId: balance
+      requestBody:
+        description: manage a user balance
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Balance'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /image:
+    get:
+      tags:
+        - get image
+      summary: image
+      description: image
+      operationId: image
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
 
 components:
   schemas:
@@ -807,6 +868,12 @@ components:
         password:
           type: string
           example: "1234"
+    Balance:
+      type: object
+      properties:
+        balance:
+          type: integer
+          example: 10000
     LoginResp:
       type: object
       properties:
@@ -818,6 +885,13 @@ components:
           enum:
             - "seller"
             - "admin"
+    BalanceResponse:
+      type: object
+      properties:
+        message: 
+          type: string
+          example: "SUCCESS"
+        
     ApiResponse:
       type: object
       properties:
