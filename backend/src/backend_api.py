@@ -170,8 +170,8 @@ def add_customer(current_user):
         data = request.json
         check_fields(data, ['name', 'phone_number', 'credit'])
         profile_photo = get_request_attached_file()
-        link = backend.save_file(profile_photo, data['name'], 'customer')
-        did_success, message = backend.customer_manager.add_customer(data, link)
+        profile_photo_link = backend.save_file(profile_photo, data['name'], 'customer')
+        did_success, message = backend.customer_manager.add_customer(data, profile_photo_link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
@@ -189,14 +189,14 @@ def edit_customer(current_user, customer_id):
         data = request.json
         check_fields(data, ['name', 'phone_number', 'credit'])
         profile_photo = get_request_attached_file()
-        link = backend.save_file(profile_photo, data['name'], 'customer')
-        did_success, message = backend.customer_manager.edit_customer(customer_id, data, link)
+        profile_photo_link = backend.save_file(profile_photo, data['name'], 'customer')
+        did_success, message = backend.customer_manager.edit_customer(customer_id, data, profile_photo_link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
-        return jsonify({'message': message}), HTTPStatus.CREATED
+        return jsonify({'message': message}), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
@@ -210,8 +210,8 @@ def add_product(current_user):
         data = request.json
         check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
         profile_photo = get_request_attached_file()
-        link = backend.save_file(profile_photo, data['name'], 'product')
-        did_success, message = backend.product_manager.add_product(data, link)
+        profile_photo_link = backend.save_file(profile_photo, data['name'], 'product')
+        did_success, message = backend.product_manager.add_product(data, profile_photo_link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
@@ -229,8 +229,8 @@ def edit_product(current_user, product_id):
         data = request.json
         check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
         profile_photo = get_request_attached_file()
-        link = backend.save_file(profile_photo, data['name'], 'product')
-        did_success, message = backend.product_manager.edit_product(product_id, data, link)
+        profile_photo_link = backend.save_file(profile_photo, data['name'], 'product')
+        did_success, message = backend.product_manager.edit_product(product_id, data, profile_photo_link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
@@ -306,8 +306,8 @@ def add_seller(current_user):
         data = request.json
         check_fields(data, {'username', 'name', 'password'})
         profile_photo = get_request_attached_file()
-        link = backend.save_file(profile_photo, data['name'], 'seller')
-        did_success, message = backend.seller_manager.add_seller(data, link)
+        profile_photo_link = backend.save_file(profile_photo, data['name'], 'seller')
+        did_success, message = backend.seller_manager.add_seller(data, profile_photo_link)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
@@ -325,8 +325,8 @@ def edit_seller(current_user, seller_id):
         data = request.json
         check_fields(data, {'username', 'name', 'password'})
         profile_photo = get_request_attached_file()
-        link = backend.save_file(profile_photo, data['name'], 'seller')
-        did_success, message = backend.seller_manager.edit_account(seller_id, data, link)
+        profile_photo_link = backend.save_file(profile_photo, data['name'], 'seller')
+        did_success, message = backend.seller_manager.edit_account(seller_id, data, profile_photo_link)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
@@ -359,7 +359,7 @@ def delete_customer(current_user, customer_id):
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
-        return jsonify({'message': message}), HTTPStatus.CREATED
+        return jsonify({'message': message}), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
@@ -373,11 +373,10 @@ def edit_admin(current_user):
     try:
         check_fields(auth, {'username', 'password'})
         did_success, message = backend.admin_manager.edit_admin(auth)
-        replace_token = backend.security.create_token(auth.get('username'))
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
-        return jsonify({'message': message, 'replace_token': replace_token}), HTTPStatus.CREATED
+        return jsonify({'message': message}), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
@@ -396,7 +395,7 @@ def edit_balance(current_user, customer_id):
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
-        return jsonify({'message': message}), HTTPStatus.CREATED
+        return jsonify({'message': message}), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
