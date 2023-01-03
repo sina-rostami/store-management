@@ -672,13 +672,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  /balance:
+  /balance/{customer_id}:
     post:
       tags:
         - balance
       summary: balance
       description: balance
       operationId: balance
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: customer_id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The Customer ID
       requestBody:
         description: manage a user balance
         content:
@@ -711,13 +724,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  /image:
+  /image/{kind}/{name}:
     get:
       tags:
         - get image
       summary: image
       description: image
       operationId: image
+      parameters:
+        - in: path
+          name: kind
+          required: true
+          schema:
+            type: string
+            enum:
+              - "customer"
+              - "seller"
+              - "product"
+          description: The Kind of Image
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: File name
       responses:
         '200':
           description: Successful operation
