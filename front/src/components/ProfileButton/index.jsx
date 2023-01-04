@@ -1,6 +1,7 @@
 import { Button } from 'bootstrap';
 import React from 'react';
 import styled from 'styled-components';
+import { Avatar } from '@mui/material';
 
 const Profile = styled.button`
     border: 0;
@@ -9,7 +10,7 @@ const Profile = styled.button`
     color: #fff;
     font-size: 14px;
     font-weight: 600;
-    border-radius: 20px;
+    border-radius: 22px;
     background-color: #2980b9;
     background-image: lenear-gradient(to right, transparent 0%, #00c9ff 100%);
     transition: all 240ms ease-in-out;
@@ -27,7 +28,9 @@ const Profile = styled.button`
 function ProfileButton(props){
     return(
         <div>
-            <Profile>کاربر</Profile>
+            <Profile>
+            <Avatar src="/broken-image.jpg" />
+            </Profile>
         </div>
     )
 }
