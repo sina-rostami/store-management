@@ -84,11 +84,10 @@ export function Accessibility(props){
     }
 
     return <AccessibilityContainer>
-        {/* <Exit onClick={logoutHandler}>
-            خروج
-        </Exit> */}
         {
             <ProfileButton></ProfileButton>
         }
     </AccessibilityContainer>
 }
+
+export default Accessibility
