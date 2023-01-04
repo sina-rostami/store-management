@@ -1,7 +1,8 @@
-import { Button } from 'bootstrap';
 import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from '@mui/material';
+import { useState } from 'react';
+import DropDownMenu from '../DropDrownMenu/index.jsx';
 
 const Profile = styled.button`
     border: 0;
@@ -26,11 +27,15 @@ const Profile = styled.button`
 `;
 
 function ProfileButton(props){
+
+    const [open, setOpen] = useState(false)
+
     return(
         <div>
-            <Profile>
+            <Profile onClick={() => setOpen(!open)}>
             <Avatar src="/broken-image.jpg" />
             </Profile>
+            {open && <DropDownMenu/>}
         </div>
     )
 }
