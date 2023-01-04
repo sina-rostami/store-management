@@ -1,4 +1,3 @@
-import { Button } from '@mui/material';
 import React from 'react';
 import styles from './styles';
 
@@ -18,7 +17,11 @@ function DropDownMenu(props){
     return(
         <div className= {classes.dropDownMenuContainer}>
             <DropDownItem className={classes.menuItem}>My Profile</DropDownItem>
-            <DropDownItem>Exit</DropDownItem>
+            <DropDownItem>
+                {/* <Exit onClick={logoutHandler}>
+                    خروج            
+                </Exit> */}
+            </DropDownItem>
         </div>
     )
 }
