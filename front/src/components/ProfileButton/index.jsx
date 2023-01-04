@@ -1,7 +1,6 @@
 import { Button } from 'bootstrap';
 import React from 'react';
 import styled from 'styled-components';
-import {Account} from 'material-ui-icons'
 
 const Profile = styled.button`
     border: 0;
