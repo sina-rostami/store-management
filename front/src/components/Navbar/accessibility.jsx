@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { useAuthDispatch } from '../../context/index.js'
+import ProfileButton from "../ProfileButton/index.jsx";
 
 const AccessibilityContainer = styled.div`
     display: flex;
@@ -83,8 +84,11 @@ export function Accessibility(props){
     }
 
     return <AccessibilityContainer>
-        <Exit onClick={logoutHandler}>
+        {/* <Exit onClick={logoutHandler}>
             خروج
-        </Exit>
+        </Exit> */}
+        {
+            <ProfileButton></ProfileButton>
+        }
     </AccessibilityContainer>
 }
