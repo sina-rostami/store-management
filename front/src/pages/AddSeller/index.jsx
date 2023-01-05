@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
-
 import styles from './styles'
-
 import { ToastContainer, toast } from 'react-toastify'
-
 import 'react-toastify/dist/ReactToastify.css'
 import addSeller from '../../services/addSeller.js'
 import { useNavigate } from 'react-router-dom'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
-
 import { passwordPattern } from '../../constants/regex.js'
 
 const AddSeller = () => {
@@ -17,6 +13,7 @@ const AddSeller = () => {
   const [lastName, setLastName] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [selectedImg, setSelectedImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -97,11 +94,13 @@ const AddSeller = () => {
     e.preventDefault()
     if(checkIsFormFilled() && checkIsFormValid()) {
       setIsLoading(true)
-      addSeller({
-        name: firstName + ' ' + lastName,
-        username,
-        password,
-      }).then(res => {
+      const formData = new FormData()
+      formData.append('file', selectedImg)
+      formData.append('name', firstName + ' ' + lastName)
+      formData.append('username', username)
+      formData.append('password', password)
+      addSeller(formData)
+      .then(res => {
         setIsLoading(false)
         if (res.succeeded) {
           navigate('/sellers')
@@ -151,7 +150,7 @@ const AddSeller = () => {
           type='password'
           onChange={e => changeHandler(e, 'password')}
         />
-        <ImageUpload />
+        <ImageUpload setImage={setSelectedImg} />
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت فروشنده'}</button>
       </form>

@@ -234,19 +234,33 @@ const styles = createUseStyles({
       backgroundColor: 'lightgray',
     },
 
-    '@media (min-width: 768px)': {
+    '& img': {
+      borderRadius: '50%',
+      height: 25,
+      width: 25,
+    },
 
+    '@media (min-width: 768px)': {
       '& div': {
+        height: 30,
+        width: 30,
+      },
+
+      '& img': {
         height: 30,
         width: 30,
       },
     },
 
     '@media (min-width: 1360px)': {
-
       '& div': {
-        height: 35,
-        width: 35,
+        height: 50,
+        width: 50,
+      },
+
+      '& img': {
+        height: 50,
+        width: 50,
       },
     },
   },

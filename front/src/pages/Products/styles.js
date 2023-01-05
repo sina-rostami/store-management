@@ -121,6 +121,26 @@ const styles = createUseStyles({
     },
   },
 
+  imgPlaceholder: {
+    height: 60,
+    width: 60,
+    backgroundColor: 'gray',
+    marginBottom: 15,
+    borderRadius: '50%',
+
+    '@media (min-width: 768px)': {
+      height: 100,
+      width: 100,
+      marginBottom: 25,
+    },
+
+    '@media (min-width: 1360px)': {
+      height: 150,
+      width: 150,
+      marginBottom: 35,
+    },
+  },
+
   addProduct: {
     fontSize: 80,
 

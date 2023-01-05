@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react'
-
 import styles from './styles'
-
 import editSeller from '../../services/editSeller.js'
-
 import { ToastContainer, toast } from 'react-toastify'
-
+import ImageUpload from '../../components/ImageUpload/index.jsx'
 import 'react-toastify/dist/ReactToastify.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import getSellerById from '../../services/getSellerById'
@@ -18,6 +15,7 @@ const EditSeller = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isActive, setIsActive] = useState(false)
+  const [selectedImg, setSelectedImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
@@ -110,18 +108,16 @@ const EditSeller = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
     if(checkIsFormFilled() && checkIsFormValid()) {
       setIsLoading(true)
-      editSeller({
-        id: location.state.id,
-        data: {
-          name: firstName + ' ' + lastName,
-          password,
-          username,
-          is_active: isActive,
-        }
-      }).then(res =>{
+      const formData = new FormData()
+      formData.append('file', selectedImg)
+      formData.append('name', firstName + ' ' + lastName)
+      formData.append('username', username)
+      formData.append('password', password)
+      formData.append('is_active', isActive)
+      editSeller({ id: location.state.id, data: formData })
+      .then(res => {
         setIsLoading(false)
         if (res.succeeded) {
           navigate('/sellers')
@@ -183,7 +179,8 @@ const EditSeller = () => {
             onChange={e => changeHandler(e, 'isActive')}
           />
         </label>
-        {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
+        <img src="" alt="" />
+        <ImageUpload setImage={setSelectedImg} />
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت'}</button>
       </form>
     </div>
