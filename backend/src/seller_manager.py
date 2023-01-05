@@ -24,13 +24,13 @@ class SellerManager:
         # check existence of products
         seller = self.database_session.query(Seller).filter_by(id=seller_id).first()
         if not seller:
-            return False, 'SELLER_NOT_EXISTS'
+            return False, 'NOT_EXIST'
         elif not seller.is_active:
             return False, 'SELLER_NOT_ACTIVE'
 
         customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
         if not customer:
-            return False, 'CUSTOMER_NOT_EXISTS'
+            return False, 'CUSTOMER_NOT_EXIST'
 
         total_price = sum(
             self.database_session.query(Product).filter_by(id=product['id']).first().price * product['quantity'] for product in products)
