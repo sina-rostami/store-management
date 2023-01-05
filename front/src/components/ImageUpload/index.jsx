@@ -1,31 +1,35 @@
 import axios from 'axios'
 import React, {useState} from 'react'
 
-import styles from "./styles.js"
+import styles from "./styles"
 
-function ImageUpload() {
-
-    const [image, setImage] = useState('')
+function ImageUpload({ setImage }) {
+    // const [image, setImage] = useState('')
+    // const [isUploaded, setIsUploaded] = useState(false)
 
     const classes = styles()
 
-    function handleImage (e){
-        console.log(e.target.files)
+    function handleImage (e) {
         setImage(e.target.files[0])
     }
-    function handleApi() {
+
+    function handleApi () {
         const formData = new FormData()
         formData.append('image', image)
         axios.post('url', formData).then((res) => { // url is the destination
             console.log(res)
         })
     }
+
     return(
         <div className={classes.container} >
             <input onChange={handleImage} className={classes.imgInput} accept='image/*' type="file" name='file' />
             <br />
-            {image && <img src= {`./asset/images/${image}`} />}
-            <button>بارگذاری تصویر</button>
+            {/* {isUploaded
+                ? <img className={classes.uploadedImg} src= {`./asset/images/${image}`} />
+                : <div className={classes.imgPlaceholder}></div>
+            } */}
+            {/* <button>بارگذاری تصویر</button> */}
         </div>
     )
 }

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
-
 import cx from 'classnames'
 import { Link, useNavigate } from 'react-router-dom'
-
 import styles from './styles'
-
 import getProducts from '../../services/getProducts'
 import dltf from '../../utilities/dltf'
 
@@ -31,7 +28,10 @@ const Products = () => {
           ? <span>در حال دریافت اطلاعات ...</span>
           : products.map(product => (
             <div className={classes.product} key={product.id}>
-              <img src={`./asset/images/${product.id}.png`} alt={product.name} title={product.name} />
+              {product.profile_photo_link
+                ? <img src={product.profile_photo_link} alt={product.name} title={product.name} />
+                : <div className={classes.imgPlaceholder}></div>
+              }
               <span>{product.name}</span>
               <span className={cx({[classes.stock]: true, [classes.zeroStock]: !!!product.stock_number})} >موجودی انبار: {dltf(product.stock_number)}</span>
             </div>

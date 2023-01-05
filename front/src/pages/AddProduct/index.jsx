@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
-
 import styles from './styles'
 import addProduct from '../../services/addProduct.js'
-
 import { ToastContainer, toast } from 'react-toastify'
-
 import 'react-toastify/dist/ReactToastify.css'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
 import dltf from '../../utilities/dltf.js'
@@ -14,6 +11,7 @@ const AddProduct = () => {
   const [counter, setCounter] = useState(0)
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
+  const [selectedImg, setSelectedImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleCounter = (action) => {
@@ -55,12 +53,14 @@ const AddProduct = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsLoading(true)
-    addProduct({
-      name,
-      category_id: 1,
-      price: +price,
-      stock_number: counter,
-    }).then(res =>{
+    const formData = new FormData()
+    formData.append('file', selectedImg)
+    formData.append('name', name)
+    formData.append('category_id', 1)
+    formData.append('price', +price)
+    formData.append('stock_number', counter)
+    addProduct(formData)
+    .then(res => {
       setIsLoading(false)
       if (res.succeeded) {
         showToastMessage('success')
@@ -99,8 +99,7 @@ const AddProduct = () => {
           <div className={classes.qtyInput}>{dltf(counter)}</div>
           <div className={classes.qtyBtn} onClick={() => handleCounter('sub')}>-</div>
         </div>
-        <ImageUpload />
-        {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
+        <ImageUpload setImage={setSelectedImg} />
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت محصول'}</button>
       </form>
       <ToastContainer />

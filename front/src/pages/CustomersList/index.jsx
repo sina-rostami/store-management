@@ -38,8 +38,8 @@ const CustomersList = () => {
           <div className={classes.customerRow} key={customer.id}>
             <div className={classes.indexContainer}><span>{dltf(index + 1)}</span></div>
             <div className={classes.imgContainer}>
-              {customer.imageUri
-                ? <img src="" alt="" />
+              {customer.profile_photo_link
+                ? <img src={customer .profile_photo_link} alt={customer.name} />
                 : <div></div>
               }
             </div>

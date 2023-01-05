@@ -5,7 +5,7 @@ const editSeller = async ({ id, data }) => {
 
   try {
     const response = await apiService(
-      { endpoint: `/seller/${id}`, authTokenNeeded: true, method: 'put', data },
+      { endpoint: `/seller/${id}`, authTokenNeeded: true, method: 'put', data, isMultiPartData: true },
     )
     if (!response.data) return { succeeded: true }
 

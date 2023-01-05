@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-import { useState } from 'react'
 import AuthGuard from './components/AuthGuard/index.jsx'
 import Navbar from './components/Navbar/index.jsx'
 import { AuthProvider } from './context/index.js'
