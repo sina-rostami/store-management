@@ -7,9 +7,8 @@ const styles = createUseStyles({
         display: 'flex',
         left: 15,
         width: 150,
-        padding: 20,
+        padding: [0, 10, 10],
         overflow: 'hidden',
-        marginBottom: 30,
         backgroundColor: 'white',
     },
     menuItem: {
@@ -19,13 +18,19 @@ const styles = createUseStyles({
         padding: 20,
         marginBottom: 20,
         font: 20,
-
+    },
+    listItem: {
+        cursor: 'pointer',
+        paddingTop: 10,
     },
     items: {
         listStyleType: 'none',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+    },
+    name: {
+        paddingTop: 10,
     }
 })
 

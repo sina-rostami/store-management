@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useState } from 'react'
-
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
@@ -13,7 +12,6 @@ import Container from '@mui/material/Container'
 import CssBaseline from '@mui/material/CssBaseline'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
-import Link from '@mui/material/Link'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -25,19 +23,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 document.dir = 'rtl'
-
-function Copyright (props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
 
 const theme = createTheme({
   direction: 'rtl',
@@ -217,7 +202,6 @@ const SignIn = () => {
                   </Button>
                 </Box>
               </Box>
-              <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
           </ThemeProvider>
         </CacheProvider>
