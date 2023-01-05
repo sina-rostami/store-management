@@ -5,11 +5,13 @@ const signIn = async ({ data }) => {
     const response = await apiService(
       { endpoint: '/login', data, method: 'post' },
     )
-    const result = response?.data || {}
+    if (!response.data) return { succeeded: true }
+
+    const result = { ...response.data, succeeded: true }
 
     return result
   } catch (error) {
-    return (console.error(error), {})
+    return (console.error(error), error)
   }
 }
 
