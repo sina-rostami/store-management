@@ -1,4 +1,11 @@
-export const initialAuthState = { authStatus: 'loading', role: '', userId: null }
+export const initialAuthState = {
+  authStatus: 'loading',
+  role: '',
+  userId: null,
+  name: '',
+  profilePictureUrl: null,
+  username: '',
+}
 
 export function AuthReducer (state, action) {
   switch (action.type) {
@@ -12,6 +19,12 @@ export function AuthReducer (state, action) {
     return { ...state, role: action.payload }
   case 'setUserId':
     return { ...state, userId: action.payload }
+  case 'setName':
+    return { ...state, name: action.payload }
+  case 'setUsername':
+    return { ...state, username: action.payload }
+  case 'setProfilePictureUrl':
+    return { ...state, profilePictureUrl: action.payload }
   default:
     throw new Error()
   }
