@@ -73,7 +73,7 @@ class Backend:
         if os.path.exists(path_file):
             os.remove(path_file)
         file.save(path_file)
-        return os.path.join(self.app_base_url, 'image', kind, name, extension)
+        return f'{self.app_base_url}/image/{kind}/{name}{extension}'
 
     def get_image(self, kind):
         return os.path.join(self.files_path, kind)
