@@ -5,21 +5,27 @@ const styles = createUseStyles({
     dropDownMenuContainer: {
         position: 'absolute',
         display: 'flex',
-        top: 100,
+        left: 15,
         width: 150,
-        height: 150,
-        padding: '1rem',
+        padding: 20,
         overflow: 'hidden',
         marginBottom: 30,
-        marginTop: 10,
         backgroundColor: 'white',
     },
-
     menuItem: {
         height: 50,
         display: 'flex',
         alignItems: 'center',
-        padding: '0.5rem',
+        padding: 20,
+        marginBottom: 20,
+        font: 20,
+
+    },
+    items: {
+        listStyleType: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
     }
 })
 
