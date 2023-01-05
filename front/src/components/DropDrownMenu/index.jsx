@@ -1,9 +1,19 @@
 import React from 'react';
 import styles from './styles';
+import { useAuthDispatch } from '../../context/index.js'
+
 
 function DropDownMenu(props){
 
     const classes = styles()
+
+    const authDispatch = useAuthDispatch()
+
+    const logoutHandler = () => {
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('role')
+        authDispatch({ type: 'logout' })
+    }
 
     function DropDownItem(props){
         return(
@@ -17,10 +27,8 @@ function DropDownMenu(props){
     return(
         <div className= {classes.dropDownMenuContainer}>
             <DropDownItem className={classes.menuItem}>My Profile</DropDownItem>
-            <DropDownItem>
-                {/* <Exit onClick={logoutHandler}>
+            <DropDownItem onClick={logoutHandler}>
                     خروج            
-                </Exit> */}
             </DropDownItem>
         </div>
     )
