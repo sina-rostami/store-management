@@ -13,10 +13,10 @@ class ProductManager:
             return False, 'ALREADY_EXISTS'
         if not self.database_session.query(Category).filter_by(id=data['category_id']).first():
             return False, 'CATEGORY_NOT_EXIST'
-        if int(data['price']) < 0:
+        if float(data['price']) < 0:
             return False, 'NEGATIVE_PRICE'
 
-        self.database_session.add(Product(name=data['name'], price=int(data['price']), stock_number=int(data['stock_number']),
+        self.database_session.add(Product(name=data['name'], price=float(data['price']), stock_number=int(data['stock_number']),
                                           category_id=int(data['category_id']), profile_photo_link=profile_photo_link))
         self.database_session.commit()
 
@@ -29,18 +29,18 @@ class ProductManager:
             return False, 'NOT_EXIST'
         if not self.database_session.query(Category).filter_by(id=data['category_id']).first():
             return False, 'CATEGORY_NOT_EXIST'
-        if data['price'] < 0:
+        if float(data['price']) < 0:
             return False, 'NEGATIVE_PRICE'
 
-        same_product = self.database_session.query(Product).filter_by(name=data['name'], price=data['price'],
+        same_product = self.database_session.query(Product).filter_by(name=data['name'], price=float(data['price']),
                                                                       category_id=data['category_id']).first()
         if same_product and same_product.id != id:
             return False, 'ALREADY_EXISTS'
 
         old_product.name = data['name']
-        old_product.price = data['price']
-        old_product.category_id = data['category_id']
-        old_product.stock_number = data['stock_number']
+        old_product.price = float(data['price'])
+        old_product.category_id = int(data['category_id'])
+        old_product.stock_number = int(data['stock_number'])
         old_product.profile_photo_link = profile_photo_link
 
         self.database_session.commit()

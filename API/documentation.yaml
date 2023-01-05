@@ -1054,4 +1054,6 @@ components:
             - "TOKEN_EXPIRED"
             - "EXPECTED_FILE"
             - "EXPECTED_IMAGE"
+            - "EXPECTED_<key>"
+            - "INVALID_<key>"
 

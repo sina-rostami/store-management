@@ -9,6 +9,7 @@ from werkzeug.exceptions import BadRequest
 
 from backend import Backend
 import os
+from regex import patterns
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -73,6 +74,8 @@ def check_fields(data, fields):
     for x in fields:
         if data.get(x) is None or data.get(x) == '':
             raise BadRequest("EXPECTED_" + x.upper())
+        if not re.findall(patterns.get(x, r'.'), data.get(x)):
+            raise BadRequest("INVALID_" + x.upper())
 
 
 def get_request_attached_file():
@@ -169,7 +172,7 @@ def get_customer(current_user, customer_id):
 @admin_authorization
 def add_customer(current_user):
     try:
-        data = request.json
+        data = request.form
         check_fields(data, ['name', 'phone_number', 'credit'])
         profile_photo = get_request_attached_file()
         profile_photo_link = backend.save_file(profile_photo, data['name'], 'customer')
@@ -188,7 +191,7 @@ def add_customer(current_user):
 @admin_authorization
 def edit_customer(current_user, customer_id):
     try:
-        data = request.json
+        data = request.form
         check_fields(data, ['name', 'phone_number', 'credit'])
         profile_photo = get_request_attached_file()
         profile_photo_link = backend.save_file(profile_photo, data['name'], 'customer')
@@ -209,7 +212,7 @@ def edit_customer(current_user, customer_id):
 @normal_authorization
 def add_product(current_user):
     try:
-        data = request.json
+        data = request.form
         check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
         profile_photo = get_request_attached_file()
         profile_photo_link = backend.save_file(profile_photo, data['name'], 'product')
@@ -228,7 +231,7 @@ def add_product(current_user):
 @normal_authorization
 def edit_product(current_user, product_id):
     try:
-        data = request.json
+        data = request.form
         check_fields(data, ['name', 'price', 'stock_number', 'category_id'])
         profile_photo = get_request_attached_file()
         profile_photo_link = backend.save_file(profile_photo, data['name'], 'product')
@@ -305,7 +308,7 @@ def get_seller(current_user, seller_id):
 @admin_authorization
 def add_seller(current_user):
     try:
-        data = request.json
+        data = request.form
         check_fields(data, {'username', 'name', 'password'})
         profile_photo = get_request_attached_file()
         profile_photo_link = backend.save_file(profile_photo, data['name'], 'seller')
@@ -324,7 +327,7 @@ def add_seller(current_user):
 @admin_authorization
 def edit_seller(current_user, seller_id):
     try:
-        data = request.json
+        data = request.form
         check_fields(data, {'username', 'name', 'password'})
         profile_photo = get_request_attached_file()
         profile_photo_link = backend.save_file(profile_photo, data['name'], 'seller')

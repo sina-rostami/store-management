@@ -12,11 +12,11 @@ class CustomerManager:
 
         if old_customer:
             return False, 'ALREADY_EXISTS'
-        elif data['credit'] < 0:
+        elif float(data['credit']) < 0:
             return False, 'NEGATIVE_CREDIT'
 
         self.database_session.add(
-            Customer(name=data['name'], credit=data['credit'], phone_number=data['phone_number'], join_date=datetime.datetime.now(),
+            Customer(name=data['name'], credit=float(data['credit']), phone_number=data['phone_number'], join_date=datetime.datetime.now(),
                      is_active=True, profile_photo_link=profile_photo_link))
         self.database_session.commit()
 
@@ -27,7 +27,7 @@ class CustomerManager:
 
         if not old_customer:
             return False, 'NOT_EXIST'
-        elif data['credit'] < 0:
+        elif float(data['credit']) < 0:
             return False, 'NEGATIVE_CREDIT'
 
         same_customer = self.database_session.query(Customer).filter_by(name=data['name'], phone_number=data['phone_number']).first()
@@ -35,7 +35,7 @@ class CustomerManager:
             return False, 'ALREADY_EXISTS'
 
         old_customer.name = data['name']
-        old_customer.credit = data['credit']
+        old_customer.credit = float(data['credit'])
         old_customer.phone_number = data['phone_number']
         old_customer.profile_photo_link = profile_photo_link
 
