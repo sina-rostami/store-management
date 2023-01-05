@@ -25,7 +25,7 @@ class Security:
             user = self.database_session.query(Seller).filter_by(username=input_data.get('username')).first()
             role = 'seller'
             if not user:
-                return make_response(jsonify({'message': 'INVALID_USER_NAME'}), HTTPStatus.UNAUTHORIZED)
+                return make_response(jsonify({'message': 'INVALID_DATA'}), HTTPStatus.UNAUTHORIZED)
 
             username = user.username
             password = user.password
@@ -36,7 +36,7 @@ class Security:
 
             return make_response(jsonify({'token': token, 'role': role, 'user_id': id}), HTTPStatus.OK)
 
-        return make_response(jsonify({'message': 'INVALID_PASSWORD'}), HTTPStatus.UNAUTHORIZED)
+        return make_response(jsonify({'message': 'INVALID_DATA'}), HTTPStatus.UNAUTHORIZED)
 
     def create_token(self, username):
         return encode({'username': username, 'exp': datetime.utcnow() + timedelta(days=1)}, self.app_secret_key, "HS256")
