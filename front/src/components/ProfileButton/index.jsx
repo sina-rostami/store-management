@@ -28,14 +28,14 @@ const Profile = styled.button`
 
 function ProfileButton(props){
 
-    const [open, setOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     return(
         <div>
-            <Profile onClick={() => setOpen(!open)}>
+            <Profile onClick={() => setIsOpen(!isOpen)}>
             <Avatar src="/broken-image.jpg" />
             </Profile>
-            {open && <DropDownMenu/>}
+            {isOpen && <DropDownMenu/>}
         </div>
     )
 }
