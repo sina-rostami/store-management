@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-
 import styles from './styles'
-
 import addCustomer from '../../services/addCustomer.js'
 import { ToastContainer, toast } from 'react-toastify'
 import isNaN from 'lodash/isNaN'
-
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
@@ -17,6 +14,7 @@ const AddCustomer = () => {
   const [lastName, setLastName] = useState('')
   const [credit, setCredit] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [selectedImg, setSelectedImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate('')
 
@@ -95,14 +93,15 @@ const AddCustomer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
     if (checkIsFormFilled() && checkIsFormValid()) {
       setIsLoading(true)
-      addCustomer({
-        name: firstName + ' ' + lastName,
-        credit: +credit,
-        phone_number: phoneNumber,
-      }).then(res =>{
+      const formData = new FormData()
+      formData.append('file', selectedImg);
+      formData.append('name', firstName + ' ' + lastName);
+      formData.append('credit', +credit);
+      formData.append('phone_number', phoneNumber);
+      addCustomer(formData)
+      .then(res =>{
         setIsLoading(false)
         if (res.succeeded) {
           navigate('/customers')
@@ -151,7 +150,7 @@ const AddCustomer = () => {
           value={phoneNumber}
           onChange={e => changeHandler(e, 'phoneNumber')}
         />
-        <ImageUpload />
+        <ImageUpload setImage={setSelectedImg} />
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت مشتری'}</button>
       </form>

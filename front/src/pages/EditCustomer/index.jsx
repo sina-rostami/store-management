@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
-
 import styles from './styles'
-
 import editCustomer from '../../services/editCustomer.js'
 import { ToastContainer, toast } from 'react-toastify'
 import isNaN from 'lodash/isNaN'
-
 import 'react-toastify/dist/ReactToastify.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import getCustomerById from '../../services/getCustomerById'
 import { phoneNumberPattern } from '../../constants/regex.js'
+import ImageUpload from '../../components/ImageUpload/index.jsx'
 
 const EditCustomer = (props) => {
   const classes = styles()
@@ -17,6 +15,7 @@ const EditCustomer = (props) => {
   const [lastName, setLastName] = useState('')
   const [credit, setCredit] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [selectedImg, setSelectedImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
@@ -105,19 +104,16 @@ const EditCustomer = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
     if (checkIsFormFilled() && checkIsFormValid()) {
       setIsLoading(true)
-      editCustomer({
-        id: location.state.id,
-        data: {
-          name: firstName + ' ' + lastName,
-          credit: +credit,
-          phone_number: phoneNumber,
-        }
-      }
-      ).then(res => {
-        console.log(res)
+      const formData = new FormData()
+      formData.append('file', selectedImg)
+      formData.append('id', location.state.id)
+      formData.append('name', firstName + ' ' + lastName)
+      formData.append('credit', +credit)
+      formData.append('phone_number', phoneNumber)
+      editCustomer({ id: location.state.id, data: formData })
+      .then(res => {
         setIsLoading(false)
         if (res.succeeded) {
           navigate('/customers')
@@ -166,7 +162,8 @@ const EditCustomer = (props) => {
           value={phoneNumber}
           onChange={e => changeHandler(e, 'phoneNumber')}
         />
-        {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
+        <img src="" alt="" />
+        <ImageUpload setImage={setSelectedImg} />
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت'}</button>
       </form>
     </div>

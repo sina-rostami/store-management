@@ -3,7 +3,7 @@ import apiService from './apiService'
 const editCustomerById = async ({ id, data }) => {
   try {
     const response = await apiService(
-      { endpoint: `/customer/${id}`, authTokenNeeded: true, method: 'put', data },
+      { endpoint: `/customer/${id}`, authTokenNeeded: true, method: 'put', data, isMultiPartData: true },
     )
     if (!response.data) return { succeeded: true }
 

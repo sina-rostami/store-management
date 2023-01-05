@@ -27,7 +27,7 @@ const SellersList = () => {
       </div>
       <div className={classes.headerRow}>
         <div className={classes.indexHeader}><span>شماره</span></div>
-        <div className={classes.imgHeader}><span>عکس</span></div>
+        <div className={classes.imgHeader}><span>تصویر</span></div>
         <div className={classes.nameHeader}><span>نام و نام خانوادگی</span></div>
         <div className={classes.usernameHeader}><span>نام کاربری</span></div>
       </div>
@@ -37,8 +37,8 @@ const SellersList = () => {
           <div className={classes.sellersRow} key={seller.id}>
             <div className={classes.indexContainer}><span>{dltf(index + 1)}</span></div>
             <div className={classes.imgContainer}>
-              {seller.imageUri
-                ? <img src="" alt="" />
+              {seller.profile_photo_link
+                ? <img src={seller.profile_photo_link} alt={seller.name} />
                 : <div></div>
               }
             </div>
