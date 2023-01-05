@@ -23,7 +23,7 @@ import EditCustomer from './pages/EditCustomer/index.jsx'
 import EditSeller from './pages/EditSeller/index.jsx'
 import SelectCustomer from './pages/SelectCustomer/index.jsx'
 import SignIn from './pages/SignIn/index.jsx'
-import ImageUpload from './components/ImageUpload/index.jsx'
+import EditAdmin from './pages/EditAdmin/index.jsx'
 
 const App = () => {
   return (
@@ -46,6 +46,7 @@ const App = () => {
         <Route path='/admin-panel' element={<AuthGuard adminGuard component={<AdminPanel />} />} />
         <Route path='/seller-panel' element={<AuthGuard sellerGuard component={<SellerPanel />} />} />
         <Route path='/ordering' element={<AuthGuard component={<Ordering />} />} />
+        <Route path='/edit-admin' element={<AuthGuard component={<EditAdmin />} />} />
         <Route path='/not-found' element={<NotFound />} />
         <Route path='*' element={<Navigate to='/not-found' />} />
       </Routes>
