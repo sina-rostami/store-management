@@ -24,10 +24,18 @@ const AddSeller = () => {
     if (type === 'success') {
       toast.success('!افزودن فروشنده با موفقیت انجام شد', {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     } else if (type === 'error') {
       toast.error(message, {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     }
   }
@@ -115,6 +123,7 @@ const AddSeller = () => {
 
   return (
     <div className={classes.addSellerRoot}>
+      <ToastContainer rtl />
       <h3 className={classes.pageTitle}>افزودن فروشنده</h3>
       <form className={classes.form} onSubmit={handleSubmit}>
         <input
@@ -146,7 +155,6 @@ const AddSeller = () => {
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت فروشنده'}</button>
       </form>
-      <ToastContainer />
     </div>
   )
 }
