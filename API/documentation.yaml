@@ -156,7 +156,7 @@ paths:
           required: true
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/addCustomer'
         required: true
@@ -234,7 +234,7 @@ paths:
           description: The customer ID
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/addCustomer'
         required: true
@@ -301,6 +301,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+        - customer
+      summary: delete customers
+      description: delete customers
+      operationId: deleteCustomers
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The customer ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
   /seller:
     post:
       tags:
@@ -316,7 +356,7 @@ paths:
           required: true
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/addSeller'
         required: true
@@ -394,7 +434,7 @@ paths:
           description: The seller ID
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/addSeller'
         required: true
@@ -482,7 +522,7 @@ paths:
           required: true
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/addProduct'
         required: true
@@ -560,7 +600,7 @@ paths:
           description: The product ID
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               $ref: '#/components/schemas/addProduct'
         required: true
@@ -662,6 +702,51 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
         '401':
           description: Wrong username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /admin:
+    post:
+      tags:
+        - admin
+      summary: edit admin
+      description: edit admin user & pass
+      operationId: edit admin
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: edit admin
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditAdmin'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
@@ -783,6 +868,18 @@ components:
           type: array
           items:
             type: integer
+    EditAdmin:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+          example: 'admin'
+        password:
+          type: string
+          example: '123456'
     Order:
       type: object
       properties:
@@ -817,6 +914,9 @@ components:
         credit:
           type: number
           example: 10.5
+        profile:
+          type: string
+          format: binary
     Customer:
       type: object
       properties:
@@ -850,6 +950,9 @@ components:
         password:
           type: string
           example: "12345"
+        profile:
+          type: string
+          format: binary
     Seller:
       type: object
       properties:
@@ -874,6 +977,9 @@ components:
         price:
           type: number
           example: 10.5
+        link:
+          type: string
+          format: binary
     Product:
       type: object
       properties:
@@ -918,10 +1024,9 @@ components:
     BalanceResponse:
       type: object
       properties:
-        message: 
+        message:
           type: string
           example: "SUCCESS"
-        
     ApiResponse:
       type: object
       properties:
