@@ -6,20 +6,21 @@ import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import editAdmin from '../../services/editAdmin.js'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import { passwordPattern } from '../../constants/regex.js'
 import { useAuthDispatch } from '../../context/index.js'
 
 const EditAdmin = () => {
   const classes = styles()
-  const [username, setUsername] = useState('')
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const authDispatch = useAuthDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
+  const [username, setUsername] = useState(location.state.username)
 
   const showToastMessage = (type, message) => {
     if (type === 'success') {
@@ -55,25 +56,25 @@ const EditAdmin = () => {
 
   const checkIsFormValid = () => {
     if (username.length < 4) {
-      showToastMessage('error', 'نام کاربری باید حداقل شامل چهار کاراکتر باشد')
+      showToastMessage('error', 'نام کاربری جدید باید حداقل شامل چهار کاراکتر باشد')
 
       return false
     }
 
-    if (passwordPattern.test(newPassword)) {
+    if (!passwordPattern.test(newPassword)) {
       showToastMessage('error', 'رمز عبور باید شامل حروف انگلیسی بزرگ و کوچک، عدد و کاراکتر خاص باشد')
 
       return false
     }
 
-    if (newPassword !== oldPassword) {
-      // disable button and add red border to input tag
+    if (newPassword === oldPassword) {
+      showToastMessage('error', 'رمز عبور قدیمی و رمز عبور جدید یکسان می باشند')
 
       return false
     }
 
     if (newPassword !== confirmPassword) {
-      // disable button and add red border to input tag
+      showToastMessage('error', 'رمز عبور جدید و تایید رمز عبور یکسان نمی باشند')
 
       return false
     }
@@ -85,7 +86,7 @@ const EditAdmin = () => {
     const emptyInputs = []
 
     if (!username) {
-      emptyInputs.push('نام کاربری')
+      emptyInputs.push('نام کاربری جدید')
     }
     if (!oldPassword) {
       emptyInputs.push('رمز عبور قدیمی')
@@ -146,7 +147,7 @@ const EditAdmin = () => {
       <form className={classes.form} onSubmit={handleSubmit}>
         <input
           className={classes.firstNameInput}
-          placeholder='نام کاربری *'
+          placeholder='نام کاربری جدید *'
           value={username}
           onChange={e => changeHandler(e, 'username')}
         />

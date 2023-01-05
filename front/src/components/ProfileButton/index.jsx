@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Avatar } from '@mui/material';
 import { useState } from 'react';
 import DropDownMenu from '../DropDrownMenu/index.jsx';
+import { useAuthState } from '../../context/index.js'
 
 const Profile = styled.button`
     border: 0;
@@ -26,16 +27,20 @@ const Profile = styled.button`
     }
 `;
 
-function ProfileButton(props){
-
+function ProfileButton() {
     const [isOpen, setIsOpen] = useState(false)
+    const { name, profilePictureUrl, role, username } = useAuthState()
 
     return(
         <div>
-            <Profile onClick={() => setIsOpen(!isOpen)}>
-            <Avatar src="/broken-image.jpg" />
-            </Profile>
-            {isOpen && <DropDownMenu/>}
+            {/* <Profile> */}
+                <Avatar
+                    onClick={() => setIsOpen(!isOpen)}
+                    src={profilePictureUrl}
+                    style={{ cursor: 'pointer' }}
+                />
+            {/* </Profile > */}
+            {isOpen && <DropDownMenu name={name} role={role} username={username} />}
         </div>
     )
 }
