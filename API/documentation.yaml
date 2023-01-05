@@ -925,7 +925,7 @@ components:
         credit:
           type: number
           example: 10.5
-        profile:
+        file:
           type: string
           format: binary
     Customer:
@@ -949,6 +949,9 @@ components:
         phone_number:
           type: string
           example: "01232312342"
+        profile_photo_link:
+          type: string
+          example: "http://127.0.0.1/image/customer/1.jpg"
     addSeller:
       type: object
       properties:
@@ -961,7 +964,7 @@ components:
         password:
           type: string
           example: "12345"
-        profile:
+        file:
           type: string
           format: binary
     Seller:
@@ -976,6 +979,9 @@ components:
         username:
           type: string
           example: "ali_ahmadi"
+        profile_photo_link:
+          type: string
+          example: "http://127.0.0.1/image/seller/1.jpg"
     addProduct:
       type: object
       properties:
@@ -988,7 +994,7 @@ components:
         price:
           type: number
           example: 10.5
-        link:
+        file:
           type: string
           format: binary
     Product:
@@ -1006,6 +1012,9 @@ components:
         price:
           type: number
           example: 10.5
+        profile_photo_link:
+          type: string
+          example: "http://127.0.0.1/image/product/1.jpg"
     Login:
       type: object
       properties:
