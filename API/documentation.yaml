@@ -859,7 +859,7 @@ components:
       required:
         - seller_id
         - customer_id
-        - products_ids
+        - products
       type: object
       properties:
         seller_id:
