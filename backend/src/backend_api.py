@@ -1,3 +1,4 @@
+import re
 from functools import wraps
 from http import HTTPStatus
 
@@ -93,6 +94,7 @@ def is_file_type_allowed(filename):
 @normal_authorization
 def place_order(current_user):
     try:
+        check_fields(data, {'customer_id', 'seller_id', 'products'})
         did_success, message = backend.seller_manager.place_order(request.json)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
