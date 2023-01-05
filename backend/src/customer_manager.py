@@ -81,7 +81,7 @@ class CustomerManager:
         if not old_customer:
             return False, 'NOT_EXIST'
         if not old_customer.is_active:
-            return False, 'LEFT'
+            return False, 'ALREADY_LEFT'
 
         old_customer.credit = data.get('balance')
 

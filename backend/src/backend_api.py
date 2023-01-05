@@ -29,16 +29,16 @@ def normal_authorization(f):
         if 'x-access-token' in request.headers:
             token = request.headers.get('x-access-token')
         if not token:
-            return jsonify({'message': 'Token is missing !!'}), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'TOKEN_MISSING'}), HTTPStatus.UNAUTHORIZED
         try:
             data = decode(token, app.config['SECRET_KEY'], "HS256")
             current_user = backend.seller_manager.get_seller(data['username'])
             if not current_user:
                 current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError as e:
-            return jsonify({'message': 'Token is Expired !!'}), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'TOKEN_EXPIRED'}), HTTPStatus.UNAUTHORIZED
         except Exception as e:
-            return jsonify({'message': 'Token is invalid !!'}), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'INVALID_TOKEN'}), HTTPStatus.UNAUTHORIZED
 
         return f(current_user, *args, **kwargs)
 
@@ -52,14 +52,14 @@ def admin_authorization(f):
         if 'x-access-token' in request.headers:
             token = request.headers.get('x-access-token')
         if not token:
-            return jsonify({'message': 'Token is missing !!'}), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'TOKEN_MISSING'}), HTTPStatus.UNAUTHORIZED
         try:
             data = decode(token, app.config['SECRET_KEY'], "HS256")
             current_user = backend.find_admin(data['username'])
         except ExpiredSignatureError as e:
-            return jsonify({'message': 'Token is Expired !!'}), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'TOKEN_EXPIRED'}), HTTPStatus.UNAUTHORIZED
         except Exception as e:
-            return jsonify({'message': 'Token is invalid !!'}), HTTPStatus.UNAUTHORIZED
+            return jsonify({'message': 'INVALID_TOKEN'}), HTTPStatus.UNAUTHORIZED
 
         return f(current_user, *args, **kwargs)
 
