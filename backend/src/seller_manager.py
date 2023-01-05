@@ -78,7 +78,7 @@ class SellerManager:
         return [self.get_order_as_json(order) for order in self.database_session.query(Order).all()]
 
     def get_seller_as_json(self, seller):
-        return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active, 'profile': seller.profile}
+        return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active, 'profile_photo_link': seller.profile_photo_link}
 
     def get_seller_as_json_by_id(self, id):
         seller = self.database_session.query(Seller).filter_by(id=id).first()
