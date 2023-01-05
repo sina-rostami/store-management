@@ -24,10 +24,18 @@ function Cart (props) {
     if (type === 'success') {
       toast.success('!ثبت سفارش با موفقیت انجام شد', {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     } else if (type === 'error') {
       toast.error(message, {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     }
   }
@@ -66,6 +74,7 @@ function Cart (props) {
 
   return (
     <div className={classes.cartContainer}>
+      <ToastContainer rtl />
       <span className={classes.title}>سبد فروش</span>
       <Grid container className={classes.headerContainer}>
         <Grid className={classes.gridHeader} item xs={3} sm={3} md={3} lg={3}>
@@ -106,7 +115,6 @@ function Cart (props) {
           {isBtnLoading ? 'در حال ثبت' : 'ثبت فروش'}
         </Button>
       </div>
-      <ToastContainer />
     </div>
   )
 }

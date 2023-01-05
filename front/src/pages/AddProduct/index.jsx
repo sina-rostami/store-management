@@ -36,10 +36,18 @@ const AddProduct = () => {
     if (type === 'success') {
       toast.success('!ثبت محصول با موفقیت انجام شد', {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     } else if (type === 'error') {
       toast.error(message, {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     }
   }

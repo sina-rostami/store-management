@@ -46,10 +46,18 @@ const EditCustomer = (props) => {
     if (type === 'success') {
       toast.success('!ویرایش مشتری با موفقیت انجام شد', {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     } else if (type === 'error') {
       toast.error(message, {
         position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
       })
     }
   }
@@ -131,6 +139,7 @@ const EditCustomer = (props) => {
 
   return (
     <div className={classes.editCustomerRoot}>
+      <ToastContainer rtl />
       <h3 className={classes.pageTitle}>ویرایش مشتری</h3>
       <form className={classes.form} onSubmit={handleSubmit}>
         <input
@@ -160,7 +169,6 @@ const EditCustomer = (props) => {
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت'}</button>
       </form>
-      <ToastContainer />
     </div>
   )
 }
