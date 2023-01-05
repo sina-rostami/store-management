@@ -23,6 +23,10 @@ tags:
     description: Everything about Products
   - name: login
     description: Everything about Authentication
+  - name: admin
+    description: Everything about Admin
+  - name: image
+    description: Everything about Image
 paths:
   /order:
     post:
@@ -713,7 +717,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
   /admin:
-    post:
+    put:
       tags:
         - admin
       summary: edit admin
@@ -758,9 +762,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
   /balance/{customer_id}:
-    post:
+    put:
       tags:
-        - balance
+        - customer
       summary: balance
       description: balance
       operationId: balance
@@ -812,7 +816,7 @@ paths:
   /image/{kind}/{name}:
     get:
       tags:
-        - get image
+        - image
       summary: image
       description: image
       operationId: image
