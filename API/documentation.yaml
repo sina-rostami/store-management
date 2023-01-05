@@ -790,7 +790,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceResponse'
+                $ref: '#/components/schemas/ApiResponse'
         '400':
           description: Bad request
           content:
@@ -1021,12 +1021,6 @@ components:
           enum:
             - "seller"
             - "admin"
-    BalanceResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "SUCCESS"
     ApiResponse:
       type: object
       properties:
@@ -1045,4 +1039,15 @@ components:
             - "ALREADY_EXISTS"
             - "NEGATIVE_CREDIT"
             - "EXPECTED_DATA"
+            - "ALREADY_LEFT"
+            - "HAS_DEBT"
+            - "NOT_IN_STOCK"
+            - "CUSTOMER_NOT_EXIST"
+            - "SELLER_NOT_ACTIVE"
+            - "NOT_EXIST"
+            - "TOKEN_MISSING"
+            - "INVALID_TOKEN"
+            - "TOKEN_EXPIRED"
+            - "EXPECTED_FILE"
+            - "EXPECTED_IMAGE"
 
