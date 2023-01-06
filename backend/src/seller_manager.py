@@ -109,8 +109,7 @@ class SellerManager:
         return True, 'SUCCESS'
 
     def edit_account(self, id, data, profile_photo_link):
-        name, password, username, is_active = data.get('name'), data.get('password'),
-        data.get('username'), True if data.get('is_active') == "true" else False
+        name, password, username = data.get('name'), data.get('password'), data.get('username')
 
         old_seller = self.database_session.query(Seller).filter_by(id=id).first()
         if not old_seller:
@@ -123,8 +122,21 @@ class SellerManager:
         old_seller.name = name
         old_seller.password = generate_password_hash(password)
         old_seller.username = username
-        old_seller.is_active = is_active
         old_seller.profile_photo_link = profile_photo_link
+
+        self.database_session.commit()
+
+        return True, 'SUCCESS'
+
+    def delete_seller(self, seller_id):
+        old_seller = self.database_session.query(Seller).filter_by(id=seller_id).first()
+
+        if not old_seller:
+            return False, 'NOT_EXIST'
+        if not old_seller.is_active:
+            return False, 'ALREADY_LEFT'
+
+        old_seller.is_active = False
 
         self.database_session.commit()
 

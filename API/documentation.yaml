@@ -330,11 +330,15 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponse'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Seller not found
           content:
             application/json:
               schema:
@@ -401,9 +405,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Seller'
+                $ref: '#/components/schemas/Seller'
         '400':
           description: Bad request
           content:
@@ -493,6 +495,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Seller'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Seller not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+        - seller
+      summary: delete seller
+      description: delete seller
+      operationId: deleteSeller
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The seller ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         '400':
           description: Bad request
           content:
@@ -994,6 +1040,9 @@ components:
         username:
           type: string
           example: "ali_ahmadi"
+        is_active:
+          type: boolean
+          example: true
         profile_photo_link:
           type: string
           example: "http://127.0.0.1/image/seller/1.jpg"
