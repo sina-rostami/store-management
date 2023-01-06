@@ -27,6 +27,8 @@ tags:
     description: Everything about Admin
   - name: image
     description: Everything about Image
+  - name: payment
+    description: Everything about Payment
 paths:
   /order:
     post:
@@ -807,32 +809,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  /balance/{customer_id}:
-    put:
+  /payment:
+    post:
       tags:
-        - customer
-      summary: balance
-      description: balance
-      operationId: balance
+        - payment
+      summary: payment
+      description: payment
+      operationId: payment
       parameters:
         - in: header
           name: x-access-token
           schema:
             type: string
           required: true
-        - in: path
-          name: customer_id
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-          description: The Customer ID
       requestBody:
-        description: manage a user balance
+        description: Add Payment
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Balance'
+              $ref: '#/components/schemas/Payment'
         required: true
       responses:
         '200':
@@ -859,6 +854,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+    get:
+      tags:
+        - payment
+      summary: get Payments
+      description: get Payments
+      operationId: get Payment
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentResp'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /payment/{payment_id}:
+      get:
+        tags:
+          - payment
+        summary: get a Payment
+        description: get a Payment
+        operationId: get a Payment
+        parameters:
+          - in: header
+            name: x-access-token
+            schema:
+              type: string
+            required: true
+          - in: path
+            name: payment_id
+            required: true
+            schema:
+              type: integer
+              minimum: 1
+            description: The Payment ID
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/PaymentResp'
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
   /image/{kind}/{name}:
     get:
       tags:
@@ -1088,12 +1157,54 @@ components:
         password:
           type: string
           example: "1234"
-    Balance:
+    PaymentResp:
       type: object
       properties:
-        balance:
+        customer_name:
+          type: string
+          example: 'ali'
+        payer_name:
+          type: string
+          example: 'hassan'
+        payer_phone_number:
+          type: string
+          example: '01232312342'
+        payer_id:
           type: integer
-          example: 10000
+          example: '1'
+        customer_id:
+          type: integer
+          example: '1'
+        method:
+          type: integer
+          example: '1'
+        amount:
+          type: number
+          example: '15'
+        date:
+          type: number
+          example: 1669315706.634264
+    Payment:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'hassan'
+        phone_number:
+          type: integer
+          example: '1'
+        customer_id:
+          type: integer
+          example: '1'
+        method:
+          type: integer
+          example: '1'
+        amount:
+          type: number
+          example: '15'
+        date:
+          type: number
+          example: 1669315706.634264
     LoginResp:
       type: object
       properties:
