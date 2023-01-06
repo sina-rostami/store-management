@@ -8,14 +8,16 @@ from jwt import decode, ExpiredSignatureError
 from werkzeug.exceptions import BadRequest
 
 from backend import Backend
-import os
+import os, sys
 from regex import patterns
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = '7aMpqUuCDCogpSlH1PoR5sy8MyqLWsXW'
-app.config['UPLOAD_FILE'] = os.path.join(os.path.abspath(os.curdir).removesuffix(os.path.join('backend', 'src')), 'public')
-app.config['BASE_URL'] = 'http://127.0.0.1:5000'
+app.config['UPLOAD_FILE'] = os.path.join(os.path.abspath(
+    os.curdir).removesuffix(os.path.join('backend', 'src')), 'public')
+external_ip = 'http://' + sys.argv[2].split('=')[1] + ':5000'
+app.config['BASE_URL'] = external_ip
 CORS(app)
 
 backend = Backend(app.config['SECRET_KEY'], app.config['UPLOAD_FILE'], app.config['BASE_URL'])
@@ -209,6 +211,23 @@ def edit_customer(current_user, customer_id):
         return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+@app.route('/customer/<int:customer_id>', methods=['DELETE'])
+@admin_authorization
+def delete_customer(current_user, customer_id):
+    try:
+        did_success, message = backend.customer_manager.delete_customer(customer_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 @app.route('/product', methods=['POST'])
 @normal_authorization
 def add_product(current_user):
@@ -345,21 +364,11 @@ def edit_seller(current_user, seller_id):
         return jsonify({'message': f'An error occurred while updating seller : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    auth = request.json
-    try:
-        check_fields(auth, {'username', 'password'}, False)
-        return backend.security.authorize(auth)
-    except BadRequest as e:
-        return make_response(jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
-
-
-@app.route('/customer/<int:customer_id>', methods=['DELETE'])
+@app.route('/seller/<int:seller_id>', methods=['DELETE'])
 @admin_authorization
-def delete_customer(current_user, customer_id):
+def delete_seller(current_user, seller_id):
     try:
-        did_success, message = backend.customer_manager.delete_customer(customer_id)
+        did_success, message = backend.seller_manager.delete_seller(seller_id)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
@@ -369,7 +378,17 @@ def delete_customer(current_user, customer_id):
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while getting customers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({'message': f'An error occurred while getting sellers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    auth = request.json
+    try:
+        check_fields(auth, {'username', 'password'}, False)
+        return backend.security.authorize(auth)
+    except BadRequest as e:
+        return make_response(jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
 
 
 @app.route('/admin', methods=['PUT'])
