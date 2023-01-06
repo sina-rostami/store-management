@@ -6,6 +6,7 @@ import styles from './styles'
 
 import getBills from '../../services/getBills.js'
 import dltf from '../../utilities/dltf.js'
+import { seperateByComma } from '../../utilities/seperateByComma.js'
 
 const BillsList = () => {
   const [bills, setBills] = useState(null)
@@ -28,7 +29,7 @@ const BillsList = () => {
         <div className={classes.customerHeader}><span>خریدار</span></div>
         <div className={classes.idHeader}><span>شناسه</span></div>
         <div className={classes.submitDateHeader}><span>تاریخ ثبت</span></div>
-        <div className={classes.submitTimeHeader}><span>ساعت ثبت</span></div>
+        <div className={classes.submitTimeHeader}><span>جمع کل</span></div>
       </div>
       <div className={classes.billsContainer}>
         {bills=== null
@@ -50,7 +51,8 @@ const BillsList = () => {
                     </div>
                     <div className={classes.submitTimeContainer}>
                       <span>
-                        {Intl.DateTimeFormat('fa', {hour: '2-digit', minute: '2-digit',second: '2-digit' }).format(bill.date * 1000)}
+                        {dltf(seperateByComma(bill.total_price))}
+                        {/* {Intl.DateTimeFormat('fa', {hour: '2-digit', minute: '2-digit',second: '2-digit' }).format(bill.date * 1000)} */}
                       </span>
                     </div>
                     <div className={classes.seeMoreContainer}>
