@@ -1,11 +1,16 @@
 const dltf = (n) => {
   const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
 
-  return n
-    .toString()
+  return n.toString()
     .split('')
-    .map(x => farsiDigits[x])
-    .join('');
+    .map(x => {
+      if (x === ',') {
+        return '٫'
+      }
+      return farsiDigits[x]
+    })
+    .join('')
+
 }
 
 export default dltf

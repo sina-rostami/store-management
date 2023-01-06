@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import getCustomers from '../../services/getCustomers'
 import dltf from '../../utilities/dltf'
+import { seperateByComma } from '../../utilities/seperateByComma.js'
 import styles from './styles'
 import DeleteModal from '../../components/DeleteModal/index.jsx'
 
@@ -47,8 +48,7 @@ const CustomersList = () => {
         <div className={classes.indexHeader}><span>شماره</span></div>
         <div className={classes.imgHeader}><span>تصویر</span></div>
         <div className={classes.nameHeader}><span>نام و نام خانوادگی</span></div>
-        <div className={classes.creditHeader}><span>اعتبار</span></div>
-        <div className={classes.joinDateHeader}><span>تاریخ عضویت</span></div>
+        <div className={classes.joinDateHeader}><span>اعتبار(تومان)</span></div>
         <div className={classes.leaveDateHeader}><span>تاریخ ترخیص</span></div>
       </div>
       {customers.length === 0
@@ -67,11 +67,9 @@ const CustomersList = () => {
             </div>
             <div className={classes.creditContainer}>
               <span>{customer.credit}</span>
-              </div> 
+              </div>
             <div className={classes.joinDateContainer}>
-              <span>
-              {Intl.DateTimeFormat('fa', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(customer.join_date * 1000)}
-              </span>
+              <span>{dltf(seperateByComma(customer.credit))}</span>
             </div>
             <div className={classes.leaveDateContainer}>
               <span>
