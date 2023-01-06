@@ -71,7 +71,7 @@ const styles = createUseStyles({
   },
 
   product: {
-    height: 170,
+    height: 180,
     width: 170,
     display: 'flex',
     justifyContent: 'center',
@@ -79,6 +79,7 @@ const styles = createUseStyles({
     flexDirection: 'column',
     border: '1px solid black',
     borderRadius: 10,
+    padding: 10,
 
     '& img': {
       height: 60,
@@ -166,6 +167,11 @@ const styles = createUseStyles({
   zeroStock: {
     color: 'red',
     fontWeight: 700,
+  },
+
+  editProduct: {
+    marginTop: 10,
+    padding: 8,
   }
 })
 

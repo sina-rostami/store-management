@@ -34,6 +34,7 @@ const Products = () => {
               }
               <span>{product.name}</span>
               <span className={cx({[classes.stock]: true, [classes.zeroStock]: !!!product.stock_number})} >موجودی انبار: {dltf(product.stock_number)}</span>
+              <button onClick={() => navigate('/edit-product', {state: {id: product.id}})} className={classes.editProduct} >ویرایش محصول</button>
             </div>
           ))
         }
