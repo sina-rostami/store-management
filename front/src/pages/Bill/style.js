@@ -44,19 +44,29 @@ const styles = createUseStyles({
   },
 
   sellerName :{
+    fontSize: 16,
+    marginBottom: 10,
 
   },
 
   customerName: {
-
+    fontSize: 16,
+    marginBottom: 10,
   },
 
   purchaseDate:{
-
+    fontSize: 16,
+    marginBottom: 10,
   },
 
   id: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
 
+  shoppingCart: {
+    fontSize: 16,
+    marginBottom: 10,
   }
 })
 
