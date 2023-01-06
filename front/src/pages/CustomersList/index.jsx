@@ -65,9 +65,6 @@ const CustomersList = () => {
             <div className={classes.nameContainer}>
               <span>{customer.name}</span>
             </div>
-            <div className={classes.creditContainer}>
-              <span>{customer.credit}</span>
-              </div>
             <div className={classes.joinDateContainer}>
               <span>{dltf(seperateByComma(customer.credit))}</span>
             </div>
