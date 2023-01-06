@@ -6,7 +6,7 @@ import isNaN from 'lodash/isNaN'
 import 'react-toastify/dist/ReactToastify.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import getCustomerById from '../../services/getCustomerById'
-import { phoneNumberPattern, usernamePattern, pattern } from '../../constants/regex.js'
+import { phoneNumberPattern, namePattern } from '../../constants/regex.js'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
 
 const EditCustomer = (props) => {
@@ -62,12 +62,6 @@ const EditCustomer = (props) => {
   }
 
   const checkIsFormValid = () => {
-    if (!usernamePattern.test(username)) {
-      showToastMessage('error', 'طول نام کاربری باید بین ۴ تا ۱۵ کاراکتر باشد')
-
-      return false
-    }
-
     if (isNaN(Number(credit))) {
       showToastMessage('error', 'مقدار اعتبار باید عدد باشد!')
 
