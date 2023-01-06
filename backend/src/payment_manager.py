@@ -22,8 +22,9 @@ class PaymentManager:
             self.database_session.add(payer)
             self.database_session.commit()
 
-        payment = Payment(payer_id=payer.id, customer_id=old_customer.id, amount=data['amount'], date=datetime.datetime.now(),
-                          method=data['method'])
+        self.database_session.add(
+            Payment(payer_id=payer.id, customer_id=old_customer.id, amount=data['amount'], date=datetime.datetime.now(),
+                    method=data['method']))
 
         old_customer.credit += data.get('amount')
 
@@ -32,17 +33,17 @@ class PaymentManager:
         return True, 'SUCCESS'
 
     def get_payment_as_json(self, payment):
-        payer = self.database_session.query(Payer).filter_by(id=payment.payer.id).first()
+        payer = self.database_session.query(Payer).filter_by(id=payment.payer_id).first()
         customer = self.database_session.query(Customer).filter_by(id=payment.customer_id).first()
-        return {'payer_name': payer.name, 'payer_phone_number': payer.phone_number, 'customer_name': customer.name, 'payer_id': payer.id, 'customer_id': customer.id,
-                'amount': payment.amount, 'date': payment.date, 'method': payment.method}
+        return {'id': payment.id, 'payer_name': payer.name, 'payer_phone_number': payer.phone_number, 'customer_name': customer.name,
+                'payer_id': payer.id, 'customer_id': customer.id, 'amount': payment.amount, 'date': payment.date, 'method': payment.method}
 
     def get_payments_as_json(self):
         return [self.get_payment_as_json(payment) for payment in self.database_session.query(Payment).all()]
 
     def get_a_payment_as_json(self, payment_id):
-        payment = self.database_session.query(Payment).filter(id=payment_id).first()
+        payment = self.database_session.query(Payment).filter_by(id=payment_id).first()
         if not payment:
             return False, 'NOT_EXIST'
 
-        return True, self.get_payment_as_json(payment_id)
+        return True, self.get_payment_as_json(payment)
