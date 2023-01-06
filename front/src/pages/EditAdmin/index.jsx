@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import editAdmin from '../../services/editAdmin.js'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-import { passwordPattern } from '../../constants/regex.js'
+import { passwordPattern, usernamePattern } from '../../constants/regex.js'
 import { useAuthDispatch } from '../../context/index.js'
 
 const EditAdmin = () => {
@@ -55,8 +55,8 @@ const EditAdmin = () => {
   }
 
   const checkIsFormValid = () => {
-    if (username.length < 4) {
-      showToastMessage('error', 'نام کاربری جدید باید حداقل شامل چهار کاراکتر باشد')
+    if (!usernamePattern.test(username)) {
+      showToastMessage('error', 'طول نام کاربری باید بین ۴ تا ۱۵ کاراکتر باشد')
 
       return false
     }
