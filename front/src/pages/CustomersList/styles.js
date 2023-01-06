@@ -358,6 +358,19 @@ const styles = createUseStyles({
       },
     },
   },
+
+  btn: {
+    padding: 10,
+    fontSize: 16,
+    fontWeight: 700,
+    width: 80,
+    borderRadius: 7,
+    cursor: 'pointer',
+
+    '&:hover': {
+      backgroundColor: 'rgba(237, 231, 225)',
+    },
+  },
 })
 
 export default styles
