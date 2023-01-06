@@ -375,10 +375,10 @@ def delete_customer(current_user, customer_id):
 @app.route('/admin', methods=['PUT'])
 @admin_authorization
 def edit_admin(current_user):
-    auth = request.json
+    data = request.json
     try:
-        check_fields(auth, {'username', 'password'})
-        did_success, message = backend.admin_manager.edit_admin(auth)
+        check_fields(data, {'username', 'old_password', 'new_password', 'confirm_new_password'})
+        did_success, message = backend.admin_manager.edit_admin(data)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
