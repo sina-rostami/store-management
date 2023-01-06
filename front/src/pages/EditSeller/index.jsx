@@ -6,7 +6,7 @@ import ImageUpload from '../../components/ImageUpload/index.jsx'
 import 'react-toastify/dist/ReactToastify.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import getSellerById from '../../services/getSellerById'
-import { passwordPattern } from '../../constants/regex.js'
+import { passwordPattern, usernamePattern, namePattern } from '../../constants/regex.js'
 
 
 const EditSeller = () => {
@@ -66,8 +66,20 @@ const EditSeller = () => {
   }
 
   const checkIsFormValid = () => {
-    if (username.length < 4) {
-      showToastMessage('error', 'نام کاربری باید حداقل شامل چهار کاراکتر باشد!')
+    if (!usernamePattern.test(username)) {
+      showToastMessage('error', 'طول نام کاربری باید بین ۴ تا ۱۵ کاراکتر باشد')
+
+      return false
+    }
+
+    if (!namePattern.test(firstName)) {
+      showToastMessage('error', 'طول نام باید بین ۲ تا ۱۵ کاراکتر باشد')
+
+      return false
+    }
+
+    if (!namePattern.test(lastName)) {
+      showToastMessage('error', 'طول نام خانوادگی باید بین ۲ تا ۱۵ کاراکتر باشد')
 
       return false
     }
