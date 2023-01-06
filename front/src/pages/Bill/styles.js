@@ -1,7 +1,6 @@
 import { createUseStyles } from 'react-jss'
 
-const styles = createUseStyles({    
-
+const styles = createUseStyles({
     pageHeader: {
     position: 'relative',
 
@@ -26,7 +25,7 @@ const styles = createUseStyles({
         width: 30,
       },
     },
-  },  
+  },
 
   pageTitle: {
     textAlign: 'center',
@@ -43,30 +42,14 @@ const styles = createUseStyles({
     },
   },
 
-  sellerName :{
-    fontSize: 16,
-    marginBottom: 10,
+  topSection: {
+    textAlign: 'center',
+    fontWeight: 500,
+    fontSize: 20,
 
-  },
-
-  customerName: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-
-  purchaseDate:{
-    fontSize: 16,
-    marginBottom: 10,
-  },
-
-  id: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-
-  shoppingCart: {
-    fontSize: 16,
-    marginBottom: 10,
+    '& li': {
+      marginBottom: 10,
+    },
   }
 })
 

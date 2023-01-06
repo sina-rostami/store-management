@@ -36,6 +36,7 @@ const SellersList = () => {
           question={`آیا از حذف ${modalName} اطمینان دارید؟`}
           type='seller'
           idToDelete={modalId}
+          option='حذف'
         />
       }
       <div className={classes.pageHeader}>

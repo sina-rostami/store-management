@@ -14,7 +14,7 @@ const EditSeller = () => {
   const [lastName, setLastName] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [isActive, setIsActive] = useState(false)
+  // const [isActive, setIsActive] = useState(false)
   const [selectedImg, setSelectedImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
@@ -27,7 +27,7 @@ const EditSeller = () => {
       setLastName(res.name.split(' ')[1])
       setUsername(res.username)
       setPassword(res.password)
-      setIsActive(res.is_active)
+      // setIsActive(res.is_active)
     })
   }, [])
 
@@ -40,9 +40,10 @@ const EditSeller = () => {
       setPassword(e.target.value)
     } else if (type === 'username') {
       setUsername(e.target.value)
-    } else if (type === 'isActive') {
-      setIsActive(!isActive)
     }
+    // else if (type === 'isActive') {
+    //   setIsActive(!isActive)
+    // }
   }
 
   const showToastMessage = (type, message) => {
@@ -127,7 +128,7 @@ const EditSeller = () => {
       formData.append('name', firstName + ' ' + lastName)
       formData.append('username', username)
       formData.append('password', password)
-      formData.append('is_active', isActive)
+      // formData.append('is_active', isActive)
       editSeller({ id: location.state.id, data: formData })
       .then(res => {
         setIsLoading(false)
@@ -138,7 +139,7 @@ const EditSeller = () => {
           setLastName('')
           setUsername('')
           setPassword('')
-          setIsActive(false)
+          // setIsActive(false)
         } else {
           const { message } = res.response.data
 
@@ -180,7 +181,7 @@ const EditSeller = () => {
           type='password'
           onChange={e => changeHandler(e, 'password')}
         />
-        <label
+        {/* <label
           className={classes.checkboxLabel}
         >
           فعال بودن
@@ -190,7 +191,7 @@ const EditSeller = () => {
             checked={isActive}
             onChange={e => changeHandler(e, 'isActive')}
           />
-        </label>
+        </label> */}
         <img src="" alt="" />
         <ImageUpload setImage={setSelectedImg} />
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت'}</button>

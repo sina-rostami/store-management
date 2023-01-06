@@ -33,9 +33,10 @@ const CustomersList = () => {
         <DeleteModal
           modalHandler={modalHandler}
           title='حذف مشتری'
-          question={`آیا از حذف ${modalName} اطمینان دارید؟`}
+          question={`آیا از ترخیص ${modalName} اطمینان دارید؟`}
           type='customer'
           idToDelete={modalId}
+          option='ترخیص'
         />
       }
       <div className={classes.pageHeader}>
@@ -56,7 +57,7 @@ const CustomersList = () => {
             <div className={classes.indexContainer}><span>{dltf(index + 1)}</span></div>
             <div className={classes.imgContainer}>
               {customer.profile_photo_link
-                ? <img src={customer .profile_photo_link} alt={customer.name} />
+                ? <img src={customer.profile_photo_link} alt={customer.name} />
                 : <div></div>
               }
             </div>
@@ -73,11 +74,16 @@ const CustomersList = () => {
               {customer.leave_date ? Intl.DateTimeFormat('fa', {year: 'numeric', month: '2-digit',day: '2-digit' }).format(customer.leave_date * 1000) : '-'}
               </span>
             </div>
-            <div className={classes.seeMoreContainer}>
-              {/* <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" /> */}
-              <button className={classes.btn} onClick={() => navigate('/edit-customer', { state: { id: customer.id } })}>ویرایش</button>
-              <button className={classes.btn} onClick={() => modalHandler(customer.id, customer.name)} style={{ marginRight: 10 }}>حذف</button>
-            </div>
+            {customer.is_active
+              ? (
+                <div className={classes.seeMoreContainer}>
+                  {/* <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" /> */}
+                  <button className={classes.btn} onClick={() => navigate('/edit-customer', { state: { id: customer.id } })}>ویرایش</button>
+                  <button className={classes.btn} onClick={() => modalHandler(customer.id, customer.name)} style={{ marginRight: 10 }}>ترخیص</button>
+                </div>
+              )
+              : <span style={{ color: 'red', fontWeight: 800 }}>ترخیص شده</span>
+            }
           </div>
         ))}
     </div>
