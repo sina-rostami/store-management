@@ -98,9 +98,10 @@ class OrderProduct(Base):
     __tablename__ = "OrderProduct"
     order_id = Column(Integer, ForeignKey("Order.id"), primary_key=True, nullable=False)
     product_id = Column(Integer, ForeignKey("Product.id"), primary_key=True, nullable=False)
+    quantity = Column(Integer)
 
     def __repr__(self) -> str:
-        return f'OrderProduct(order_id={self.order_id}, product_id={self.product_id})'
+        return f'OrderProduct(order_id={self.order_id}, product_id={self.product_id}, quantity={self.quantity})'
 
 
 class Payment(Base):
