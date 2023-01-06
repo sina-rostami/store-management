@@ -104,7 +104,7 @@ class SellerManager:
         return True, 'SUCCESS'
 
     def edit_account(self, id, data, profile_photo_link):
-        name, password, username, is_active = data.get('name'), data.get('password'), data.get('username'), data.get('is_active')
+        name, password, username, is_active = data.get('name'), data.get('password'), data.get('username'), True if data.get('is_active') == "true" else False
 
         old_seller = self.database_session.query(Seller).filter_by(id=id).first()
         if not old_seller:
