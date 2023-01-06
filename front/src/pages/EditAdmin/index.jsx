@@ -142,7 +142,6 @@ const EditAdmin = () => {
 
   return (
     <div className={classes.addSellerRoot}>
-      <ToastContainer rtl />
       <h3 className={classes.pageTitle}>ویرایش اطلاعات ادمین</h3>
       <form className={classes.form} onSubmit={handleSubmit}>
         <input
@@ -175,6 +174,7 @@ const EditAdmin = () => {
         {/* <input className={classes.imageInput} placeholder='بارگذاری تصویر' /> */}
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ویرایش اطلاعات'}</button>
       </form>
+      <ToastContainer rtl />
     </div>
   )
 }
