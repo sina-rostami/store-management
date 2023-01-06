@@ -98,7 +98,7 @@ def is_file_type_allowed(filename):
 def place_order(current_user):
     try:
         data = request.json
-        check_fields(data, {'customer_id', 'seller_id', 'products'})
+        check_fields(data, {'customer_id', 'seller_id', 'products'}, False)
         did_success, message = backend.seller_manager.place_order(data)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
