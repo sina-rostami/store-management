@@ -14,8 +14,7 @@ from regex import patterns
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = '7aMpqUuCDCogpSlH1PoR5sy8MyqLWsXW'
-app.config['UPLOAD_FILE'] = os.path.join(os.path.abspath(
-    os.curdir).removesuffix(os.path.join('backend', 'src')), 'public')
+app.config['UPLOAD_FILE'] = os.path.join(os.path.abspath(os.curdir).removesuffix(os.path.join('backend', 'src')), 'public')
 external_ip = 'http://' + sys.argv[2].split('=')[1] + ':5000'
 app.config['BASE_URL'] = external_ip
 CORS(app)
@@ -408,13 +407,13 @@ def edit_admin(current_user):
         return jsonify({'message': f'An error occurred while getting admins : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@app.route('/balance/<int:customer_id>', methods=['PUT'])
-@admin_authorization
-def edit_balance(current_user, customer_id):
+@app.route('/payment', methods=['POST'])
+@normal_authorization
+def add_payment(current_user):
     data = request.json
     try:
-        check_fields(data, {'balance'})
-        did_success, message = backend.customer_manager.edit_balance(customer_id, data)
+        check_fields(data, {'name', 'phone_number', 'amount', 'method', 'customer_id'})
+        did_success, message = backend.payment_manager.add_payment(data)
         if not did_success:
             if message == 'NOT_EXIST':
                 return jsonify({'message': message}), HTTPStatus.NOT_FOUND
@@ -425,6 +424,34 @@ def edit_balance(current_user, customer_id):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while getting admins : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/payment/<int:payment_id>', methods=['GET'])
+@normal_authorization
+def get_payment(current_user, payment_id):
+    try:
+        did_success, message = backend.payment_manager.get_a_payment_as_json(payment_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify(message), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting seller : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/payment', methods=['GET'])
+@normal_authorization
+def get_payments(current_user):
+    try:
+        return jsonify(backend.payment_manager.get_payments_as_json()), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting sellers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/image/<string:kind>/<path:name>', methods=['GET'])
