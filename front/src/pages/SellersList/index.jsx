@@ -66,11 +66,16 @@ const SellersList = () => {
             <div className={classes.usernameContainer}>
               <span>{seller.username}</span>
             </div>
-            <div className={classes.seeMoreContainer}>
-              {/* <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" /> */}
-              <button className={classes.btn} onClick={() => navigate('/edit-seller', { state: { id: seller.id } })}>ویرایش</button>
-              <button className={classes.btn} onClick={() => modalHandler(seller.id, seller.name)} style={{ marginRight: 10 }}>حذف</button>
-            </div>
+            {seller.is_active
+              ? (
+                <div className={classes.seeMoreContainer}>
+                  {/* <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" /> */}
+                  <button className={classes.btn} onClick={() => navigate('/edit-seller', { state: { id: seller.id } })}>ویرایش</button>
+                  <button className={classes.btn} onClick={() => modalHandler(seller.id, seller.name)} style={{ marginRight: 10 }}>حذف</button>
+                </div>
+              )
+              : <span style={{ color: 'red', fontWeight: 800 }}>غیر فعال</span>
+            }
           </div>
         ))}
     </div>
