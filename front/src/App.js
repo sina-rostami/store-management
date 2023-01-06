@@ -47,7 +47,7 @@ const App = () => {
         <Route path='/seller-panel' element={<AuthGuard sellerGuard component={<SellerPanel />} />} />
         <Route path='/ordering' element={<AuthGuard component={<Ordering />} />} />
         <Route path='/edit-admin' element={<AuthGuard component={<EditAdmin />} />} />
-        <Route path='/Bill' element={<AuthGuard component={<Bill/>} />} />
+        <Route path='/bill' element={<AuthGuard component={<Bill/>} />} />
         <Route path='/not-found' element={<NotFound />} />
         <Route path='*' element={<Navigate to='/not-found' />} />
       </Routes>
