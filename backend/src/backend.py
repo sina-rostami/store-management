@@ -62,6 +62,8 @@ class Backend:
             raise HTTPError()
 
     def save_file(self, file, name, kind):
+        if not file:
+            return None
         extension = '.' + (file.filename and file.filename.rsplit('.', 1)[1].lower())
         path_file = os.path.join(self.files_path, kind, name + extension)
         if not os.path.exists(self.files_path):

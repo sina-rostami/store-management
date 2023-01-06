@@ -80,7 +80,7 @@ def check_fields(data, fields, do_match=True):
 
 def get_request_attached_file():
     if 'file' not in request.files:
-        raise BadRequest("EXPECTED_FILE")
+        return None
     file = request.files['file']
     if file.filename == '':
         raise BadRequest("EXPECTED_FILE")
