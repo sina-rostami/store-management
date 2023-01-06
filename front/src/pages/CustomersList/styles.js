@@ -176,6 +176,20 @@ const styles = createUseStyles({
     },
   },
 
+  creditHeader: {
+    display: 'flex',
+
+    '@media (min-width: 768px)': {
+      display: 'flex',
+      width: '20%',
+      fontSize: 14,
+    },
+
+    '@media (min-width: 1360px)': {
+      fontSize: 16,
+    },
+  },
+
   customerRow: {
     display: 'flex',
     flexDirection: 'row',
@@ -277,6 +291,21 @@ const styles = createUseStyles({
   },
 
   nameContainer: {
+    display: 'flex',
+    width: '40%',
+    fontSize: 12,
+
+    '@media (min-width: 768px)': {
+      width: '20%',
+      fontSize: 14,
+    },
+
+    '@media (min-width: 1360px)': {
+      fontSize: 16,
+    },
+  },
+
+  creditContainer: {
     display: 'flex',
     width: '40%',
     fontSize: 12,
