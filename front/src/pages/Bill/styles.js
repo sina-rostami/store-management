@@ -50,7 +50,41 @@ const styles = createUseStyles({
     '& li': {
       marginBottom: 10,
     },
-  }
+  },
+  cartContainer: {
+    marginTop: 60,
+
+    '@media (min-width: 768px)': {
+
+    },
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+  cartItem: {
+    margin: [20, 0],
+  },
+
+  gridItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    '& img': {
+      width: 75,
+      height: 75,
+
+      '@media (min-width: 768px)': {
+        width: 150,
+        height: 150,
+      },
+
+      '@media (min-width: 1360px)': {
+        width: 200,
+        height: 200,
+      },
+    },
+  },
 })
 
 export default styles
