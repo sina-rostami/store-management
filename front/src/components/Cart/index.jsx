@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid'
 import { ToastContainer, toast } from 'react-toastify'
 import styles from './styles'
 import dltf from '../../utilities/dltf.js'
+import { seperateByComma } from '../../utilities/seperateByComma.js'
 import 'react-toastify/dist/ReactToastify.css'
 import submitOrder from '../../services/submitOrder'
 import { useNavigate } from 'react-router-dom'
@@ -94,7 +95,7 @@ function Cart (props) {
               {item.name}
             </Grid>
             <Grid className={classes.gridItem} item xs={3} sm={3} md={3} lg={3}>
-              {dltf(item.price)}
+              {dltf(seperateByComma(item.price))}
             </Grid>
             <Grid className={classes.gridItem} item xs={3} sm={3} md={3} lg={3}>
               {dltf(item.quantity)}
@@ -105,7 +106,7 @@ function Cart (props) {
           </Grid>
         ))
       }
-      <span className={classes.totalPrice}>جمع کل: {dltf(totalPrice)} تومان</span>
+      <span className={classes.totalPrice}>جمع کل: {dltf(seperateByComma(totalPrice))} تومان</span>
       <div className={classes.submitBtn}>
         <Button variant="contained" onClick={submitPurchase}>
           {isBtnLoading ? 'در حال ثبت' : 'ثبت فروش'}

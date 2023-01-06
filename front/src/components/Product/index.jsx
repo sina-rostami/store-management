@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 
 import styles from './styles'
 import dltf from '../../utilities/dltf.js'
+import { seperateByComma } from '../../utilities/seperateByComma.js'
 import cx from 'classnames'
 
 function Product (props) {
   const { product, handleCart, cart } = props
-  const { name, price, id, stock_number } = product
+  const { name, price, id, stock_number, profile_photo_link } = product
   const [stockNumber, setStockNumber] = useState(stock_number)
   const classes = styles()
 
@@ -22,10 +23,13 @@ function Product (props) {
 
   return (
     <div className={classes.product} key={id}>
-      <img src={`./asset/images/${id}.png`} alt={name} title={name} />
+      {profile_photo_link
+        ? <img src={profile_photo_link} alt={name} title={name} />
+        : <div className={classes.imgPlaceholder}></div>
+      }
       <div className={classes.firstRow}>
         <div className={classes.name}>{name}</div>
-        <div className={classes.price}>{dltf(price)} تومان</div>
+        <div className={classes.price}>{dltf(seperateByComma(price))} تومان</div>
       </div>
       <div className={cx({[classes.stockRow]: true, [classes.zeroStock]: !!!stockNumber})}>
         <span>موجودی انبار: {dltf(stockNumber)}</span>
