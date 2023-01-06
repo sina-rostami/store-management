@@ -12,5 +12,7 @@ patterns = {
     'category_id': r'^\d+$',
     'customer_id': r'^\d+$',
     'seller_id': r'^\d+$',
-    'balance': r'^\d+(.\d+|)$'
+    'balance': r'^\d+(.\d+|)$',
+    'amount': r'^\d+(.\d+|)$',
+    'method': r'^\d+(.\d+|)${1}'
 }
