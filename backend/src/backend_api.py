@@ -68,13 +68,13 @@ def admin_authorization(f):
     return decorated
 
 
-def check_fields(data, fields):
+def check_fields(data, fields, do_match=True):
     if not data:
         raise BadRequest("EXPECTED_DATA" + x.upper())
     for x in fields:
         if data.get(x) is None or data.get(x) == '':
             raise BadRequest("EXPECTED_" + x.upper())
-        if not re.findall(patterns.get(x, r'.'), data.get(x)):
+        if do_match and not re.findall(patterns.get(x, r'.'), data.get(x)):
             raise BadRequest("INVALID_" + x.upper())
 
 
@@ -97,8 +97,9 @@ def is_file_type_allowed(filename):
 @normal_authorization
 def place_order(current_user):
     try:
+        data = request.json
         check_fields(data, {'customer_id', 'seller_id', 'products'})
-        did_success, message = backend.seller_manager.place_order(request.json)
+        did_success, message = backend.seller_manager.place_order(data)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
 
@@ -348,7 +349,7 @@ def edit_seller(current_user, seller_id):
 def login():
     auth = request.json
     try:
-        check_fields(auth, {'username', 'password'})
+        check_fields(auth, {'username', 'password'}, False)
         return backend.security.authorize(auth)
     except BadRequest as e:
         return make_response(jsonify({'message': e.description}), HTTPStatus.BAD_REQUEST)
