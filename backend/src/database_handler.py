@@ -107,7 +107,7 @@ class OrderProduct(Base):
 class Payment(Base):
     __tablename__ = "Payment"
     id = Column(Integer, Identity(start=1), primary_key=True)
-    payer_id = Column(Integer, ForeignKey("Seller.id"), nullable=False)
+    payer_id = Column(Integer, ForeignKey("Payer.id"), nullable=False)
     customer_id = Column(Integer, ForeignKey("Customer.id"), nullable=False)
     amount = Column(Float)
     date = Column(DateTime)
