@@ -882,13 +882,21 @@ components:
     EditAdmin:
       required:
         - username
-        - password
+        - old_password
+        - new_password
+        - confirm_new_password
       type: object
       properties:
         username:
           type: string
           example: 'admin'
-        password:
+        old_password:
+          type: string
+          example: '123456'
+        new_password:
+          type: string
+          example: '123456'
+        confirm_new_password:
           type: string
           example: '123456'
     Order:
@@ -1072,4 +1080,5 @@ components:
             - "EXPECTED_IMAGE"
             - "EXPECTED_<key>"
             - "INVALID_<key>"
-
+            - "WRONG_PASSWORD"
+            - "PASSWORDS_NOT_MATCH"
