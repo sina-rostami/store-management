@@ -51,12 +51,6 @@ const AddCustomer = () => {
   }
 
   const checkIsFormValid = () => {
-    if (!usernamePattern.test(username)) {
-      showToastMessage('error', 'طول نام کاربری باید بین ۴ تا ۱۵ کاراکتر باشد')
-
-      return false
-    }
-
     if (!namePattern.test(firstName)) {
       showToastMessage('error', 'طول نام باید بین ۲ تا ۱۵ کاراکتر باشد')
 
