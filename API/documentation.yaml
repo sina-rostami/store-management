@@ -911,10 +911,17 @@ components:
         customer_id:
           type: integer
           example: 1
-        products_ids:
+        products:
           type: array
           items:
-            type: integer
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              quantity:
+                type: integer
+                example: 1
         total_price:
           type: number
           example: 10

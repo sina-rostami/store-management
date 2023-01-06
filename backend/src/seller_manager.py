@@ -33,7 +33,8 @@ class SellerManager:
             return False, 'CUSTOMER_NOT_EXIST'
 
         total_price = sum(
-            self.database_session.query(Product).filter_by(id=product['id']).first().price * product['quantity'] for product in products)
+            self.database_session.query(Product).filter_by(id=product['id']).first().price * product['quantity']
+            for product in products)
 
         if not self.are_enough_products_available_in_stock(products):
             return False, 'NOT_IN_STOCK'
@@ -44,13 +45,15 @@ class SellerManager:
         if total_price > customer.credit + maximum_debt:
             return False, 'CREDIT_NOT_ENOUGH'
 
-        order = Order(seller_id=seller_id, customer_id=customer_id, total_price=total_price, date=datetime.datetime.now())
+        order = Order(seller_id=seller_id, customer_id=customer_id,
+                      total_price=total_price, date=datetime.datetime.now())
         self.database_session.add(order)
         customer.credit -= total_price
         self.database_session.commit()
 
         for product in products:
-            self.database_session.add(OrderProduct(order_id=order.id, product_id=product['id']))
+            self.database_session.add(
+                OrderProduct(order_id=order.id, product_id=product['id'], quantity=product['quantity']))
             product_db_object = self.database_session.query(Product).filter_by(id=product['id']).first()
             product_db_object.stock_number -= product['quantity']
 
@@ -64,7 +67,8 @@ class SellerManager:
         customer = self.database_session.query(Customer).filter_by(id=order.customer_id).first()
 
         return {'id': order.id, 'customer_id': order.customer_id, 'customer_name': customer.name, 'seller_id': order.seller_id,
-                'seller_name': seller.name, 'products_ids': [order_product.product_id for order_product in order_products],
+                'seller_name': seller.name,
+                'products': [{'id': order_product.product_id, 'quantity': order_product.quantity} for order_product in order_products],
                 'total_price': order.total_price, 'date': order.date.timestamp()}
 
     def get_order_as_json_by_id(self, id):
@@ -98,13 +102,15 @@ class SellerManager:
             return False, 'ALREADY_EXISTS'
 
         self.database_session.add(
-            Seller(name=name, username=username, password=generate_password_hash(password), is_active=True, profile_photo_link=profile_photo_link))
+            Seller(name=name, username=username, password=generate_password_hash(password),
+                   is_active=True, profile_photo_link=profile_photo_link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
 
     def edit_account(self, id, data, profile_photo_link):
-        name, password, username, is_active = data.get('name'), data.get('password'), data.get('username'), True if data.get('is_active') == "true" else False
+        name, password, username, is_active = data.get('name'), data.get('password'),
+        data.get('username'), True if data.get('is_active') == "true" else False
 
         old_seller = self.database_session.query(Seller).filter_by(id=id).first()
         if not old_seller:
