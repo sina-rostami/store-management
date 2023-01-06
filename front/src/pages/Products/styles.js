@@ -80,6 +80,7 @@ const styles = createUseStyles({
     border: '1px solid black',
     borderRadius: 10,
     padding: 10,
+    backgroundColor: 'rgba(175,194,212,1)',
 
     '& img': {
       height: 60,
