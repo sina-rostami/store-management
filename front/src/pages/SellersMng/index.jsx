@@ -11,7 +11,6 @@ const SellersMng = () => {
     <div className={classes.sellersMngRoot}>
       <div className={classes.sellerItem}><Link to='/sellers'>لیست فروشندگان</Link></div>
       <div className={classes.sellerItem}><Link to='/add-seller'>افزودن فروشنده</Link></div>
-      <div className={classes.sellerItem}><Link to='/remove-seller'>حذف فروشنده</Link></div>
     </div>
   )
 }
