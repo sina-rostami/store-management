@@ -54,7 +54,7 @@ const BillsList = () => {
                       </span>
                     </div>
                     <div className={classes.seeMoreContainer}>
-                      <img onClick={() => navigate('/bill', {state:{id}})} src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />
+                      <img onClick={() => navigate('/bill', {state:{ id: bill.id }})} src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" />
                     </div>
                   </div>
                 ))
