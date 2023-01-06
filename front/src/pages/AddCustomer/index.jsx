@@ -6,7 +6,7 @@ import isNaN from 'lodash/isNaN'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
-import { phoneNumberPattern, usernamePattern, namePattern } from '../../constants/regex.js'
+import { phoneNumberPattern, namePattern } from '../../constants/regex.js'
 
 const AddCustomer = () => {
   const classes = styles()
