@@ -10,6 +10,7 @@ from database_handler import DatabaseHandler, Seller, Customer, Category, Payer,
 from product_manager import ProductManager
 from security import Security
 from seller_manager import SellerManager
+from payment_manager import PaymentManager
 
 
 class Backend:
@@ -19,6 +20,7 @@ class Backend:
         self.customer_manager = CustomerManager(self.database_session)
         self.product_manager = ProductManager(self.database_session)
         self.admin_manager = AdminManager(self.database_session)
+        self.payment_manager = PaymentManager(self.database_session)
         self.security = Security(self.database_session, app_secret_key)
         self.files_path = files_path
         self.app_base_url = app_base_url

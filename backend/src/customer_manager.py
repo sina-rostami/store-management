@@ -74,17 +74,3 @@ class CustomerManager:
         self.database_session.commit()
 
         return True, 'SUCCESS'
-
-    def edit_balance(self, customer_id, data):
-        old_customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
-
-        if not old_customer:
-            return False, 'NOT_EXIST'
-        if not old_customer.is_active:
-            return False, 'ALREADY_LEFT'
-
-        old_customer.credit = data.get('balance')
-
-        self.database_session.commit()
-
-        return True, 'SUCCESS'
