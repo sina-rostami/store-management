@@ -14,8 +14,10 @@ from regex import patterns
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = '7aMpqUuCDCogpSlH1PoR5sy8MyqLWsXW'
-app.config['UPLOAD_FILE'] = os.path.join(os.path.abspath(os.curdir).removesuffix(os.path.join('backend', 'src')), 'public')
-app.config['BASE_URL'] = 'http://127.0.0.1:5000'
+app.config['UPLOAD_FILE'] = os.path.join(os.path.abspath(
+    os.curdir).removesuffix(os.path.join('backend', 'src')), 'public')
+external_ip = 'http://' + sys.argv[2].split('=')[1] + ':5000'
+app.config['BASE_URL'] = external_ip
 CORS(app)
 
 backend = Backend(app.config['SECRET_KEY'], app.config['UPLOAD_FILE'], app.config['BASE_URL'])
