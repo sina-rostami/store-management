@@ -1,13 +1,9 @@
 import React, { useState } from 'react'
-
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import { ToastContainer, toast } from 'react-toastify'
-
 import styles from './styles'
-
 import dltf from '../../utilities/dltf.js'
-
 import 'react-toastify/dist/ReactToastify.css'
 import submitOrder from '../../services/submitOrder'
 import { useNavigate } from 'react-router-dom'
