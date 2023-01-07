@@ -100,9 +100,10 @@ class OrderProduct(Base):
     order_id = Column(Integer, ForeignKey("Order.id"), primary_key=True, nullable=False)
     product_id = Column(Integer, ForeignKey("Product.id"), primary_key=True, nullable=False)
     quantity = Column(Integer)
+    price = Column(Float)
 
     def __repr__(self) -> str:
-        return f'OrderProduct(order_id={self.order_id}, product_id={self.product_id}, quantity={self.quantity})'
+        return f'OrderProduct(order_id={self.order_id}, product_id={self.product_id}, quantity={self.quantity}, price={self.price})'
 
 
 class Payment(Base):

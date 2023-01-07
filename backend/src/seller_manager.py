@@ -53,7 +53,8 @@ class SellerManager:
 
         for product in products:
             self.database_session.add(
-                OrderProduct(order_id=order.id, product_id=product['id'], quantity=product['quantity']))
+                OrderProduct(order_id=order.id, product_id=product['id'], quantity=product['quantity'],
+                             price=self.database_session.query(Product).filter_by(id=product['id']).first().price))
             product_db_object = self.database_session.query(Product).filter_by(id=product['id']).first()
             product_db_object.stock_number -= product['quantity']
 
@@ -68,7 +69,8 @@ class SellerManager:
 
         return {'id': order.id, 'customer_id': order.customer_id, 'customer_name': customer.name, 'seller_id': order.seller_id,
                 'seller_name': seller.name,
-                'products': [{'id': order_product.product_id, 'quantity': order_product.quantity} for order_product in order_products],
+                'products': [{'id': order_product.product_id, 'quantity': order_product.quantity,
+                              'price': order_product.price} for order_product in order_products],
                 'total_price': order.total_price, 'date': order.date.timestamp()}
 
     def get_order_as_json_by_id(self, id):
