@@ -1,4 +1,4 @@
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from database_handler import Scratch, Seller
 
@@ -16,7 +16,7 @@ class AdminManager:
         username_db = self.database_session.query(Scratch).filter_by(key='admin_username').first()
         password_db = self.database_session.query(Scratch).filter_by(key='admin_password').first()
 
-        if password_db.value != generate_password_hash(old_password):
+        if not check_password_hash(password_db.value, old_password):
             return False, "WRONG_PASSWORD"
         if new_password != confirm_new_password:
             return False, "PASSWORDS_NOT_MATCH"
