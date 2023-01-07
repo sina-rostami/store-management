@@ -149,7 +149,7 @@ const EditSeller = () => {
             authDispatch({ type: 'logout' })
           }
           if (message === 'ALREADY_EXISTS') {
-            showToastMessage('error', '!این کاربر قبلا ثبت شده است')
+            showToastMessage('error', 'این فروشنده قبلا ثبت شده است')
           }
         }
       })
