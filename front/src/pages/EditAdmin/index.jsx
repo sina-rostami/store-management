@@ -132,6 +132,11 @@ const EditAdmin = () => {
         } else {
           const { message } = res.response.data // handle error messages here
 
+          if (message === 'INVALID_TOKEN') {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('role')
+            authDispatch({ type: 'logout' })
+          }
           // if (message === 'ALREADY_EXISTS') {
           //   showToastMessage('error', 'این کاربر قبلا ثبت شده است')
           // }

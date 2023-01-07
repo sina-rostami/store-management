@@ -170,9 +170,29 @@ const styles = createUseStyles({
     fontWeight: 700,
   },
 
+  btnContainer: {
+    width: '70%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
   editProduct: {
     marginTop: 10,
     padding: 8,
+    cursor: 'pointer',
+    borderRadius: 7,
+    fontSize: 14,
+    fontWeight: 700,
+  },
+
+  deleteProduct: {
+    marginTop: 10,
+    padding: 8,
+    cursor: 'pointer',
+    borderRadius: 7,
+    fontSize: 14,
+    fontWeight: 700,
   }
 })
 

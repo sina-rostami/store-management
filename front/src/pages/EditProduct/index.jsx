@@ -41,7 +41,7 @@ const EditProduct = () => {
       setName(e.target.value)
     } else if (type === 'price') {
       setPrice(e.target.value)
-    } 
+    }
   }
 
   const showToastMessage = (type, message) => {
@@ -88,7 +88,7 @@ const EditProduct = () => {
     if (!price) {
       emptyInputs.push('قیمت')
     }
-    
+
     if (emptyInputs.length !== 0) {
       showToastMessage('error', `${emptyInputs.join(' و ')} را وارد کنید!`)
 
@@ -120,7 +120,12 @@ const EditProduct = () => {
             setPrice('')
           } else {
             const { message } = res.response.data
-    
+
+            if (message === 'INVALID_TOKEN') {
+              localStorage.removeItem('auth_token')
+              localStorage.removeItem('role')
+              authDispatch({ type: 'logout' })
+            }
             // if (message === 'CREDIT_NOT_ENOUGH') {
             //   showToastMessage('error', '!موجودی حساب مشتری کافی نمی باشد')
             // }

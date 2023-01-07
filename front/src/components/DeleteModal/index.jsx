@@ -18,7 +18,11 @@ const DeleteModal = ({ modalHandler, title, question, type, idToDelete, option }
           modalHandler()
           navigate('/sellers-mng')
         } else {
-
+          if (message === 'INVALID_TOKEN') {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('role')
+            authDispatch({ type: 'logout' })
+          }
         }
       })
     } else if ('customer') {
@@ -27,11 +31,26 @@ const DeleteModal = ({ modalHandler, title, question, type, idToDelete, option }
           modalHandler()
           navigate('/customers-mng')
         } else {
-
+          if (message === 'INVALID_TOKEN') {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('role')
+            authDispatch({ type: 'logout' })
+          }
         }
       })
     } else if ('product') {
-
+      deleteProduct(idToDelete).then(res => {
+        if (res.succeeded) {
+          modalHandler()
+          navigate('/customers-mng')
+        } else {
+          if (message === 'INVALID_TOKEN') {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('role')
+            authDispatch({ type: 'logout' })
+          }
+        }
+      })
     }
   }
 
