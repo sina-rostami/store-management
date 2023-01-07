@@ -137,6 +137,11 @@ const EditCustomer = (props) => {
         } else {
           const { message } = res.response.data
 
+          if (message === 'INVALID_TOKEN') {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('role')
+            authDispatch({ type: 'logout' })
+          }
           // if (message === 'CREDIT_NOT_ENOUGH') {
           //   showToastMessage('error', '!موجودی حساب مشتری کافی نمی باشد')
           // }
