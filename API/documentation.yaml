@@ -725,6 +725,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+        - product
+      summary: delete product
+      description: delete product
+      operationId: deleteProduct
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The product ID
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Seller not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
   /login:
     post:
       tags:
@@ -1143,6 +1187,9 @@ components:
         price:
           type: number
           example: 10.5
+        is_active:
+          type: boolean
+          example: true
         profile_photo_link:
           type: string
           example: "http://127.0.0.1/image/product/1.jpg"

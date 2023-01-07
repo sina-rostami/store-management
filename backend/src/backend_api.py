@@ -296,6 +296,23 @@ def get_product(current_user, product_id):
         return jsonify({'message': f'An error occurred while getting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
+@app.route('/product/<int:product_id>', methods=['DELETE'])
+@admin_authorization
+def delete_product(current_user, product_id):
+    try:
+        did_success, message = backend.product_manager.delete_product(product_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while deleting product : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 @app.route('/seller', methods=['GET'])
 @admin_authorization
 def get_sellers(current_user):

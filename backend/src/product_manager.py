@@ -17,7 +17,7 @@ class ProductManager:
             return False, 'NEGATIVE_PRICE'
 
         self.database_session.add(Product(name=data['name'], price=float(data['price']), stock_number=int(data['stock_number']),
-                                          category_id=int(data['category_id']), profile_photo_link=profile_photo_link))
+                                          category_id=int(data['category_id']), is_active=True, profile_photo_link=profile_photo_link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
@@ -49,7 +49,7 @@ class ProductManager:
 
     def get_product_as_json(self, product):
         return {'id': product.id, 'name': product.name, 'stock_number': product.stock_number, 'category_id': product.category_id,
-                'price': product.price, 'profile_photo_link': product.profile_photo_link}
+                'price': product.price, 'is_active': product.is_active, 'profile_photo_link': product.profile_photo_link}
 
     def get_product_as_json_by_id(self, id):
         product = self.database_session.query(Product).filter_by(id=id).first()
@@ -60,3 +60,18 @@ class ProductManager:
 
     def get_all_products_as_json(self):
         return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
+
+    def delete_product(self, product_id):
+        old_product = self.database_session.query(Product).filter_by(id=product_id).first()
+
+        if not old_product:
+            return False, 'NOT_EXIST'
+        if not old_product.is_active:
+            return False, 'ALREADY_LEFT'
+
+        old_product.is_active = False
+        old_product.stock_number = 0
+
+        self.database_session.commit()
+
+        return True, 'SUCCESS'

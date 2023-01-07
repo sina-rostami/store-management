@@ -75,11 +75,12 @@ class Product(Base):
     price = Column(Float)
     stock_number = Column(Integer)
     category_id = Column(Integer, ForeignKey("Category.id"), nullable=False)
+    is_active = Column(Boolean)
     profile_photo_link = Column(Text)
 
     def __repr__(self) -> str:
         return f'Product(id={self.id}, name={self.name}, price={self.price}, stock_number={self.stock_number}, ' \
-               f'category_id={self.category_id}, profile_photo_link={self.profile_photo_link})'
+               f'category_id={self.category_id}, is_active={self.is_active}, profile_photo_link={self.profile_photo_link})'
 
 
 class Order(Base):
