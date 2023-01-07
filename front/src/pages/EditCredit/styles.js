@@ -31,13 +31,14 @@ const styles = createUseStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'space-between',        
       },
 
       submitBtn: {
         width: 150,
         height: 30,
       },
-      
+
       pageTitle: {
         textAlign: 'center',
         marginBottom: 30,
@@ -67,7 +68,6 @@ const styles = createUseStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        font: 20,
         '& img': {
           width: 75,
           height: 75,
@@ -90,5 +90,20 @@ const styles = createUseStyles({
         marginBottom: 20,
         padding: 10,
       },
+
+    formContainer: {
+        height: 400,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontWeight: 700,
+        fontSize: 22
+    },
+    submitBtn: {
+        marginTop: 20,
+        width: 150,
+        height: 30,
+    }
 })
 export default styles

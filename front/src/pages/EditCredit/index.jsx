@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react'
 import styles from "./styles"
 import { useLocation, useNavigate } from 'react-router-dom'
 import getCustomerById from '../../services/getCustomerById'
+import dltf from '../../utilities/dltf'
+import {seperateByComma} from '../../utilities/seperateByComma'
+import editCredit from '../../services/editCredit'
 
 function EditCredit(props){
     const [credit, setCredit] = useState('')
     const [id, setId] = useState(null)
     const [name, setName] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-
+    const [charge, setCharge] = useState('')
     const classes = styles()
 
     const navigate = useNavigate()
@@ -24,8 +27,8 @@ function EditCredit(props){
       }, [])
 
     const changeHandler = (e, type) => {
-        if (type === 'credit') {
-          setCredit(e.target.value)
+        if (type === 'charge') {
+          setCharge(e.target.value)
         } 
       }
 
@@ -77,14 +80,12 @@ function EditCredit(props){
       const handleSubmit = (e) => {
         e.preventDefault()
         if (checkIsFormFilled() && checkIsFormValid()) {
-          setIsLoading(true)
-          const formData = new FormData()
-          formData.append('credit', +credit)
-          editCustomer({ id: location.state.id, data: formData })
+          setIsLoading(true) 
+          editCredit({ id: location.state.id, data: {balance: +credit} })
           .then(res => {
             setIsLoading(false)
             if (res.succeeded) {
-              navigate('/customers')
+              navigate('/credit')
               showToastMessage('success')
               setCredit('')
             } else {
@@ -99,19 +100,19 @@ function EditCredit(props){
       }
 
     return (
-        <div>
-            <ul className={classes.topSection}>
-            <li className={classes.customerName}>شماره مشتری : {id} </li>
-            <li className={classes.customerName}>نام مشتری : {name} </li>
-            <li className={classes.customerName}>اعتبار : {credit} </li>
-            </ul>
+        <div className={classes.formContainer}>
+            <h1 className={classes.pageTitle}>افزایش اعتبار</h1>
+            <span className={classes.customerName}>شماره مشتری : {dltf(+id)} </span>
+            <span className={classes.customerName}>نام مشتری : {name} </span>
+            <span className={classes.customerName}>اعتبار : {dltf(seperateByComma(credit))} </span>
             <form className={classes.form} onSubmit={handleSubmit}>
             <input
             className={classes.creditInput}
             placeholder='مقدار واریزی *'
-            value={credit}
-            onChange={e => changeHandler(e, 'credit')}
+            value={charge}
+            onChange={e => changeHandler(e, 'charge')}
             />
+            <span>اعتبار جدید : { dltf(seperateByComma(+charge + credit)) }</span>
             <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت'}</button>
             </form>
         </div>
