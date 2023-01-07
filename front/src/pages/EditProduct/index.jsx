@@ -5,10 +5,11 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
 import dltf from '../../utilities/dltf.js'
-import { useLocation,useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import getProductById from '../../services/getProductById'
 import { useEffect } from 'react'
 import { namePattern } from '../../constants/regex'
+import dftl from '../../utilities/dftl'
 
 const EditProduct = () => {
   const classes = styles()
@@ -65,8 +66,20 @@ const EditProduct = () => {
   }
 
   const checkIsFormValid = () => {
-    if (isNaN(Number(price))) {
+    if (isNaN(Number(dftl(price)))) {
       showToastMessage('error', 'مقدار قیمت باید عدد باشد!')
+
+      return false
+    }
+
+    if (Number(dftl(price)) < 0) {
+      showToastMessage('error', 'قیمت نمی‌تواند منفی باشد')
+
+      return false
+    }
+
+    if (name.length < 2 || name.length > 20) {
+      showToastMessage('error', 'نام محصول باید بین ۲ تا ۱۵ کاراکتر باشد')
 
       return false
     }
@@ -107,7 +120,7 @@ const EditProduct = () => {
         formData.append('file', selectedImg)
         formData.append('name', name)
         formData.append('category_id', 1)
-        formData.append('price', +price)
+        formData.append('price', +dftl(price))
         formData.append('stock_number', counter)
         editProduct({id: location.state.id, data: formData})
         .then(res => {
@@ -126,9 +139,9 @@ const EditProduct = () => {
               localStorage.removeItem('role')
               authDispatch({ type: 'logout' })
             }
-            // if (message === 'CREDIT_NOT_ENOUGH') {
-            //   showToastMessage('error', '!موجودی حساب مشتری کافی نمی باشد')
-            // }
+            if (message === 'ALREADY_EXISTS') {
+              showToastMessage('error', 'این محصول قبلا ثبت شده است')
+            }
           }
         })
     }
@@ -159,7 +172,7 @@ const EditProduct = () => {
         <ImageUpload setImage={setSelectedImg} />
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت محصول'}</button>
       </form>
-      <ToastContainer />
+      <ToastContainer rtl />
     </div>
   )
 }

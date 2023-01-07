@@ -38,7 +38,7 @@ const styles = createUseStyles({
     },
 
     '@media (min-width: 1360px)': {
-      height: 300,
+      height: 320,
       width: 300,
 
       '& img': {
@@ -74,6 +74,7 @@ const styles = createUseStyles({
 
   name: {
     fontSize: 14,
+    marginBottom: 5,
 
     '@media (min-width: 768px)': {
       fontSize: 18,
@@ -86,6 +87,7 @@ const styles = createUseStyles({
 
   price: {
     fontSize: 14,
+    marginBottom: 5,
 
     '@media (min-width: 768px)': {
       fontSize: 18,
