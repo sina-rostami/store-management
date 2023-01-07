@@ -113,7 +113,9 @@ const EditAdmin = () => {
       setIsLoading(true)
       editAdmin({
         username,
-        password: newPassword,
+        new_password: newPassword,
+        old_password: oldPassword,
+        confirm_new_password: confirmPassword,
       }).then(res => {
         setIsLoading(false)
         if (res.succeeded) {
@@ -137,9 +139,9 @@ const EditAdmin = () => {
             localStorage.removeItem('role')
             authDispatch({ type: 'logout' })
           }
-          // if (message === 'ALREADY_EXISTS') {
-          //   showToastMessage('error', 'این کاربر قبلا ثبت شده است')
-          // }
+          if (message === 'WRONG_PASSWORD') {
+            showToastMessage('error', 'رمز عبور قدیمی اشتباه است')
+          }
         }
       })
     }

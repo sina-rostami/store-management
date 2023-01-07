@@ -22,7 +22,7 @@ function Bill (props) {
         const cartItem = products.find(product => product.id === elem.id)
         const temp = {
           id: cartItem.id,
-          price: cartItem.price,
+          price: elem.price,
           name: cartItem.name,
           quantity: elem.quantity,
         }
