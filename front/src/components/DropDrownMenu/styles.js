@@ -3,6 +3,8 @@ import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
     dropDownMenuContainer: {
+        borderRadius: 7,
+        border: '2px solid black',
         position: 'absolute',
         display: 'flex',
         left: 15,

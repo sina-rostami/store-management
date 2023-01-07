@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import getCustomerById from '../../services/getCustomerById'
 import { phoneNumberPattern, namePattern } from '../../constants/regex.js'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
+import dftl from '../../utilities/dftl.js'
 
 const EditCustomer = (props) => {
   const classes = styles()
@@ -62,12 +63,6 @@ const EditCustomer = (props) => {
   }
 
   const checkIsFormValid = () => {
-    if (isNaN(Number(credit))) {
-      showToastMessage('error', 'مقدار اعتبار باید عدد باشد!')
-
-      return false
-    }
-
     if (!namePattern.test(firstName)) {
       showToastMessage('error', 'طول نام باید بین ۲ تا ۱۵ کاراکتر باشد')
 
@@ -80,7 +75,13 @@ const EditCustomer = (props) => {
       return false
     }
 
-    if (!phoneNumberPattern.test(phoneNumber)) {
+    if (isNaN(Number(dftl(credit)))) {
+      showToastMessage('error', 'مقدار اعتبار باید عدد باشد!')
+
+      return false
+    }
+
+    if (!phoneNumberPattern.test(dftl(phoneNumber))) {
       showToastMessage('error', 'تلفن همراه معتبر نمی‌باشد!')
 
       return false
@@ -98,7 +99,7 @@ const EditCustomer = (props) => {
     if (!lastName) {
       emptyInputs.push('نام خانوادگی')
     }
-    if (!credit) {
+    if (!credit.toString()) {
       emptyInputs.push('اعتبار')
     }
     if (!phoneNumber) {
@@ -122,8 +123,8 @@ const EditCustomer = (props) => {
       formData.append('file', selectedImg)
       formData.append('id', location.state.id)
       formData.append('name', firstName + ' ' + lastName)
-      formData.append('credit', +credit)
-      formData.append('phone_number', phoneNumber)
+      formData.append('credit', +dftl(credit))
+      formData.append('phone_number', dftl(phoneNumber))
       editCustomer({ id: location.state.id, data: formData })
       .then(res => {
         setIsLoading(false)
@@ -136,15 +137,16 @@ const EditCustomer = (props) => {
           setPhoneNumber('')
         } else {
           const { message } = res.response.data
+          console.log(message)
 
           if (message === 'INVALID_TOKEN') {
             localStorage.removeItem('auth_token')
             localStorage.removeItem('role')
             authDispatch({ type: 'logout' })
           }
-          // if (message === 'CREDIT_NOT_ENOUGH') {
-          //   showToastMessage('error', '!موجودی حساب مشتری کافی نمی باشد')
-          // }
+          if (message === 'ALREADY_EXISTS') {
+            showToastMessage('error', 'این مشتری قبلا ثبت شده است')
+          }
         }
       })
     }
