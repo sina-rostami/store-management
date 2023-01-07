@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './styles'
 import getProducts from '../../services/getProducts'
 import dltf from '../../utilities/dltf'
+import { seperateByComma } from '../../utilities/seperateByComma'
 import DeleteModal from '../../components/DeleteModal/index.jsx'
 
 const Products = () => {
@@ -15,8 +16,10 @@ const Products = () => {
   const classes = styles()
 
   useEffect(() => {
-    getProducts().then(data => setProducts(data))
-  }, [])
+    // if (isDeleteModalOpen) {
+      getProducts().then(data => setProducts(data.filter(product => product.is_active === true)))
+    // }
+  }, [isDeleteModalOpen])
 
   const modalHandler = (id = null, name = '') => {
     setModalName(name)
@@ -52,7 +55,8 @@ const Products = () => {
                 ? <img src={product.profile_photo_link} alt={product.name} title={product.name} />
                 : <div className={classes.imgPlaceholder}></div>
               }
-              <span>{product.name}</span>
+              <span className={classes.name}>{product.name}</span>
+              <span className={classes.price}>قیمت: {dltf(seperateByComma(product.price))} تومان</span>
               <span className={cx({[classes.stock]: true, [classes.zeroStock]: !!!product.stock_number})} >موجودی انبار: {dltf(product.stock_number)}</span>
               <div className={classes.btnContainer}>
                 <button onClick={() => navigate('/edit-product', {state: {id: product.id}})} className={classes.editProduct} >ویرایش محصول</button>

@@ -48,6 +48,7 @@ const styles = createUseStyles({
     borderRadius: 10,
     marginBottom: 20,
     padding: 10,
+    direction: 'ltr',
   },
 
   qty: {

@@ -27,10 +27,8 @@ function Product (props) {
         ? <img src={profile_photo_link} alt={name} title={name} />
         : <div className={classes.imgPlaceholder}></div>
       }
-      <div className={classes.firstRow}>
-        <div className={classes.name}>{name}</div>
-        <div className={classes.price}>{dltf(seperateByComma(price))} تومان</div>
-      </div>
+      <div className={classes.name}>{name}</div>
+      <div className={classes.price}>قیمت: {dltf(seperateByComma(price))} تومان</div>
       <div className={cx({[classes.stockRow]: true, [classes.zeroStock]: !!!stockNumber})}>
         <span>موجودی انبار: {dltf(stockNumber)}</span>
       </div>
