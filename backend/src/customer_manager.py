@@ -27,8 +27,6 @@ class CustomerManager:
 
         if not old_customer:
             return False, 'NOT_EXIST'
-        elif float(data['credit']) < 0:
-            return False, 'NEGATIVE_CREDIT'
 
         same_customer = self.database_session.query(Customer).filter_by(name=data['name'], phone_number=data['phone_number']).first()
         if same_customer and same_customer.id != customer_id:
