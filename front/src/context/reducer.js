@@ -12,7 +12,7 @@ export function AuthReducer (state, action) {
   case 'login':
     return { ...state, authStatus: 'loggedIn' }
   case 'logout':
-    return { ...state, authStatus: 'loggedOut', role: '' }
+    return { ...state, authStatus: 'loggedOut', role: '', userId: null, name: '', profilePictureUrl: null, username: '' }
   case 'loading':
     return { ...state, authStatus: 'loading' }
   case 'setRole':

@@ -4,9 +4,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './styles'
 import getProducts from '../../services/getProducts'
 import dltf from '../../utilities/dltf'
+import DeleteModal from '../../components/DeleteModal/index.jsx'
 
 const Products = () => {
   const [products, setProducts] = useState([])
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [modalName, setModalName] = useState('')
+  const [modalId, setModalId] = useState(null)
   const navigate = useNavigate()
   const classes = styles()
 
@@ -14,8 +18,24 @@ const Products = () => {
     getProducts().then(data => setProducts(data))
   }, [])
 
+  const modalHandler = (id = null, name = '') => {
+    setModalName(name)
+    setModalId(id)
+    setIsDeleteModalOpen(prev => !prev)
+  }
+
   return (
     <div className={classes.productsRoot}>
+      {isDeleteModalOpen &&
+        <DeleteModal
+          modalHandler={modalHandler}
+          title='حذف محصول'
+          question={`آیا از حذف ${modalName} اطمینان دارید؟`}
+          type='product'
+          idToDelete={modalId}
+          option='حذف'
+        />
+      }
       <div className={classes.pageHeader}>
         <img src="./asset/images/back.png" alt="بازگشت" title='بازگشت' onClick={() => navigate(-1)} />
         <h3 className={classes.pageTitle}>لیست محصولات</h3>
@@ -34,7 +54,10 @@ const Products = () => {
               }
               <span>{product.name}</span>
               <span className={cx({[classes.stock]: true, [classes.zeroStock]: !!!product.stock_number})} >موجودی انبار: {dltf(product.stock_number)}</span>
-              <button onClick={() => navigate('/edit-product', {state: {id: product.id}})} className={classes.editProduct} >ویرایش محصول</button>
+              <div className={classes.btnContainer}>
+                <button onClick={() => navigate('/edit-product', {state: {id: product.id}})} className={classes.editProduct} >ویرایش محصول</button>
+                <button onClick={() => modalHandler(product.id, product.name)} className={classes.deleteProduct} >حذف محصول</button>
+              </div>
             </div>
           ))
         }
