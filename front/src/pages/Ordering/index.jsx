@@ -16,7 +16,7 @@ const Ordering = () => {
   const classes = styles()
 
   useEffect(() => {
-    getProducts().then(data => setProducts(data))
+    getProducts().then(data => setProducts(data.filter(product => product.is_active === true)))
   }, [])
 
   const handleCart = (productId, action) => {

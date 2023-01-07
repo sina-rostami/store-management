@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
 import { phoneNumberPattern, namePattern } from '../../constants/regex.js'
+import dftl from '../../utilities/dftl.js'
 
 const AddCustomer = () => {
   const classes = styles()
@@ -63,13 +64,19 @@ const AddCustomer = () => {
       return false
     }
 
-    if (isNaN(Number(credit))) {
+    if (isNaN(Number(dftl(credit)))) {
       showToastMessage('error', 'مقدار اعتبار باید عدد باشد')
 
       return false
     }
 
-    if (!phoneNumberPattern.test(phoneNumber)) {
+    if (Number(dftl(credit)) < 0) {
+      showToastMessage('error', 'مقدار اعتبار اولیه نمی‌تواند منفی باشد')
+
+      return false
+    }
+
+    if (!phoneNumberPattern.test(dftl(phoneNumber))) {
       showToastMessage('error', 'تلفن همراه معتبر نمی‌باشد')
 
       return false
@@ -110,8 +117,8 @@ const AddCustomer = () => {
       const formData = new FormData()
       formData.append('file', selectedImg);
       formData.append('name', firstName + ' ' + lastName);
-      formData.append('credit', +credit);
-      formData.append('phone_number', phoneNumber);
+      formData.append('credit', +dftl(credit));
+      formData.append('phone_number', dftl(phoneNumber));
       addCustomer(formData)
       .then(res =>{
         setIsLoading(false)
@@ -129,6 +136,12 @@ const AddCustomer = () => {
             localStorage.removeItem('auth_token')
             localStorage.removeItem('role')
             authDispatch({ type: 'logout' })
+          }
+          if (message === 'ALREADY_EXISTS') {
+            showToastMessage('error', 'این مشتری قبلا ثبت شده است')
+          }
+          if (message === 'NEGATIVE_CREDIT') {
+            showToastMessage('error', 'مقدار اعتبار اولیه نمی‌تواند منفی باشد')
           }
         }
       })

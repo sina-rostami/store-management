@@ -6,6 +6,8 @@ const dltf = (n) => {
     .map(x => {
       if (x === ',') {
         return '٫'
+      } else if (x === '-') {
+        return '-'
       }
       return farsiDigits[x]
     })
