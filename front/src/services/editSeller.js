@@ -13,7 +13,7 @@ const editSeller = async ({ id, data }) => {
 
     return result
   } catch (error) {
-    return (console.error(error), false)
+    return (console.error(error), error)
   }
 }
 
