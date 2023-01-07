@@ -32,11 +32,11 @@ const SellersList = () => {
       {isDeleteModalOpen &&
         <DeleteModal
           modalHandler={modalHandler}
-          title='حذف فروشنده'
-          question={`آیا از حذف ${modalName} اطمینان دارید؟`}
+          title='غیرفعال کردن فروشنده'
+          question={`آیا از غیرفعال کردن ${modalName} اطمینان دارید؟`}
           type='seller'
           idToDelete={modalId}
-          option='حذف'
+          option='غیرفعال کردن'
         />
       }
       <div className={classes.pageHeader}>
@@ -71,7 +71,7 @@ const SellersList = () => {
                 <div className={classes.seeMoreContainer}>
                   {/* <img src="./asset/images/chevron-left.png" alt="مشاهده بیشتر" title="مشاهده بیشتر" /> */}
                   <button className={classes.btn} onClick={() => navigate('/edit-seller', { state: { id: seller.id } })}>ویرایش</button>
-                  <button className={classes.btn} onClick={() => modalHandler(seller.id, seller.name)} style={{ marginRight: 10 }}>حذف</button>
+                  <button className={classes.btn} onClick={() => modalHandler(seller.id, seller.name)} style={{ marginRight: 10 }}>غیرفعال کردن</button>
                 </div>
               )
               : <span style={{ color: 'red', fontWeight: 800 }}>غیر فعال</span>

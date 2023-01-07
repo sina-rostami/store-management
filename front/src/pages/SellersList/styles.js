@@ -330,7 +330,7 @@ const styles = createUseStyles({
     padding: 10,
     fontSize: 16,
     fontWeight: 700,
-    width: 80,
+    width: 100,
     borderRadius: 7,
     cursor: 'pointer',
 
