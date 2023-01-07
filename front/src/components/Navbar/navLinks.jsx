@@ -31,6 +31,7 @@ const LinkItem = styled.li`
   display: flex;
   border-top: 2px solid transparent:
   transition: all 220ms ease-in-out;
+  cursor: pointer;
 
   &:hover {
     border-top: 2px solid #2980b9;

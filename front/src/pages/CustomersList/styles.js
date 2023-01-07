@@ -291,10 +291,11 @@ const styles = createUseStyles({
     },
   },
 
-  joinDateContainer: {
+  creditContainer: {
     display: 'none',
 
     '& span': {
+      direction: 'ltr',
       width: 90,
       textAlign: 'center',
     },
