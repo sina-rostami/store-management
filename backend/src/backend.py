@@ -40,12 +40,12 @@ class Backend:
             return
 
         self.database_session.add(Seller(id=0, name='Admin', username='admin', password=generate_password_hash('12345'), is_active=True))
-        self.database_session.add(Seller(name='ali', username='user0', password=generate_password_hash('password'), is_active=True, profile_photo_link=f'{self.app_base_url}/image/seller/p.jpg'))
+        self.database_session.add(Seller(name='ali', username='user0', password=generate_password_hash('password'), is_active=True))
         self.database_session.add(
-            Customer(name='asghar', credit=100000000.0, join_date=datetime.datetime.now(), is_active=True, phone_number='09101010203', profile_photo_link=f'{self.app_base_url}/image/customer/p.jpg'))
+            Customer(name='asghar', credit=100000000.0, join_date=datetime.datetime.now(), is_active=True, phone_number='09101010203'))
         self.database_session.add(Payer(name='asghar-payer', phone_number='09111010203'))
         self.database_session.add(Category(name='خوراکی'))
-        self.database_session.add(Product(name='چای', price=1000, stock_number=5, category_id=1, profile_photo_link=f'{self.app_base_url}/image/product/p.jpg'))
+        self.database_session.add(Product(name='چای', price=1000, stock_number=5, category_id=1))
         self.database_session.add(Product(name='نسکافه', price=7000, stock_number=2, category_id=1))
         self.database_session.add(Product(name='آبمیوه', price=8000, stock_number=10, category_id=1))
         self.database_session.add(Product(name='نان', price=9000, stock_number=10, category_id=1))
