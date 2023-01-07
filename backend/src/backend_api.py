@@ -424,7 +424,7 @@ def add_payment(current_user):
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while getting admins : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({'message': f'An error occurred while creating payment : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/payment/<int:payment_id>', methods=['GET'])
@@ -441,7 +441,7 @@ def get_payment(current_user, payment_id):
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while getting seller : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({'message': f'An error occurred while getting payment : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/payment', methods=['GET'])
@@ -452,7 +452,7 @@ def get_payments(current_user):
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
-        return jsonify({'message': f'An error occurred while getting sellers : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+        return jsonify({'message': f'An error occurred while getting payments : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @app.route('/image/<string:kind>/<path:name>', methods=['GET'])
