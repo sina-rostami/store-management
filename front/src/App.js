@@ -25,6 +25,7 @@ import SignIn from './pages/SignIn/index.jsx'
 import EditAdmin from './pages/EditAdmin/index.jsx'
 import Bill from './pages/Bill/index.jsx'
 import EditProduct from './pages/EditProduct/index.jsx'
+import Credit from './pages/Credit/index.jsx'
 
 const App = () => {
   return (
@@ -50,6 +51,7 @@ const App = () => {
         <Route path='/edit-admin' element={<AuthGuard component={<EditAdmin />} />} />
         <Route path='/edit-product' element={<AuthGuard component={<EditProduct />} />} />
         <Route path='/bill' element={<AuthGuard component={<Bill/>} />} />
+        <Route path='/credit' element={<AuthGuard component={<Credit/>} />} />
         <Route path='/not-found' element={<NotFound />} />
         <Route path='*' element={<Navigate to='/not-found' />} />
       </Routes>
