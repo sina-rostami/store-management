@@ -18,7 +18,8 @@ const styles = createUseStyles({
     margin: '5% auto 15% auto',
     border: '1px solid #888',
     width: '40%',
-    height: 150,
+    height: 180,
+    borderRadius: 10,
   },
 
   close: {
@@ -51,7 +52,6 @@ const styles = createUseStyles({
 
   clearfix: {
     '& button': {
-      color: 'white',
       padding: '14px 20px',
       margin: '8px 0',
       border: 'none',
@@ -68,15 +68,27 @@ const styles = createUseStyles({
 
   cancelbtn: {
     float: 'left',
-    width: '50%',
+    width: '45%',
     backgroundColor: '#ccc',
-    color: 'black',
+    borderRadius: 10,
+    color: '#000',
   },
 
   deletebtn: {
-    float: 'left',
-    width: '50%',
+    float: 'right',
+    width: '45%',
     backgroundColor: '#f44336',
+    borderRadius: 10,
+    color: '#fff',
+  },
+
+  title: {
+    marginBottom: 10,
+  },
+
+  question: {
+    marginBottom: 10,
+    fontSize: 18,
   },
 })
 

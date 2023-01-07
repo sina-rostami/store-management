@@ -71,7 +71,7 @@ const styles = createUseStyles({
   },
 
   product: {
-    height: 180,
+    height: 200,
     width: 170,
     display: 'flex',
     justifyContent: 'center',
@@ -108,7 +108,7 @@ const styles = createUseStyles({
     },
 
     '@media (min-width: 1360px)': {
-      height: 300,
+      height: 350,
       width: 300,
 
       '& img': {
@@ -121,6 +121,11 @@ const styles = createUseStyles({
         fontSize: 22,
       },
     },
+  },
+
+  name: {
+    marginBottom: 5,
+    fontWeight: 700,
   },
 
   imgPlaceholder: {

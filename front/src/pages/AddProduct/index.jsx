@@ -5,6 +5,9 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ImageUpload from '../../components/ImageUpload/index.jsx'
 import dltf from '../../utilities/dltf.js'
+import dftl from '../../utilities/dftl.js'
+import { namePattern } from '../../constants/regex'
+import { useNavigate } from 'react-router-dom'
 
 const AddProduct = () => {
   const classes = styles()
@@ -13,6 +16,7 @@ const AddProduct = () => {
   const [price, setPrice] = useState('')
   const [selectedImg, setSelectedImg] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleCounter = (action) => {
     if (action === 'add') {
@@ -32,7 +36,7 @@ const AddProduct = () => {
 
   const showToastMessage = (type, message) => {
     if (type === 'success') {
-      toast.success('!ثبت محصول با موفقیت انجام شد', {
+      toast.success('ثبت محصول با موفقیت انجام شد', {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
         hideProgressBar: true,
@@ -50,33 +54,86 @@ const AddProduct = () => {
     }
   }
 
+  const checkIsFormValid = () => {
+    if (isNaN(Number(dftl(price)))) {
+      showToastMessage('error', 'مقدار قیمت باید عدد باشد')
+
+      return false
+    }
+
+    if (Number(dftl(price)) < 0) {
+      showToastMessage('error', 'قیمت نمی‌تواند منفی باشد')
+
+      return false
+    }
+
+    if (name.length < 2 || name.length > 20) {
+      showToastMessage('error', 'نام محصول باید بین ۲ تا ۱۵ کاراکتر باشد')
+
+      return false
+    }
+
+    if (!namePattern.test(name)) {
+      showToastMessage('error', 'نام محصول شامل کاراکتر های غیرمجاز می‌باشد')
+
+      return false
+    }
+
+    return true
+  }
+
+  const checkIsFormFilled = () => {
+    const emptyInputs = []
+
+    if (!name) {
+      emptyInputs.push('نام')
+    }
+    if (!price) {
+      emptyInputs.push('قیمت')
+    }
+
+    if (emptyInputs.length !== 0) {
+      showToastMessage('error', `${emptyInputs.join(' و ')} را وارد کنید!`)
+
+      return false
+    }
+
+    return true
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    setIsLoading(true)
-    const formData = new FormData()
-    formData.append('file', selectedImg)
-    formData.append('name', name)
-    formData.append('category_id', 1)
-    formData.append('price', +price)
-    formData.append('stock_number', counter)
-    addProduct(formData)
-    .then(res => {
-      setIsLoading(false)
-      if (res.succeeded) {
-        showToastMessage('success')
-        setCounter(0)
-        setName('')
-        setPrice('')
-      } else {
-        const { message } = res.response.data
+    if (checkIsFormFilled() && checkIsFormValid()) {
+      setIsLoading(true)
+      const formData = new FormData()
+      formData.append('file', selectedImg)
+      formData.append('name', name)
+      formData.append('category_id', 1)
+      formData.append('price', +dftl(price))
+      formData.append('stock_number', counter)
+      addProduct(formData)
+      .then(res => {
+        setIsLoading(false)
+        if (res.succeeded) {
+          navigate('/products')
+          showToastMessage('success')
+          setCounter(0)
+          setName('')
+          setPrice('')
+        } else {
+          const { message } = res.response.data
 
-        if (message === 'INVALID_TOKEN') {
-          localStorage.removeItem('auth_token')
-          localStorage.removeItem('role')
-          authDispatch({ type: 'logout' })
+          if (message === 'INVALID_TOKEN') {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('role')
+            authDispatch({ type: 'logout' })
+          }
+          if (message === 'ALREADY_EXISTS') {
+            showToastMessage('error', 'این محصول قبلا ثبت شده است')
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   return (
@@ -104,7 +161,7 @@ const AddProduct = () => {
         <ImageUpload setImage={setSelectedImg} />
         <button className={classes.submitBtn}>{isLoading ? 'در حال ثبت ...' : 'ثبت محصول'}</button>
       </form>
-      <ToastContainer />
+      <ToastContainer rtl />
     </div>
   )
 }
