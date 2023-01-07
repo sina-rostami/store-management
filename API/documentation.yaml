@@ -913,9 +913,7 @@ paths:
             content:
               application/json:
                 schema:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/PaymentResp'
+                  $ref: '#/components/schemas/PaymentResp'
           '400':
             description: Bad request
             content:
@@ -1191,8 +1189,8 @@ components:
           type: string
           example: 'hassan'
         phone_number:
-          type: integer
-          example: '1'
+          type: string
+          example: '09123251425'
         customer_id:
           type: integer
           example: '1'
@@ -1201,10 +1199,7 @@ components:
           example: '1'
         amount:
           type: number
-          example: '15'
-        date:
-          type: number
-          example: 1669315706.634264
+          example: '1554.5'
     LoginResp:
       type: object
       properties:
