@@ -1,5 +1,254 @@
-import { createUseStyles } from "react-jss";
+import { createUseStyles } from 'react-jss'
 
 const styles = createUseStyles({
-    
+  customersListRoot: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: [0, 30, 60],
+
+    '@media (min-width: 768px)': {
+      padding: [0, 50, 80],
+    },
+    '@media (min-width: 1360px)': {
+      padding: [0, 60, 100],
+    },
+  },
+
+  noItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    fontSize: 16,
+    marginTop: 200,
+
+    '@media (min-width: 768px)': {
+      fontSize: 22,
+      marginTop: 215,
+    },
+
+    '@media (min-width: 1360px)': {
+      fontSize: 30,
+      marginTop: 230,
+    },
+  },
+
+  pageHeader: {
+    position: 'relative',
+
+    '& img': {
+      position: 'absolute',
+      height: 20,
+      width: 20,
+      verticalAlign: 'middle',
+      cursor: 'pointer',
+    },
+
+    '@media (min-width: 768px)': {
+      '& img': {
+        height: 25,
+        width: 25,
+      },
+    },
+
+    '@media (min-width: 1360px)': {
+      '& img': {
+        height: 30,
+        width: 30,
+      },
+    },
+  },
+
+  pageTitle: {
+    textAlign: 'center',
+    marginBottom: 30,
+    fontSize: 14,
+
+    '@media (min-width: 768px)': {
+      marginBottom: 40,
+      fontSize: 20,
+    },
+
+    '@media (min-width: 1360px)': {
+      marginBottom: 50,
+      fontSize: 28,
+    },
+  },
+
+  customersContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+
+  headerRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 40,
+    width: 300,
+    border: '1px solid black',
+    borderRadius: 5,
+    marginBottom: 15,
+    padding: [0, 10],
+
+    '& span': {
+      fontSize: 14,
+      fontWeight: 700,
+    },
+
+    '@media (min-width: 768px)': {
+      width: 500,
+      height: 50,
+      marginBottom: 20,
+      padding: [0, 15],
+
+      '& span': {
+        fontSize: 16,
+      },
+    },
+
+    '@media (min-width: 1360px)': {
+      height: 60,
+      marginBottom: 25,
+      padding: [0, 20],
+
+      '& span': {
+        fontSize: 18,
+      },
+    },
+  },
+
+  nameHeader: {
+    display: 'flex',
+    width: '50%',
+
+    '@media (min-width: 768px)': {
+
+    },
+
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+
+  idHeader: {
+    display: 'flex',
+    width: '45%',
+
+    '@media (min-width: 768px)': {
+
+    },
+
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+
+  customerRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 40,
+    border: '1px solid black',
+    borderRadius: 5,
+    marginBottom: 15,
+    padding: [0, 10],
+    backgroundColor: 'rgba(175,194,212,100)',
+    width: 300,
+
+    '& hover': {
+      backgroundColor: 'rgba(175,194,212,50)',
+    },
+
+    '& span': {
+      fontSize: 14,
+      fontWeight: 700,
+    },
+
+    '@media (min-width: 768px)': {
+      width: 500,
+      height: 50,
+      marginBottom: 20,
+      padding: [0, 15],
+
+      '& span': {
+        fontSize: 16,
+      },
+    },
+
+    '@media (min-width: 1360px)': {
+      height: 60,
+      marginBottom: 25,
+      padding: [0, 20],
+
+      '& span': {
+        fontSize: 18,
+      },
+    },
+  },
+
+  nameContainer: {
+    display: 'flex',
+    width: '50%',
+
+    '@media (min-width: 768px)': {
+
+    },
+
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+
+  idContainer: {
+    display: 'flex',
+    width: '45%',
+    fontSize: 12,
+
+    '& span': {
+      width: 35,
+      textAlign: 'center',
+    },
+
+    '@media (min-width: 768px)': {
+
+    },
+
+    '@media (min-width: 1360px)': {
+
+    },
+  },
+
+  seeMoreContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    width: '5%',
+    cursor: 'pointer',
+
+    '& img': {
+      border: '1px solid black',
+      borderRadius: '50%',
+      height: 25,
+      width: 25,
+    },
+
+    '@media (min-width: 768px)': {
+      width: '5%',
+
+      '& img': {
+        height: 30,
+        width: 30,
+      },
+    },
+
+    '@media (min-width: 1360px)': {
+      width: '5%',
+
+      '& img': {
+        height: 35,
+        width: 35,
+      },
+    },
+  },
 })
+
+export default styles
