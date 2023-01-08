@@ -12,6 +12,7 @@ const styles = createUseStyles({
         padding: [0, 10, 10],
         overflow: 'hidden',
         backgroundColor: 'white',
+        zIndex: 2,
     },
     menuItem: {
         height: 50,
