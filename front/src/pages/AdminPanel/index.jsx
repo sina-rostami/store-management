@@ -25,7 +25,7 @@ const AdminPanel = () => {
       <div className={classes.adminItem}><Link to='/bills'>مشاهده فاکتور‌های ثبت‌شده</Link></div>
       <div className={classes.adminItem}><Link to='/products'>مدیریت محصولات</Link></div>
       <div className={classes.adminItem}><Link to='/select-customer'>ثبت فروش</Link></div>
-      <div className={classes.adminItem}><Link to='/credit'>افزایش اعتبار</Link></div>
+      {/* <div className={classes.adminItem}><Link to='/credit'>افزایش اعتبار</Link></div> */}
     </div>
   )
 }
