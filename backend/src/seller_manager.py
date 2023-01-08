@@ -124,7 +124,7 @@ class SellerManager:
         old_seller.name = name
         old_seller.password = generate_password_hash(password)
         old_seller.username = username
-        old_seller.profile_photo_link = profile_photo_link
+        old_seller.profile_photo_link = profile_photo_link if profile_photo_link else old_seller.profile_photo_link
 
         self.database_session.commit()
 

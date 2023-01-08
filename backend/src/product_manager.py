@@ -41,7 +41,7 @@ class ProductManager:
         old_product.price = float(data['price'])
         old_product.category_id = int(data['category_id'])
         old_product.stock_number = int(data['stock_number'])
-        old_product.profile_photo_link = profile_photo_link
+        old_product.profile_photo_link = profile_photo_link if profile_photo_link else old_product.profile_photo_link
 
         self.database_session.commit()
 

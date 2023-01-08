@@ -35,7 +35,7 @@ class CustomerManager:
         old_customer.name = data['name']
         old_customer.credit = float(data['credit'])
         old_customer.phone_number = data['phone_number']
-        old_customer.profile_photo_link = profile_photo_link
+        old_customer.profile_photo_link = profile_photo_link if profile_photo_link else old_customer.profile_photo_link
 
         self.database_session.commit()
 
