@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // import { baseUrl } from './serviceAddress'
-const baseUrl = 'http://192.168.0.121:5000'
+const baseUrl = 'http://192.168.43.226:5000'
 // const baseUrl = 'http://192.168.1.43:5000'
 
 

@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
 import styles from "./styles"
 import { menuItems } from "./menuItems"
+import getSellerInfo from '../../services/getSellerInfo'
 import { useAuthState } from "../../context/index.js"
 
 
@@ -39,13 +40,23 @@ const LinkItem = styled.li`
 `;
 
 export function NavLinks(props) {
-  const { role } = useAuthState()
+  const [isSellerActive, setIsSellerActive] = useState(true)
+  const { role, userId } = useAuthState()
   const classes = styles()
+
+  useEffect(() => {
+    getSellerInfo(userId).then(res => {
+      if (res.name) {
+        setIsSellerActive(res.is_active)
+      }
+      }
+    )
+  }, [])
 
   return <NavLinksContainer>
     <LinksWrapper>
       {
-        menuItems.map(menuItem => {
+        menuItems(isSellerActive).map(menuItem => {
           if (menuItem.roles.includes(role)) {
             return (
               <LinkItem key={menuItem.path}>

@@ -24,7 +24,7 @@ function Product (props) {
   return (
     <div className={classes.product} key={id}>
       {profile_photo_link
-        ? <img src={profile_photo_link} alt={name} title={name} />
+        ? <img className={classes.productImg} src={profile_photo_link} alt={name} title={name} />
         : <div className={classes.imgPlaceholder}></div>
       }
       <div className={classes.name}>{name}</div>
