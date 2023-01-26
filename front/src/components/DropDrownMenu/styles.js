@@ -34,7 +34,13 @@ const styles = createUseStyles({
     },
     name: {
         paddingTop: 10,
-    }
+        paddingRight: 35,
+    },
+    logo: {
+        width: 15,
+        height: 15,
+        paddingRight: 5,
+    },
 })
 
 export default styles
