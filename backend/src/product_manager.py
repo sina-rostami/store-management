@@ -58,8 +58,9 @@ class ProductManager:
 
         return True, self.get_product_as_json(product)
 
-    def get_all_products_as_json(self):
-        return [self.get_product_as_json(product) for product in self.database_session.query(Product).all()]
+    def get_all_products_as_json(self, page, per_page):
+        return [self.get_product_as_json(product) for product in
+                self.database_session.query(Product).limit(per_page).offset((page - 1) * per_page).all()]
 
     def delete_product(self, product_id):
         old_product = self.database_session.query(Product).filter_by(id=product_id).first()
