@@ -34,3 +34,17 @@ class CategoryManager:
 
     def get_category_as_json(self, category):
         return {'id': category.id, 'name': category.name}
+
+    def edit_category(self, data):
+        category_id = data['id']
+
+        same_category = self.database_session.query(Category).filter_by(id=category_id).first()
+
+        if not same_category:
+            return False, 'NOT_EXIST'
+
+        same_category.name = data['name']
+
+        self.database_session.commit()
+
+        return True, 'SUCCESS'
