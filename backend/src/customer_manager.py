@@ -53,8 +53,9 @@ class CustomerManager:
 
         return True, self.get_customer_as_json(customer)
 
-    def get_all_customers_as_json(self):
-        return [self.get_customer_as_json(customer) for customer in self.database_session.query(Customer).all()]
+    def get_all_customers_as_json(self, page, per_page):
+        return [self.get_customer_as_json(customer) for customer in
+                self.database_session.query(Customer).limit(per_page).offset((page - 1) * per_page).all()]
 
     def delete_customer(self, customer_id):
         old_customer = self.database_session.query(Customer).filter_by(id=customer_id).first()
