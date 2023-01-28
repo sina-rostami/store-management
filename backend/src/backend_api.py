@@ -498,6 +498,24 @@ def create_category(current_user):
     except Exception as e:
         return jsonify({'message': f'An error occurred while creating category : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
+@app.route('/category', methods=['PUT'])
+@admin_authorization
+def edit_category(current_user):
+    data = request.json
+
+    try:
+        check_fields(data, {'id','name'})
+
+        did_success, message = backend.category_manager.edit_category(data)
+        if not did_success:
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while creating category : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
 
 @app.route('/category', methods=['GET'])
 def get_categories():
