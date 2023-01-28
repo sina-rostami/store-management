@@ -480,6 +480,23 @@ def get_image(kind, name):
         return jsonify({'message': 'FILE_NOT_FOUND'}), HTTPStatus.NOT_FOUND
 
 
+@app.route('/category' , methods=['POST'])
+@normal_authorization
+def create_category(current_user):
+    try:
+        check_fields(data, {'name'})
+
+        did_success, message = backend.category_manager.create_category(data)
+        if not did_success:
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify({'message': message}), HTTPStatus.CREATED
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while creating category : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 if __name__ == "__main__":
     # setting debug to True enables hot reload
     # and also provides a debugger shell
