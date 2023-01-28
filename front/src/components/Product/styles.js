@@ -42,8 +42,8 @@ const styles = createUseStyles({
       width: 300,
 
       '& img': {
-        height: 150,
-        width: 150,
+        height: 140,
+        width: 140,
         marginBottom: 35,
       },
 
