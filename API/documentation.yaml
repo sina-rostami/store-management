@@ -199,6 +199,18 @@ paths:
           schema:
             type: string
           required: true
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: page
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+          required: false
+          description: per_page
       responses:
         '200':
           description: Successful operation
@@ -403,6 +415,18 @@ paths:
           schema:
             type: string
           required: true
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: page
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+          required: false
+          description: per_page
       responses:
         '200':
           description: Successful operation
@@ -574,6 +598,18 @@ paths:
           schema:
             type: string
           required: true
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: page
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+          required: false
+          description: per_page
       requestBody:
         content:
           multipart/form-data:
@@ -1063,6 +1099,18 @@ paths:
             schema:
               type: string
             required: false
+          - in: query
+            name: page
+            schema:
+              type: integer
+            required: false
+            description: page
+          - in: query
+            name: per_page
+            schema:
+              type: integer
+            required: false
+            description: per_page
         responses:
           '200':
             description: Successful operation
