@@ -18,3 +18,19 @@ class CategoryManager:
         self.database_session.commit()
 
         return True, 'SUCCESS'
+
+    def get_categories(self, page, per_page):
+
+        return [self.get_category_as_json(payment) for payment in
+                self.database_session.query(Category).limit(per_page).offset((page-1) * per_page).all()]
+
+    def get_a_category_as_json(self, category_id):
+        category = self.database_session.query(Category).filter_by(id=category_id).first()
+
+        if not category:
+            return False, 'NOT_EXIST'
+
+        return True, self.get_category_as_json(category)
+
+    def get_category_as_json(self, category):
+        return {'id': category.id, 'name': category.name}
