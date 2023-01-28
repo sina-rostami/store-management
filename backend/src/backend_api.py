@@ -274,7 +274,9 @@ def edit_product(current_user, product_id):
 @normal_authorization
 def get_products(current_user):
     try:
-        return jsonify(backend.product_manager.get_all_products_as_json()), HTTPStatus.OK
+        page = request.args.get('page') if request.args.get('page') else 1
+        per_page = request.args.get('per_page') if request.args.get('per_page') else 10
+        return jsonify(backend.product_manager.get_all_products_as_json(int(page), int(per_page))), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
