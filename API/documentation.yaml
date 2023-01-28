@@ -29,6 +29,8 @@ tags:
     description: Everything about Image
   - name: payment
     description: Everything about Payment
+  - name: category
+    description: Everything about Category
 paths:
   /order:
     post:
@@ -1009,7 +1011,153 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-
+  /category/{category_id}:
+      get:
+        tags:
+          - category
+        summary: get a category
+        description: get a category
+        operationId: get a category
+        parameters:
+          - in: header
+            name: x-access-token
+            schema:
+              type: string
+            required: false
+          - in: path
+            name: category_id
+            required: true
+            schema:
+              type: integer
+              minimum: 1
+            description: The Category ID
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Category'
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+  /category:
+      get:
+        tags:
+          - category
+        summary: get categories
+        description: get categories
+        operationId: get categories
+        parameters:
+          - in: header
+            name: x-access-token
+            schema:
+              type: string
+            required: false
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Category'
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+      post:
+        tags:
+          - category
+        summary: create category
+        description: create category
+        operationId: create category
+        parameters:
+          - in: header
+            name: x-access-token
+            schema:
+              type: string
+            required: true
+        requestBody:
+          description: Edit Category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryCreate'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+      put:
+        tags:
+          - category
+        summary: edit category
+        description: edit category
+        operationId: edit category
+        parameters:
+          - in: header
+            name: x-access-token
+            schema:
+              type: string
+            required: true
+        requestBody:
+          description: Edit Category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
 components:
   schemas:
     addOrder:
@@ -1258,6 +1406,21 @@ components:
           enum:
             - "seller"
             - "admin"
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'دارو'
+        id:
+          type: integer
+          example: '1'
+    CategoryCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'دارو'
     ApiResponse:
       type: object
       properties:
