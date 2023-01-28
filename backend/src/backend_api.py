@@ -480,9 +480,11 @@ def get_image(kind, name):
         return jsonify({'message': 'FILE_NOT_FOUND'}), HTTPStatus.NOT_FOUND
 
 
-@app.route('/category' , methods=['POST'])
-@normal_authorization
+@app.route('/category', methods=['POST'])
+@admin_authorization
 def create_category(current_user):
+    data = request.json
+
     try:
         check_fields(data, {'name'})
 
@@ -495,6 +497,34 @@ def create_category(current_user):
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
         return jsonify({'message': f'An error occurred while creating category : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/category', methods=['GET'])
+def get_categories():
+    try:
+        page = request.args.get('page') if request.args.get('page') else 1
+        per_page = request.args.get('per_page') if request.args.get('per_page') else 10
+        return jsonify(backend.category_manager.get_categories(int(page), int(per_page))), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting categories : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@app.route('/category/<int:category_id>', methods=['GET'])
+def get_category(category_id):
+    try:
+        did_success, message = backend.category_manager.get_a_category_as_json(category_id)
+        if not did_success:
+            if message == 'NOT_EXIST':
+                return jsonify({'message': message}), HTTPStatus.NOT_FOUND
+            return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
+
+        return jsonify(message), HTTPStatus.OK
+    except BadRequest as e:
+        return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
+    except Exception as e:
+        return jsonify({'message': f'An error occurred while getting category : {e}'}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 if __name__ == "__main__":
