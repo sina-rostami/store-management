@@ -509,7 +509,6 @@ def edit_category(current_user):
     try:
         data = request.json
         check_fields(data, {'id', 'name'})
-
         did_success, message = backend.category_manager.edit_category(data)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST

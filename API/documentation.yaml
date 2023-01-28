@@ -1080,6 +1080,57 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ApiResponse'
+          '404':
+            description: Category not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '500':
+            description: Internal error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+      put:
+        tags:
+          - category
+        summary: edit category
+        description: edit category
+        operationId: edit category
+        parameters:
+          - in: header
+            name: x-access-token
+            schema:
+              type: string
+            required: true
+          - in: path
+            name: category_id
+            required: true
+            schema:
+              type: integer
+              minimum: 1
+            description: The Category ID
+        requestBody:
+          description: Edit Category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
           '500':
             description: Internal error
             content:
@@ -1143,49 +1194,11 @@ paths:
               type: string
             required: true
         requestBody:
-          description: Edit Category
+          description: Add Category
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CategoryCreate'
-          required: true
-        responses:
-          '200':
-            description: Successful operation
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApiResponse'
-          '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApiResponse'
-          '500':
-            description: Internal error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApiResponse'
-      put:
-        tags:
-          - category
-        summary: edit category
-        description: edit category
-        operationId: edit category
-        parameters:
-          - in: header
-            name: x-access-token
-            schema:
-              type: string
-            required: true
-        requestBody:
-          description: Edit Category
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Category'
+                $ref: '#/components/schemas/AddCategory'
           required: true
         responses:
           '200':
@@ -1463,7 +1476,7 @@ components:
         id:
           type: integer
           example: '1'
-    CategoryCreate:
+    AddCategory:
       type: object
       properties:
         name:

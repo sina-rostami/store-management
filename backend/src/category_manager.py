@@ -20,7 +20,6 @@ class CategoryManager:
         return True, 'SUCCESS'
 
     def get_categories(self, page, per_page):
-
         return [self.get_category_as_json(payment) for payment in
                 self.database_session.query(Category).limit(per_page).offset((page-1) * per_page).all()]
 
