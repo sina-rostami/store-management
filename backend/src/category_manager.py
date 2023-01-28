@@ -43,6 +43,11 @@ class CategoryManager:
         if not same_category:
             return False, 'NOT_EXIST'
 
+        category = self.database_session.query(Category).filter_by(name=data['name']).first()
+
+        if category and category.id != id:
+            return False, 'ALREADY_EXISTS'
+
         same_category.name = data['name']
 
         self.database_session.commit()

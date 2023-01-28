@@ -489,11 +489,9 @@ def get_image(kind, name):
 @app.route('/category', methods=['POST'])
 @admin_authorization
 def create_category(current_user):
-    data = request.json
-
     try:
+        data = request.json
         check_fields(data, {'name'})
-
         did_success, message = backend.category_manager.create_category(data)
         if not did_success:
             return jsonify({'message': message}), HTTPStatus.BAD_REQUEST
@@ -508,9 +506,8 @@ def create_category(current_user):
 @app.route('/category', methods=['PUT'])
 @admin_authorization
 def edit_category(current_user):
-    data = request.json
-
     try:
+        data = request.json
         check_fields(data, {'id', 'name'})
 
         did_success, message = backend.category_manager.edit_category(data)
