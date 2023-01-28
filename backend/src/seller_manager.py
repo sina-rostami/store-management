@@ -33,8 +33,7 @@ class SellerManager:
             return False, 'CUSTOMER_NOT_EXIST'
 
         total_price = sum(
-            self.database_session.query(Product).filter_by(id=product['id']).first().price * product['quantity']
-            for product in products)
+            self.database_session.query(Product).filter_by(id=product['id']).first().price * product['quantity'] for product in products)
 
         if not self.are_enough_products_available_in_stock(products):
             return False, 'NOT_IN_STOCK'
@@ -45,16 +44,14 @@ class SellerManager:
         if total_price > customer.credit + maximum_debt:
             return False, 'CREDIT_NOT_ENOUGH'
 
-        order = Order(seller_id=seller_id, customer_id=customer_id,
-                      total_price=total_price, date=datetime.datetime.now())
+        order = Order(seller_id=seller_id, customer_id=customer_id, total_price=total_price, date=datetime.datetime.now())
         self.database_session.add(order)
         customer.credit -= total_price
         self.database_session.commit()
 
         for product in products:
-            self.database_session.add(
-                OrderProduct(order_id=order.id, product_id=product['id'], quantity=product['quantity'],
-                             price=self.database_session.query(Product).filter_by(id=product['id']).first().price))
+            self.database_session.add(OrderProduct(order_id=order.id, product_id=product['id'], quantity=product['quantity'],
+                                                   price=self.database_session.query(Product).filter_by(id=product['id']).first().price))
             product_db_object = self.database_session.query(Product).filter_by(id=product['id']).first()
             product_db_object.stock_number -= product['quantity']
 
@@ -69,9 +66,8 @@ class SellerManager:
 
         return {'id': order.id, 'customer_id': order.customer_id, 'customer_name': customer.name, 'seller_id': order.seller_id,
                 'seller_name': seller.name,
-                'products': [{'id': order_product.product_id, 'quantity': order_product.quantity,
-                              'price': order_product.price} for order_product in order_products],
-                'total_price': order.total_price, 'date': order.date.timestamp()}
+                'products': [{'id': order_product.product_id, 'quantity': order_product.quantity, 'price': order_product.price} for
+                             order_product in order_products], 'total_price': order.total_price, 'date': order.date.timestamp()}
 
     def get_order_as_json_by_id(self, id):
         order = self.database_session.query(Order).filter_by(id=id).first()
@@ -84,7 +80,8 @@ class SellerManager:
         return [self.get_order_as_json(order) for order in self.database_session.query(Order).all()]
 
     def get_seller_as_json(self, seller):
-        return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active, 'profile_photo_link': seller.profile_photo_link}
+        return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active,
+                'profile_photo_link': seller.profile_photo_link}
 
     def get_seller_as_json_by_id(self, id):
         seller = self.database_session.query(Seller).filter_by(id=id).first()
@@ -93,8 +90,9 @@ class SellerManager:
 
         return True, self.get_seller_as_json(seller)
 
-    def get_all_sellers_as_json(self):
-        return [self.get_seller_as_json(seller) for seller in self.database_session.query(Seller).all() if seller.id != 0]
+    def get_all_sellers_as_json(self, page, per_page):
+        return [self.get_seller_as_json(seller) for seller in
+                self.database_session.query(Seller).limit(per_page).offset((page - 1) * per_page).all() if seller.id != 0]
 
     def add_seller(self, data, profile_photo_link):
         name, username, password = data.get('name'), data.get('username'), data.get('password')
@@ -103,9 +101,8 @@ class SellerManager:
         if old_seller:
             return False, 'ALREADY_EXISTS'
 
-        self.database_session.add(
-            Seller(name=name, username=username, password=generate_password_hash(password),
-                   is_active=True, profile_photo_link=profile_photo_link))
+        self.database_session.add(Seller(name=name, username=username, password=generate_password_hash(password), is_active=True,
+                                         profile_photo_link=profile_photo_link))
         self.database_session.commit()
 
         return True, 'SUCCESS'
