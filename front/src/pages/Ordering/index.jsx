@@ -10,6 +10,8 @@ import getProducts from '../../services/getProducts'
 
 const Ordering = () => {
   const [products, setProducts] = useState([])
+  const [filteredProducts, setFilteredProducts] = useState([])
+  const [searchedText, setSearchedText] = useState('')
   const [cart, setCart] = useState({ items: [], totalPrice: 0 })
   const navigate = useNavigate()
   const location = useLocation()
@@ -18,6 +20,20 @@ const Ordering = () => {
   useEffect(() => {
     getProducts().then(data => setProducts(data.filter(product => product.is_active === true)))
   }, [])
+
+  useEffect(() => {
+    if (searchedText) {
+      setFilteredProducts(
+        products.filter(product => product.name.includes(searchedText))
+      )
+    } else {
+      setFilteredProducts(products)
+    }
+  }, [searchedText, products])
+
+  const searchHandler = (e) => {
+    setSearchedText(e.target.value)
+  }
 
   const handleCart = (productId, action) => {
     const cartItem = cart.items.find(item => item.id === productId)
@@ -58,16 +74,25 @@ const Ordering = () => {
         <img src="./asset/images/back.png" alt="بازگشت" title='بازگشت' onClick={() => navigate(-1)} />
         <h3 className={classes.pageTitle}>ثبت فروش</h3>
       </div>
-        {products.length === 0
-          ? <span className={classes.noItem}>در حال دریافت اطلاعات ...</span>
+      <input
+        type="text"
+        onChange={searchHandler}
+        className={classes.search}
+        placeholder='نام محصول را وارد کنید ...'
+      />
+      {products.length === 0
+        ? <span className={classes.noItem}>در حال دریافت اطلاعات ...</span>
+        : (filteredProducts.length === 0
+          ? <span className={classes.noItem}>موردی یافت نشد!</span>
           : <div className={classes.products}>
             {
-              products.map(product => (
+            filteredProducts.map(product => (
                 product.stock_number !== 0 && <Product product={product} handleCart={handleCart} key={product.id} cart={cart} />
               ))
             }
             </div>
-        }
+        )
+      }
       {!!cart.items.length && <Cart items={cart.items} totalPrice={cart.totalPrice} handleCart={handleCart} customerId={location.state.id} />}
     </div>
   )
