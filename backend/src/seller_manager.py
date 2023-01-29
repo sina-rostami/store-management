@@ -76,8 +76,9 @@ class SellerManager:
 
         return True, self.get_order_as_json(order)
 
-    def get_all_orders_as_json(self):
-        return [self.get_order_as_json(order) for order in self.database_session.query(Order).all()]
+    def get_all_orders_as_json(self, page, per_page):
+        return [self.get_order_as_json(prder) for prder in
+                self.database_session.query(Order).limit(per_page).offset((page - 1) * per_page).all()]
 
     def get_seller_as_json(self, seller):
         return {'id': seller.id, 'name': seller.name, 'username': seller.username, 'is_active': seller.is_active,
