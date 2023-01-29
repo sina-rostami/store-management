@@ -72,6 +72,28 @@ const styles = createUseStyles({
     },
   },
 
+  search: {
+    width: '100%',
+    height: 40,
+    margin: '0 auto',
+    borderRadius: 7,
+    marginBottom: 10,
+    padding: 10,
+    fontSize: 14,
+
+    '@media (min-width: 768px)': {
+      height: 50,
+      marginBottom: 20,
+      fontSize: 16,
+    },
+
+    '@media (min-width: 1360px)': {
+      height: 60,
+      marginBottom: 25,
+      fontSize: 18,
+    },
+  },
+
   headerRow: {
     display: 'flex',
     flexDirection: 'row',
