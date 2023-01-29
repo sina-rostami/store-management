@@ -1,9 +1,9 @@
 import apiService from './apiService'
 
-const getProducts = async () => {
+const getProducts = async (page, perPage = 10) => {
   try {
     const response = await apiService(
-      { endpoint: '/product', authTokenNeeded: true },
+      { endpoint: `/product?page=${page}&per_page=${perPage}`, authTokenNeeded: true },
     )
     const result = response?.data || []
 

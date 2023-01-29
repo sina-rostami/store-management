@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import getCustomers from '../../services/getCustomers'
-
 import styles from './styles'
 import dltf from '../../utilities/dltf.js'
+import { Waypoint } from 'react-waypoint'
 
 const SelectCustomer = () => {
   const [customers, setCustomers] = useState([])
   const [filteredCutomers, setFilteredCustomers] = useState([])
   const [searchedText, setSearchedText] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isDataFinished, setIsDataFinished] = useState(false)
   const navigate = useNavigate()
   const classes = styles()
 
   useEffect(() => {
-    getCustomers().then(res =>{
+    getCustomers(currentPage).then(res =>{
       if (Array.isArray(res)) {
+        if (res.length === 10) {
+          setCurrentPage(currentPage + 1)
+        } else {
+          setIsDataFinished(true)
+        }
+
         setCustomers(res.reverse())
       }
     })
@@ -33,6 +40,22 @@ const SelectCustomer = () => {
 
   const searchHandler = (e) => {
     setSearchedText(e.target.value)
+  }
+
+  const onReachEnd = () => {
+    if (currentPage > 1) {
+      getCustomers(currentPage).then(res => {
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+
+          setCustomers((prevState) => ([...prevState, ...res]))
+        }
+      })
+    }
   }
 
   return (
@@ -72,8 +95,11 @@ const SelectCustomer = () => {
                     </div>
                   </div>
                 ))
-              )
-          }
+            )
+        }
+        {!isDataFinished &&
+          <Waypoint onEnter={onReachEnd} bottomOffset={'-10%'}/>
+        }
       </div>
     </div>
   )
