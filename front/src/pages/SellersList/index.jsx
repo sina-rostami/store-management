@@ -4,20 +4,29 @@ import getSellers from '../../services/getSellers.js'
 import styles from './styles'
 import dltf from '../../utilities/dltf.js'
 import DeleteModal from '../../components/DeleteModal/index.jsx'
+import { Waypoint } from 'react-waypoint'
 
 const SellersList = () => {
   const [sellers, setSellers] = useState([])
   const [filteredSellers, setFilteredSellers] = useState([])
   const [searchedText, setSearchedText] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [modalName, setModalName] = useState('')
   const [modalId, setModalId] = useState(null)
+  const [isDataFinished, setIsDataFinished] = useState(false)
   const navigate = useNavigate()
   const classes = styles()
 
   useEffect(() => {
-    getSellers().then(res =>{
+    getSellers(currentPage).then(res => {
       if (Array.isArray(res)) {
+        if (res.length === 10) {
+          setCurrentPage(currentPage + 1)
+        } else {
+          setIsDataFinished(true)
+        }
+
         setSellers(res.reverse())
       }
     })
@@ -32,6 +41,22 @@ const SellersList = () => {
       setFilteredSellers(sellers)
     }
   }, [searchedText, sellers])
+
+  const onReachEnd = () => {
+    if (currentPage > 1) {
+      getSellers(currentPage).then(res => {
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+
+          setSellers((prevState) => ([...prevState, ...res]))
+        }
+      })
+    }
+  }
 
   const searchHandler = (e) => {
     setSearchedText(e.target.value)
@@ -105,6 +130,9 @@ const SellersList = () => {
                 </div>
               ))
           )
+      }
+      {!isDataFinished &&
+        <Waypoint onEnter={onReachEnd} bottomOffset={'-20%'}/>
       }
     </div>
   )

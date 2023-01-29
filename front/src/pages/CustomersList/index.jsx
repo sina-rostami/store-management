@@ -5,6 +5,7 @@ import dltf from '../../utilities/dltf'
 import { seperateByComma } from '../../utilities/seperateByComma.js'
 import styles from './styles'
 import DeleteModal from '../../components/DeleteModal/index.jsx'
+import { Waypoint } from 'react-waypoint'
 
 const CustomersList = () => {
   const [customers, setCustomers] = useState([])
@@ -13,12 +14,20 @@ const CustomersList = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [modalName, setModalName] = useState('')
   const [modalId, setModalId] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isDataFinished, setIsDataFinished] = useState(false)
   const navigate = useNavigate()
   const classes = styles()
 
   useEffect(() => {
-    getCustomers().then(res =>{
+    getCustomers(currentPage).then(res => {
       if (Array.isArray(res)) {
+        if (res.length === 10) {
+          setCurrentPage(currentPage + 1)
+        } else {
+          setIsDataFinished(true)
+        }
+
         setCustomers(res.reverse())
       }
     })
@@ -42,6 +51,22 @@ const CustomersList = () => {
 
   const searchHandler = (e) => {
     setSearchedText(e.target.value)
+  }
+
+  const onReachEnd = () => {
+    if (currentPage > 1) {
+      getCustomers(currentPage).then(res => {
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+
+          setCustomers((prevState) => ([...prevState, ...res]))
+        }
+      })
+    }
   }
 
   return (
@@ -111,6 +136,9 @@ const CustomersList = () => {
               }
             </div>
           )))}
+        {!isDataFinished &&
+          <Waypoint onEnter={onReachEnd} bottomOffset={'-10%'}/>
+        }
     </div>
   )
 }

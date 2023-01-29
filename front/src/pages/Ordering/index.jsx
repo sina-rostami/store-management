@@ -1,24 +1,36 @@
 import React, { useEffect, useState } from 'react'
-
 import { useLocation, useNavigate } from 'react-router-dom'
-
 import styles from './styles'
-
 import Cart from '../../components/Cart/index.jsx'
 import Product from '../../components/Product/index.jsx'
 import getProducts from '../../services/getProducts'
+import { Waypoint } from 'react-waypoint'
 
 const Ordering = () => {
   const [products, setProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([])
   const [searchedText, setSearchedText] = useState('')
   const [cart, setCart] = useState({ items: [], totalPrice: 0 })
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isDataFinished, setIsDataFinished] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const classes = styles()
 
   useEffect(() => {
-    getProducts().then(data => setProducts(data.filter(product => product.is_active === true)))
+    if (products.length === 0) {
+      getProducts(currentPage).then(res => {
+        setProducts(res.reverse())
+
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+        }
+      })
+    }
   }, [])
 
   useEffect(() => {
@@ -33,6 +45,22 @@ const Ordering = () => {
 
   const searchHandler = (e) => {
     setSearchedText(e.target.value)
+  }
+
+  const onReachEnd = () => {
+    if (currentPage > 1 && filteredProducts.length > 0) {
+      getProducts(currentPage).then(res => {
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+
+          setFilteredProducts((prevState) => ([...prevState, ...res]))
+        }
+      })
+    }
   }
 
   const handleCart = (productId, action) => {
@@ -92,6 +120,9 @@ const Ordering = () => {
             }
             </div>
         )
+      }
+      {!isDataFinished &&
+        <Waypoint onEnter={onReachEnd} bottomOffset={'-60%'}/>
       }
       {!!cart.items.length && <Cart items={cart.items} totalPrice={cart.totalPrice} handleCart={handleCart} customerId={location.state.id} />}
     </div>

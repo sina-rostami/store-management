@@ -6,9 +6,12 @@ import getProducts from '../../services/getProducts'
 import dltf from '../../utilities/dltf'
 import { seperateByComma } from '../../utilities/seperateByComma'
 import DeleteModal from '../../components/DeleteModal/index.jsx'
+import { Waypoint } from 'react-waypoint'
 
 const Products = () => {
   const [products, setProducts] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isDataFinished, setIsDataFinished] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [modalName, setModalName] = useState('')
   const [modalId, setModalId] = useState(null)
@@ -16,8 +19,24 @@ const Products = () => {
   const classes = styles()
 
   useEffect(() => {
+    if (products.length === 0) {
+      getProducts(currentPage).then(res => {
+        setProducts(res.reverse())
+
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+        }
+      })
+    }
+  }, [])
+
+  useEffect(() => {
     // if (isDeleteModalOpen) {
-      getProducts().then(data => setProducts(data.filter(product => product.is_active === true)))
+      getProducts(1).then(data => setProducts(data.filter(product => product.is_active === true)))
     // }
   }, [isDeleteModalOpen])
 
@@ -25,6 +44,22 @@ const Products = () => {
     setModalName(name)
     setModalId(id)
     setIsDeleteModalOpen(prev => !prev)
+  }
+
+  const onReachEnd = () => {
+    if (currentPage > 1 && products.length > 0) {
+      getProducts(currentPage).then(res => {
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+
+          setProducts((prevState) => ([...prevState, ...res]))
+        }
+      })
+    }
   }
 
   return (
@@ -64,6 +99,9 @@ const Products = () => {
               </div>
             </div>
           ))
+        }
+        {!isDataFinished &&
+          <Waypoint onEnter={onReachEnd} bottomOffset={'-10%'}/>
         }
       </div>
     </div>

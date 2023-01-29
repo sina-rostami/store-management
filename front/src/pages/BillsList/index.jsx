@@ -1,21 +1,47 @@
 import React, { useState, useEffect } from 'react'
-
 import { useNavigate } from 'react-router-dom'
-
 import styles from './styles'
-
 import getBills from '../../services/getBills.js'
 import dltf from '../../utilities/dltf.js'
 import { seperateByComma } from '../../utilities/seperateByComma.js'
+import { Waypoint } from 'react-waypoint'
 
 const BillsList = () => {
   const [bills, setBills] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isDataFinished, setIsDataFinished] = useState(false)
   const classes = styles()
   const navigate = useNavigate()
 
   useEffect(() => {
-    getBills().then(res => setBills(res.reverse()))
+    getBills(currentPage).then(res => {
+      if (Array.isArray(res)) {
+        if (res.length === 10) {
+          setCurrentPage(currentPage + 1)
+        } else {
+          setIsDataFinished(true)
+        }
+
+        setBills(res.reverse())
+      }
+    })
   }, [])
+
+  const onReachEnd = () => {
+    if (currentPage > 1 && bills.length > 0) {
+      getBills(currentPage).then(res => {
+        if (Array.isArray(res)) {
+          if (res.length === 10) {
+            setCurrentPage(currentPage + 1)
+          } else {
+            setIsDataFinished(true)
+          }
+
+          setBills((prevState) => ([...prevState, ...res]))
+        }
+      })
+    }
+  }
 
   return (
     <div className={classes.billsListRoot}>
@@ -62,6 +88,9 @@ const BillsList = () => {
                 ))
               )
           )
+        }
+        {!isDataFinished &&
+          <Waypoint onEnter={onReachEnd} bottomOffset={'-50%'}/>
         }
       </div>
     </div>
