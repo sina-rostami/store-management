@@ -1116,7 +1116,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Category'
+                $ref: '#/components/schemas/AddCategory'
           required: true
         responses:
           '200':
@@ -1168,7 +1168,9 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/Category'
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Category'
           '400':
             description: Bad request
             content:

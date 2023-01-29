@@ -34,8 +34,7 @@ class CategoryManager:
     def get_category_as_json(self, category):
         return {'id': category.id, 'name': category.name}
 
-    def edit_category(self, data):
-        category_id = data['id']
+    def edit_category(self, data, category_id):
 
         same_category = self.database_session.query(Category).filter_by(id=category_id).first()
 
