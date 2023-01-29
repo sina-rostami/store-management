@@ -135,8 +135,9 @@ def get_order(current_user, order_id):
 @normal_authorization
 def get_orders(current_user):
     try:
-        # every seller gets its own placed order
-        return jsonify(backend.seller_manager.get_all_orders_as_json()), HTTPStatus.OK
+        page = request.args.get('page') if request.args.get('page') else 1
+        per_page = request.args.get('per_page') if request.args.get('per_page') else 10
+        return jsonify(backend.seller_manager.get_all_orders_as_json(int(page), int(per_page))), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
@@ -471,7 +472,9 @@ def get_payment(current_user, payment_id):
 @normal_authorization
 def get_payments(current_user):
     try:
-        return jsonify(backend.payment_manager.get_payments_as_json()), HTTPStatus.OK
+        page = request.args.get('page') if request.args.get('page') else 1
+        per_page = request.args.get('per_page') if request.args.get('per_page') else 10
+        return jsonify(backend.payment_manager.get_payments_as_json(int(page), int(per_page))), HTTPStatus.OK
     except BadRequest as e:
         return jsonify({'message': f'{e.description}'}), HTTPStatus.BAD_REQUEST
     except Exception as e:
