@@ -372,7 +372,7 @@ def add_seller(current_user):
 def edit_seller(current_user, seller_id):
     try:
         data = request.form
-        check_fields(data, {'username', 'name', 'password'})
+        check_fields(data, {'username', 'name', 'password', 'new_password'})
         profile_photo = get_request_attached_file()
         profile_photo_link = backend.save_file(profile_photo, data['name'], 'seller')
         did_success, message = backend.seller_manager.edit_account(seller_id, data, profile_photo_link)

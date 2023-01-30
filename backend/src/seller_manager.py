@@ -1,6 +1,7 @@
 import datetime
 
 from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 
 from database_handler import Seller, Product, Customer, OrderProduct, Order, Scratch
 
@@ -109,7 +110,7 @@ class SellerManager:
         return True, 'SUCCESS'
 
     def edit_account(self, id, data, profile_photo_link):
-        name, password, username = data.get('name'), data.get('password'), data.get('username')
+        name, password, username, new_password = data.get('name'), data.get('password'), data.get('username'), data.get('new_password')
 
         old_seller = self.database_session.query(Seller).filter_by(id=id).first()
         if not old_seller:
@@ -119,8 +120,11 @@ class SellerManager:
         if same_seller and same_seller.id != id:
             return False, 'ALREADY_EXISTS'
 
+        if not check_password_hash(password, old_seller.password):
+            return False, 'WRONG_PASSWORD'
+
         old_seller.name = name
-        old_seller.password = generate_password_hash(password)
+        old_seller.password = generate_password_hash(new_password)
         old_seller.username = username
         old_seller.profile_photo_link = profile_photo_link if profile_photo_link else old_seller.profile_photo_link
 
